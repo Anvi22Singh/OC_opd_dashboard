@@ -282,7 +282,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <p class="hint">
       <b>Consultations</b> — invoices with Procedure Type “OPD”; always OPD, so they ignore the OP/IP filter. <b>Fresh OPD</b> uses the billing system's own Status field, not Old/New Patient — the two disagree.<br>
       <b>Suggested diagnostics</b> — every row in the OP and IP exports whose “Diagnostics Suggested” cell has any content, counted together.<br>
-      <b>Every diagnostics bill lands in exactly one scenario.</b>
+      <b>The scenario columns count patients, not bills</b> — three tests billed to one patient on one day is one patient. Revenue still adds up every bill. Each bill lands in exactly one scenario.
       <b>①</b> a Fresh OPD consultation earlier the same month · <b>②</b> a follow-up OPD consultation earlier the same month · <b>③</b> no OPD, but a chemo/immuno/IP bill on an <i>earlier day</i> that month. Those three add up to <b>Counted</b>, and Diag % = Counted ÷ Suggested.<br>
       <b>④ Diag w/o OPD</b> — the patient has <i>never</i> consulted Oncare up to that date: a genuine direct walk-in. <b>⑤ Returning patient</b> — no consultation this month, but they did consult earlier, so the test is not this month's conversion nor a new walk-in. <b>⊘ Same-day session</b> — the only prior bill is a chemo/immuno bill on the same day, so the tests belong to that session. None of these three sit inside Counted.<br>
       ④ and ⑤ are split using the patient master's <b>Onboarding Date</b>, matched on Hospital ID: onboarded on an earlier day means the patient already existed. Without that file the split falls back to whatever invoice history is loaded.<br>
@@ -404,7 +404,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "25-Aug-2026 58a65c";
+const BUILD = "25-Aug-2026 977d37";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -776,6 +776,13 @@ function analyse(){
     return "noopd";
   }
   const COUNTED = new Set(["fresh","followup","prior"]);
+  /* Scenario columns count PATIENTS, not bills — one patient billed three times
+     on the same day is one conversion, not three. Hospital ID identifies the
+     patient; mobile and then name are fallbacks. Revenue still sums every bill. */
+  const pkey = d => d.hid || d.mob || d.patient;
+  const npat = (rows, b) => new Set(rows.filter(d=>d.bucket===b).map(pkey)).size;
+  const nCounted = rows => new Set(rows.filter(d=>COUNTED.has(d.bucket)).map(pkey)).size;
+  const sumNet = (rows, b) => rows.filter(d=>d.bucket===b).reduce((a,d)=>a+d.net,0);
   const dgAll = V.inv.filter(i=>i.procType==="DIAGNOSTICS");
   dgAll.forEach(d=>{ d.bucket = classify(d); });
   const dgInv  = dgAll.filter(d=>COUNTED.has(d.bucket));
@@ -801,7 +808,7 @@ function analyse(){
   /* Every diagnostics invoice is Invoice Type "opd" and carries no encounter
      type, so billed diagnostics cannot be attributed to OP vs IP — only the
      combined figure is meaningful. */
-  const dgCount = new Set(dgInv.map(i=>i.invNo)).size;
+  const dgCount = nCounted(dgAll);
   const byEnc = [
     {label:"OP analysis", ...encStats(all.filter(r=>r.type==="OP")), bilD:null},
     {label:"IP analysis", ...encStats(all.filter(r=>r.type==="IP")), bilD:null},
@@ -816,22 +823,23 @@ function analyse(){
   const per = centers.map(c=>{
     const rr = rows.filter(r=>r.center===c);
     const ii = opdInv.filter(i=>i.center===c);
+    const dgHere = dgAll.filter(i=>i.center===c);
     const sd = rr.filter(r=>r.hasD), sp = rr.filter(r=>r.hasP);
     return {center:c,
       opd: new Set(ii.map(i=>i.invNo)).size,
       fresh: new Set(ii.filter(i=>i.isNew).map(i=>i.invNo)).size,
       sugD: sd.length,
-      /* Billed diagnostics is a straight count of invoices marked Diagnostics
-         at this center in the range — not matched back to the advised patient. */
-      bilD: new Set(dgInv.filter(i=>i.center===c).map(i=>i.invNo)).size,
-      bFresh:  dgAll.filter(i=>i.center===c && i.bucket==="fresh").length,
-      bFollow: dgAll.filter(i=>i.center===c && i.bucket==="followup").length,
-      bPrior:  dgAll.filter(i=>i.center===c && i.bucket==="prior").length,
-      bNoOpd:  dgAll.filter(i=>i.center===c && i.bucket==="noopd").length,
-      bReturn: dgAll.filter(i=>i.center===c && i.bucket==="returned").length,
-      bSameDay:dgAll.filter(i=>i.center===c && i.bucket==="sameday").length,
-      noOpdRev:dgAll.filter(i=>i.center===c && i.bucket==="noopd").reduce((a,i)=>a+i.net,0),
-      returnRev:dgAll.filter(i=>i.center===c && i.bucket==="returned").reduce((a,i)=>a+i.net,0),
+      /* Patients with a Diagnostics bill at this centre in the range — not
+         matched back to the advised patient, and counted once each. */
+      bilD: nCounted(dgHere),
+      bFresh:  npat(dgHere,"fresh"),
+      bFollow: npat(dgHere,"followup"),
+      bPrior:  npat(dgHere,"prior"),
+      bNoOpd:  npat(dgHere,"noopd"),
+      bReturn: npat(dgHere,"returned"),
+      bSameDay:npat(dgHere,"sameday"),
+      noOpdRev: sumNet(dgHere,"noopd"),
+      returnRev:sumNet(dgHere,"returned"),
       /* Expected = value the doctor advised. Billed = everything invoiced as
          Diagnostics at this center in the period, not only the advised patients. */
       expRev: sd.reduce((a,r)=>a+r.expD,0),
@@ -842,6 +850,12 @@ function analyse(){
                 "bFresh","bFollow","bPrior","bNoOpd","bReturn","bSameDay","noOpdRev","returnRev"];
   const tot = per.reduce((a,b)=>{ KEYS.forEach(k=>a[k]+=b[k]||0); return a; },
     Object.assign({center:"All centers"}, ...KEYS.map(k=>({[k]:0}))));
+  /* Patient counts are recomputed over every centre at once: adding the columns
+     up would count a patient twice if they were seen at two centres. */
+  Object.assign(tot, {bilD:nCounted(dgAll), bFresh:npat(dgAll,"fresh"),
+    bFollow:npat(dgAll,"followup"), bPrior:npat(dgAll,"prior"),
+    bNoOpd:npat(dgAll,"noopd"), bReturn:npat(dgAll,"returned"),
+    bSameDay:npat(dgAll,"sameday")});
   /* Back-tracking: for every diagnostics bill, what did this patient do NEXT?
      Answers whether walk-in diagnostics patients ever come back to Oncare. */
   const laterOf = d => INV
@@ -1020,12 +1034,18 @@ function renderDiag(A){
   const bf=$("#dBucket").value, bk=$("#dBack").value, q=$("#dSrch").value.trim().toLowerCase();
   let list = A.dgAll.slice().sort((a,b)=>a.date-b.date);
   const scope = bf ? list.filter(d=>d.bucket===bf) : list;
-  const back = scope.filter(d=>d.back).length;
-  const backRev = scope.filter(d=>d.back).reduce((a,d)=>a+d.back.total,0);
+  /* One patient's later invoices must be counted once, however many diagnostics
+     bills they had in this view. */
+  const seenBack = new Map();
+  scope.filter(d=>d.back).forEach(d=>{ const k=d.hid||d.mob||d.patient;
+    if(!seenBack.has(k)) seenBack.set(k, d.back.total); });
+  const back = seenBack.size;
+  const backRev = [...seenBack.values()].reduce((a,v)=>a+v,0);
+  const pats = new Set(scope.map(d=>d.hid||d.mob||d.patient)).size;
   $("#diagKpis").innerHTML =
-    kpi("","Bills in view", scope.length.toLocaleString(), bf?BUCKET[bf][0]:"all scenarios") +
+    kpi("","Patients in view", pats.toLocaleString(), scope.length.toLocaleString()+" bills · "+(bf?BUCKET[bf][0]:"all scenarios")) +
     kpi("diag","Their diagnostics value", money(scope.reduce((a,d)=>a+d.net,0)), "billed in this period") +
-    kpi("","Came back afterwards", back+" of "+scope.length, scope.length?Math.round(back/scope.length*100)+"% returned":"") +
+    kpi("","Came back afterwards", back+" of "+pats, pats?Math.round(back/pats*100)+"% of patients returned":"") +
     kpi("pharm","Value of what they returned for", money(backRev), "all later invoices, any type");
   if(bf) list = scope;
   if(bk==="y") list = list.filter(d=>d.back); else if(bk==="n") list = list.filter(d=>!d.back);
@@ -1191,7 +1211,7 @@ function snapshotOf(A){
   /* Patient-level detail, included at the owner's instruction so viewers get the
      same drill-downs without loading the exports. This is the only part of the
      snapshot that carries names and mobile numbers. */
-  const dg = A.dgAll.map(d=>({p:d.patient, m:d.mob, c:d.center, d:iso(d.date),
+  const dg = A.dgAll.map(d=>({p:d.patient, m:d.mob, h:d.hid, c:d.center, d:iso(d.date),
     n:Math.round(d.net), b:d.bucket,
     k: d.back ? {d:iso(d.back.date), t:d.back.type, v:Math.round(d.back.total),
                  y:d.back.days, c:d.back.n} : null}));
@@ -1259,7 +1279,7 @@ function aggregateSnap(){
   const unpackM = (arr,kind) => (arr||[]).map(a=>({name:a[0], kind,
     m: a[1] ? {conf:a[1], item:{item:a[2]}} : null}));
   const dgAll = (s.dg||[]).filter(inRange).map(x=>({
-    patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), net:x.n, bucket:x.b,
+    patient:x.p, mob:x.m, hid:x.h||"", center:x.c, date:parseDate(x.d), net:x.n, bucket:x.b,
     back: x.k ? {date:parseDate(x.k.d), type:x.k.t, total:x.k.v, days:x.k.y, n:x.k.c} : null}));
   const rows = (s.enc||[]).filter(x=>inRange(x) && (!ty || x.t===ty)).map(x=>({
     patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
@@ -1267,6 +1287,20 @@ function aggregateSnap(){
     hasD:!!x.hD, hasP:!!x.hP, convD:!!x.cD, convP:!!x.cP, bought:!!x.bt, buyRev:x.bv,
     dItems:splitItems(x.dT), pItems:splitItems(x.pT),
     dMatch:unpackM(x.dM,"D"), pMatch:unpackM(x.pM,"P"), bD:[], bP:[]}));
+
+  /* Scenario columns are patient counts, so they are recomputed from the bill
+     rows rather than added up across days — the same patient can be billed on
+     several days and must still count once. */
+  const pk = d => d.hid || d.mob || d.patient;
+  const CNT = new Set(["fresh","followup","prior"]);
+  const np = (rr,b) => new Set(rr.filter(d=>d.bucket===b).map(pk)).size;
+  const setB = (o, rr) => Object.assign(o, {
+    bilD: new Set(rr.filter(d=>CNT.has(d.bucket)).map(pk)).size,
+    bFresh:np(rr,"fresh"), bFollow:np(rr,"followup"), bPrior:np(rr,"prior"),
+    bNoOpd:np(rr,"noopd"), bReturn:np(rr,"returned"), bSameDay:np(rr,"sameday")});
+  per.forEach(p=>setB(p, dgAll.filter(d=>d.center===p.center)));
+  setB(tot, dgAll);
+  both.bilD = tot.bilD;     // the combined row mirrors the recomputed total
 
   return {per, tot, byEnc:[encOf("OP analysis","op"), encOf("IP analysis","ip"), both],
           pharmPer: centers.map(cc=>pharm(cc, sel.filter(d=>d.c===cc))),
