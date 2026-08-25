@@ -221,6 +221,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
   </div>
   <div class="spacer"></div>
   <button class="btn ghost" id="themeBtn" type="button">Theme</button>
+  <button class="btn ghost" id="snapBtn" type="button" title="Save aggregates-only snapshot.json to share via the repo">Publish snapshot</button>
   <button class="btn ghost" id="csvBtn" type="button">Export CSV</button>
 </header>
 <main>
@@ -799,8 +800,11 @@ function analyse(){
      is an invoice tagged Procedure Type "Others"; it may fall on any later date,
      since patients often collect on their next visit. */
   const othInv  = INV.filter(i=>i.procType==="OTHERS" && i.mob && i.date);
-  const drugRows = rows.filter(r=>r.drugTxt.trim()!=="");
-  drugRows.forEach(r=>{
+  /* Resolve purchases on every encounter, not just the filtered ones, so the
+     published snapshot can hold per-day figures for any OP/IP selection. */
+  const drugAll = all.filter(r=>r.drugTxt.trim()!=="");
+  const drugRows = ty ? drugAll.filter(r=>r.type===ty) : drugAll;
+  drugAll.forEach(r=>{
     r.buys = othInv.filter(i=>i.mob===r.mob && (!sameCtr || i.center===r.center) && i.date>=r.date);
     r.bought = r.buys.length>0;
     r.buyRev = r.buys.reduce((a,i)=>a+i.net,0);
@@ -814,7 +818,7 @@ function analyse(){
   const pharmTot = pharmPer.reduce((a,b)=>({center:"All centers",sug:a.sug+b.sug,
     bought:a.bought+b.bought,adv:a.adv+b.adv,bil:a.bil+b.bil}),{sug:0,bought:0,adv:0,bil:0});
 
-  return {rows, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll,
+  return {rows, allRows: all, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll,
           drugRows, pharmPer, pharmTot, V};
 }
 
@@ -971,9 +975,9 @@ function renderPharm(A){
   $("#pharmTbl").innerHTML = "<thead><tr><th>Center</th><th>Advised drugs</th><th>Bought</th><th>Buy rate</th>"+
     "<th>Value advised</th><th>Value billed</th><th>Dip</th></tr></thead><tbody>"+
     A.pharmPer.map(r=>line(r,"")).join("")+line(t,"total")+"</tbody>";
-  const oth = INV.filter(i=>i.procType==="OTHERS").length;
-  const phLines = BILL.filter(b=>b.isP).length;
-  const phRev = BILL.filter(b=>b.isP).reduce((a,b)=>a+b.net,0);
+  const n = A.pharmNote || {oth: INV.filter(i=>i.procType==="OTHERS").length,
+    lines: BILL.filter(b=>b.isP).length, rev: BILL.filter(b=>b.isP).reduce((a,b)=>a+b.net,0)};
+  const oth = n.oth, phLines = n.lines, phRev = n.rev;
   $("#pharmNote").innerHTML = "<b>Read this alongside the numbers.</b> “Others” covers counter sales only — "+oth+
     " invoices in the whole file. Pharmacy items also sit <i>inside</i> chemo and immunotherapy invoices as drugs given during the session: "+
     phLines.toLocaleString()+" billing lines worth "+money(phRev)+
@@ -1040,6 +1044,164 @@ function renderPatients(A){
       : '<tr><td colspan="9" class="muted">No consultations match.</td></tr>')+"</tbody>";
 }
 
+/* --------------------------------------------------------------- snapshot -- */
+/* A snapshot carries ONLY computed aggregates — no patient name, mobile, invoice
+   number or per-bill row ever enters it, so the file is safe to commit to a
+   public repo. Patient-level tabs stay upload-only by design. */
+let SNAPMODE = false, SNAP = null;
+/* Figures are stored per DAY per CENTRE so a viewer can pick any date range and
+   the page re-adds the days. Each record is filed under its own date — a
+   diagnostics bill under the bill date, an encounter under the consult date —
+   which is exactly how the live filters work, so summing days is equivalent.
+   Classification (fresh / follow-up / prior IP / same-day / no-OPD) and drug
+   purchases are resolved at publish time against the FULL file, so lookups that
+   reach outside the chosen range stay correct. */
+function blankDay(d,c){
+  const side = () => ({n:0,sugD:0,expRev:0,sugP:0,bilP:0,pSug:0,pBought:0,pAdv:0,pBil:0});
+  return {d, c, opd:0, fresh:0, bilD:0, bFresh:0, bFollow:0, bPrior:0, bNoOpd:0, bSameDay:0,
+          bilRev:0, noOpdRev:0, btBills:0, btRet:0, btVal:0, op:side(), ip:side()};
+}
+function snapshotOf(A){
+  const map = new Map(), inv = new Map();   // inv: day|centre -> Set of invoice numbers
+  const cell = (dt,c) => { const k=iso(dt)+"|"+c;
+    if(!map.has(k)) map.set(k, blankDay(iso(dt),c)); return map.get(k); };
+  const seen = (dt,c,kind,no) => { const k=iso(dt)+"|"+c+"|"+kind;
+    if(!inv.has(k)) inv.set(k,new Set()); inv.get(k).add(no); };
+
+  INV.filter(i=>i.procType==="OPD" && i.date).forEach(i=>{
+    cell(i.date,i.center); seen(i.date,i.center,"opd",i.invNo);
+    if(i.isNew) seen(i.date,i.center,"fresh",i.invNo);
+  });
+  A.dgAll.forEach(d=>{
+    const x = cell(d.date,d.center);
+    if(d.bucket==="fresh") x.bFresh++; else if(d.bucket==="followup") x.bFollow++;
+    else if(d.bucket==="prior") x.bPrior++; else if(d.bucket==="sameday") x.bSameDay++;
+    else { x.bNoOpd++; x.noOpdRev += d.net;
+           x.btBills++; if(d.back){ x.btRet++; x.btVal += d.back.total; } }
+    if(d.bucket==="fresh"||d.bucket==="followup"||d.bucket==="prior"){ x.bilD++; x.bilRev += d.net; }
+  });
+  A.allRows.forEach(r=>{
+    const x = cell(r.date,r.center), s = r.type==="IP" ? x.ip : x.op;
+    s.n++;
+    if(r.hasD){ s.sugD++; s.expRev += r.expD; }
+    if(r.hasP){ s.sugP++; if(r.convP) s.bilP++; }
+    if(r.drugTxt && r.drugTxt.trim()!==""){ s.pSug++; s.pAdv += r.expDrug;
+      if(r.bought){ s.pBought++; s.pBil += r.buyRev; } }
+  });
+  const days = [...map.values()].map(x=>{
+    x.opd   = (inv.get(x.d+"|"+x.c+"|opd")   || new Set()).size;
+    x.fresh = (inv.get(x.d+"|"+x.c+"|fresh") || new Set()).size;
+    ["bilRev","noOpdRev","btVal"].forEach(k=>x[k]=Math.round(x[k]));
+    ["op","ip"].forEach(s=>["expRev","pAdv","pBil"].forEach(k=>x[s][k]=Math.round(x[s][k])));
+    return x;
+  }).sort((a,b)=> a.d===b.d ? a.c.localeCompare(b.c) : a.d.localeCompare(b.d));
+
+  const all = days.map(d=>d.d);
+  return {
+    schema: 2, publishedAt: new Date().toISOString(),
+    minDate: all.length?all[0]:"", maxDate: all.length?all[all.length-1]:"",
+    from: $("#fFrom").value, to: $("#fTo").value,
+    centers: [...new Set(days.map(d=>d.c))].sort(),
+    days,
+    pharmNote: {oth: INV.filter(i=>i.procType==="OTHERS").length,
+      lines: BILL.filter(b=>b.isP).length,
+      rev: Math.round(BILL.filter(b=>b.isP).reduce((a,b)=>a+b.net,0))}
+  };
+}
+/* Re-add the stored days for whatever range, centre and OP/IP the viewer picks. */
+function aggregateSnap(){
+  const s = SNAP, f = $("#fFrom").value, t = $("#fTo").value;
+  const c = $("#fCenter").value, ty = $("#fType").value;
+  const sel = s.days.filter(d => (!f || d.d>=f) && (!t || d.d<=t) && (!c || d.c===c));
+  const sides = d => ty==="OP" ? [d.op] : ty==="IP" ? [d.ip] : [d.op,d.ip];
+  const mk = (center,rows) => {
+    const o = {center, opd:0,fresh:0,sugD:0,bilD:0,bFresh:0,bFollow:0,bPrior:0,bNoOpd:0,
+               bSameDay:0,expRev:0,bilRev:0,noOpdRev:0,sugP:0,bilP:0};
+    rows.forEach(d=>{
+      ["opd","fresh","bilD","bFresh","bFollow","bPrior","bNoOpd","bSameDay","bilRev","noOpdRev"]
+        .forEach(k=>o[k]+=d[k]);
+      sides(d).forEach(x=>{ o.sugD+=x.sugD; o.expRev+=x.expRev; o.sugP+=x.sugP; o.bilP+=x.bilP; });
+    });
+    return o;
+  };
+  const centers = [...new Set(sel.map(d=>d.c))].sort();
+  const per = centers.map(cc=>mk(cc, sel.filter(d=>d.c===cc)));
+  const tot = mk("All centers", sel);
+  const encOf = (label,key) => {
+    const o={label,n:0,sugD:0,sugP:0,bilP:0,bilD:null};
+    sel.forEach(d=>{ const x=d[key]; o.n+=x.n; o.sugD+=x.sugD; o.sugP+=x.sugP; o.bilP+=x.bilP; });
+    return o;
+  };
+  const both = {label:"Both", n:encOf("",'op').n+encOf("",'ip').n,
+    sugD:tot.sugD, sugP:tot.sugP, bilP:tot.bilP, bilD:tot.bilD};
+  const pharm = (center,rows) => { const o={center,sug:0,bought:0,adv:0,bil:0};
+    rows.forEach(d=>sides(d).forEach(x=>{o.sug+=x.pSug;o.bought+=x.pBought;o.adv+=x.pAdv;o.bil+=x.pBil;}));
+    return o; };
+  const bt = sel.reduce((a,d)=>({bills:a.bills+d.btBills, returned:a.returned+d.btRet,
+                                 value:a.value+d.btVal}), {bills:0,returned:0,value:0});
+  return {per, tot, byEnc:[encOf("OP analysis","op"), encOf("IP analysis","ip"), both],
+          pharmPer: centers.map(cc=>pharm(cc, sel.filter(d=>d.c===cc))),
+          pharmTot: pharm("All centers", sel),
+          pharmNote: s.pharmNote, backTrack: bt,
+          rows:[], dgAll:[], drugRows:[]};
+}
+function publishSnapshot(){
+  if(!LAST || SNAPMODE){ alert("Load the dumps first, then publish."); return; }
+  /* Publish the WHOLE loaded period, not just what is on screen, so viewers can
+     move the date range afterwards. */
+  const keepF=$("#fFrom").value, keepT=$("#fTo").value, keepC=$("#fCenter").value, keepY=$("#fType").value;
+  $("#fFrom").value=""; $("#fTo").value=""; $("#fCenter").value=""; $("#fType").value="";
+  build();
+  const s = snapshotOf(analyse());
+  $("#fFrom").value=keepF; $("#fTo").value=keepT; $("#fCenter").value=keepC; $("#fType").value=keepY;
+  render();
+  const blob = new Blob([JSON.stringify(s,null,1)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "snapshot.json"; a.click();
+  URL.revokeObjectURL(a.href);
+  alert("snapshot.json saved.\n\nCommit it to your repo (Add file → Upload files) and everyone\nopening the dashboard will see these numbers without uploading anything.\n\nIt contains aggregates only — no patient names or mobiles.");
+}
+function renderSnap(){
+  const A = LAST = aggregateSnap();
+  renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); renderPharm(A);
+  const when = SNAP.publishedAt ? new Date(SNAP.publishedAt) : null;
+  $("#coverage").innerHTML = '<div class="warnbox"><b>Shared snapshot</b> — covering '+
+    esc(SNAP.minDate)+" to "+esc(SNAP.maxDate)+
+    (when?", published "+dmy(when)+" at "+String(when.getHours()).padStart(2,"0")+":"+
+      String(when.getMinutes()).padStart(2,"0"):"")+
+    ". Change the dates, centre or OP/IP freely — the figures re-add from stored daily totals. "+
+    "Load the exports above to work with patient-level detail.</div>";
+}
+function applySnapshot(s){
+  SNAPMODE = true; SNAP = s;
+  $("#fFrom").value = s.from || s.minDate || ""; $("#fTo").value = s.to || s.maxDate || "";
+  if(s.minDate){ $("#fFrom").min=s.minDate; $("#fTo").min=s.minDate; }
+  if(s.maxDate){ $("#fFrom").max=s.maxDate; $("#fTo").max=s.maxDate; }
+  $("#fCenter").innerHTML = '<option value="">All centers</option>'+
+    (s.centers||[]).map(c=>'<option>'+esc(c)+"</option>").join("");
+  ["fFrom","fTo","fCenter","fType"].forEach(id=>$("#"+id)
+    .addEventListener("change",()=>{ if(SNAPMODE) renderSnap(); }));
+  ["optSame","optAfter","optCenter"].forEach(id=>{ const e=$("#"+id); if(e){ e.disabled=true;
+    e.closest("label").title="Fixed when the snapshot was published"; } });
+  renderSnap();
+  ["diag","items","patients"].forEach(t=>{
+    const el=$("#tab-"+t); if(el) el.innerHTML =
+      '<div class="card"><h2>Patient-level detail is not in the shared snapshot</h2>'+
+      '<p class="hint">The published snapshot holds aggregates only, so no patient names or mobile numbers are ever put on a public page. '+
+      'To work case by case, load the four exports using the box above — everything is processed in your browser and nothing is uploaded anywhere.</p></div>';
+  });
+  $("#ctrlCard").style.display=""; $("#app").style.display=""; $("#emptyState").style.display="none";
+}
+async function tryLoadSnapshot(){
+  try{
+    const r = await fetch("snapshot.json", {cache:"no-store"});
+    if(!r.ok) return false;
+    const s = await r.json();
+    if(!s || !Array.isArray(s.days) || !s.days.length) return false;
+    applySnapshot(s); return true;
+  }catch(e){ return false; }
+}
+
 /* -------------------------------------------------------------------- csv -- */
 function exportCsv(){
   if(!LAST) return;
@@ -1073,7 +1235,15 @@ fi.addEventListener("change",async e=>{ await ingest(e.target.files); fi.value="
 
 async function ingest(files){
   for(const f of files){ try{ await readFile(f); }catch(err){ alert("Could not read "+f.name+": "+err.message); } }
-  if(!RAW.bill && !RAW.inv && !RAW.op) return;
+  if(!RAW.bill && !RAW.inv && !RAW.op && !RAW.ip) return;
+  if(SNAPMODE){   /* uploading real data leaves shared-snapshot mode */
+    SNAPMODE = false; SNAP = null;
+    Object.keys(TABHTML).forEach(t=>{ const el=$("#tab-"+t); if(el) el.innerHTML = TABHTML[t]; });
+    ["optSame","optAfter","optCenter"].forEach(id=>{ const e=$("#"+id); if(e){ e.disabled=false;
+      e.closest("label").removeAttribute("title"); } });
+    ["fFrom","fTo"].forEach(id=>{ const e=$("#"+id); e.removeAttribute("min"); e.removeAttribute("max"); e.value=""; });
+    wireDetailControls();
+  }
   build();
   const all = [...BILL, ...INV, ...OP].map(r=>r.date).filter(Boolean);
   if(all.length){
@@ -1088,11 +1258,20 @@ async function ingest(files){
 }
 
 ["fFrom","fTo","fCenter","fType","optSame","optAfter","optCenter"].forEach(id=>$("#"+id).addEventListener("change",render));
-["iKind","iMatch","pStat"].forEach(id=>$("#"+id).addEventListener("change",()=>{ if(LAST){renderItems(LAST);renderPatients(LAST);} }));
-["dBucket","dBack"].forEach(id=>$("#"+id).addEventListener("change",()=>{ if(LAST) renderDiag(LAST); }));
-$("#dSrch").addEventListener("input",()=>{ if(LAST) renderDiag(LAST); });
-$("#iSrch").addEventListener("input",()=>{ if(LAST) renderItems(LAST); });
-$("#pSrch").addEventListener("input",()=>{ if(LAST) renderPatients(LAST); });
+/* The detail tabs are replaced wholesale in snapshot mode, so their listeners are
+   attached through a function that can be called again after they are restored. */
+const TABHTML = {};
+["diag","items","patients"].forEach(t=>{ const el=$("#tab-"+t); if(el) TABHTML[t]=el.innerHTML; });
+function on(id, ev, fn){ const e=$("#"+id); if(e) e.addEventListener(ev, fn); }
+function wireDetailControls(){
+  ["iKind","iMatch","pStat"].forEach(id=>on(id,"change",()=>{ if(LAST){renderItems(LAST);renderPatients(LAST);} }));
+  ["dBucket","dBack"].forEach(id=>on(id,"change",()=>{ if(LAST) renderDiag(LAST); }));
+  on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
+  on("iSrch","input",()=>{ if(LAST) renderItems(LAST); });
+  on("pSrch","input",()=>{ if(LAST) renderPatients(LAST); });
+}
+wireDetailControls();
+$("#snapBtn").addEventListener("click",publishSnapshot);
 $("#csvBtn").addEventListener("click",exportCsv);
 $("#themeBtn").addEventListener("click",()=>{
   const cur = document.documentElement.getAttribute("data-theme");
@@ -1117,6 +1296,9 @@ $("#saveCfg").addEventListener("click",()=>{
 $("#resetCfg").addEventListener("click",()=>{ CFG={centers:DEF.centers,diag:DEF.diag,pharm:DEF.pharm,syn:DEF.syn};
   saveCfg(); fillCfg(); render(); $("#cfgMsg").textContent="Reset to defaults."; setTimeout(()=>$("#cfgMsg").textContent="",2600); });
 fillCfg();
+/* If a snapshot.json sits beside this page, show it immediately so viewers get
+   the day's numbers without uploading anything. */
+tryLoadSnapshot();
 </script>
 </body>
 </html>
