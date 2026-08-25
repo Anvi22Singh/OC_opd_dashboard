@@ -217,7 +217,8 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 <header>
   <div>
     <h1>Oncare Cancer — Post-OPD Conversion</h1>
-    <div class="sub">Suggested diagnostics &amp; pharmacy &rarr; actually billed</div>
+    <div class="sub">Suggested diagnostics &amp; pharmacy &rarr; actually billed
+      <span id="buildTag" title="Version of this dashboard file. Compare with the newest build you were sent; if it is older, hard-refresh with Ctrl+F5."></span></div>
   </div>
   <div class="spacer"></div>
   <button class="btn ghost" id="themeBtn" type="button">Theme</button>
@@ -400,6 +401,10 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 
 <script>
 "use strict";
+/* Stamped by the build script. Shown in the header so anyone can tell which
+   version of the file they have — GitHub Pages caches index.html for a few
+   minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
+const BUILD = "25-Aug-2026 a0371d";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1181,7 +1186,7 @@ function snapshotOf(A){
 
   const all = days.map(d=>d.d);
   return {
-    schema: 3, detail: true, dg, enc,
+    schema: 3, detail: true, dg, enc, build: BUILD,
     publishedAt: new Date().toISOString(),
     minDate: all.length?all[0]:"", maxDate: all.length?all[all.length-1]:"",
     from: $("#fFrom").value, to: $("#fTo").value,
@@ -1278,7 +1283,11 @@ function renderSnap(){
       String(when.getMinutes()).padStart(2,"0"):"")+
     ". Change the dates, centre or OP/IP freely — the figures re-add from stored daily totals."+
     (SNAP.detail ? " Patient-level detail is included."
-                 : " Load the exports above to work with patient-level detail.")+"</div>";
+                 : " Load the exports above to work with patient-level detail.")+
+    (SNAP.build && SNAP.build!==BUILD
+      ? ' <b>This snapshot was made with build '+esc(SNAP.build)+', but you are running '+esc(BUILD)+
+        '.</b> Press Ctrl+F5, or ask for a snapshot published from the current build.'
+      : "")+"</div>";
 }
 function applySnapshot(s){
   SNAPMODE = true; SNAP = s;
@@ -1407,6 +1416,7 @@ $("#saveCfg").addEventListener("click",()=>{
 });
 $("#resetCfg").addEventListener("click",()=>{ CFG={centers:DEF.centers,diag:DEF.diag,pharm:DEF.pharm,syn:DEF.syn};
   saveCfg(); fillCfg(); render(); $("#cfgMsg").textContent="Reset to defaults."; setTimeout(()=>$("#cfgMsg").textContent="",2600); });
+$("#buildTag").textContent = " · build " + BUILD;
 fillCfg();
 /* If a snapshot.json sits beside this page, show it immediately so viewers get
    the day's numbers without uploading anything. */
