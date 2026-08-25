@@ -341,6 +341,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
       <div class="fld"><label for="iSrch">Search item / patient</label><input class="srch" id="iSrch" placeholder="e.g. PET, CBC, Dolo"></div>
     </div>
     <div class="kpis" id="itemKpis"></div>
+    <div id="itemNote"></div>
     <div class="sect">Most-advised items that were never billed</div>
     <div class="tblwrap" style="margin-bottom:20px"><table id="gapTbl"></table></div>
     <div class="sect">Every advised item</div>
@@ -729,7 +730,10 @@ function analyse(){
   const dgDrop = dgAll.length - dgInv.length;
   const dgNos   = new Set(dgInv.map(i=>i.invNo));
   const dgLines = V.bill.filter(b=>dgNos.has(b.invNo));
-  const phLines = V.bill.filter(b=>b.isP);
+  /* Pharmacy lines come from the whole file, not the selected range: a drug
+     collected on the next visit still fulfils the prescription. This matches the
+     Pharmacy tab, which already counts purchases on any later date. */
+  const phLines = BILL.filter(b=>b.isP);
   const all = V.op.map(o=>{
     const bD = linkedTo(o, dgInv), bP = linkedTo(o, phLines);
     /* Suggested = the Diagnostics Suggested cell has any content at all. The
@@ -1006,6 +1010,12 @@ function renderItems(A){
   if(mf==="y") list = list.filter(x=>x.m); else if(mf==="n") list = list.filter(x=>!x.m);
   if(q) list = list.filter(x=> x.name.toLowerCase().includes(q) || x.r.patient.toLowerCase().includes(q));
 
+  const note = $("#itemNote");
+  if(note) note.innerHTML = SNAPMODE
+    ? '<div class="warnbox">Test-by-test matches were resolved when the snapshot was published, across its whole period. '+
+      'Narrowing the dates re-filters which rows you see, but a handful of matches may still reflect bills just outside your range — '+
+      'headline counts are unaffected. Load the exports for matching that tracks your date range exactly.</div>'
+    : "";
   const gaps = {};
   allItems(A).filter(x=>!x.m).forEach(x=>{
     const k = x.kind+"|"+x.name.toLowerCase();
@@ -1096,9 +1106,25 @@ function snapshotOf(A){
     return x;
   }).sort((a,b)=> a.d===b.d ? a.c.localeCompare(b.c) : a.d.localeCompare(b.d));
 
+  /* Patient-level detail, included at the owner's instruction so viewers get the
+     same drill-downs without loading the exports. This is the only part of the
+     snapshot that carries names and mobile numbers. */
+  const dg = A.dgAll.map(d=>({p:d.patient, m:d.mob, c:d.center, d:iso(d.date),
+    n:Math.round(d.net), b:d.bucket,
+    k: d.back ? {d:iso(d.back.date), t:d.back.type, v:Math.round(d.back.total),
+                 y:d.back.days, c:d.back.n} : null}));
+  const packM = arr => arr.map(x=>[x.name, x.m?x.m.conf:null, x.m?x.m.item.item:null]);
+  const enc = A.allRows.map(r=>({p:r.patient, m:r.mob, c:r.center, d:iso(r.date),
+    r:r.doctor, t:r.type, dT:r.dTxt, pT:r.pTxt, gT:r.drugTxt,
+    eD:Math.round(r.expD), eG:Math.round(r.expDrug),
+    hD:r.hasD?1:0, hP:r.hasP?1:0, cD:r.convD?1:0, cP:r.convP?1:0,
+    bt:r.bought?1:0, bv:Math.round(r.buyRev||0),
+    dM:packM(r.dMatch||[]), pM:packM(r.pMatch||[])}));
+
   const all = days.map(d=>d.d);
   return {
-    schema: 2, publishedAt: new Date().toISOString(),
+    schema: 3, detail: true, dg, enc,
+    publishedAt: new Date().toISOString(),
     minDate: all.length?all[0]:"", maxDate: all.length?all[all.length-1]:"",
     from: $("#fFrom").value, to: $("#fTo").value,
     centers: [...new Set(days.map(d=>d.c))].sort(),
@@ -1139,11 +1165,27 @@ function aggregateSnap(){
     return o; };
   const bt = sel.reduce((a,d)=>({bills:a.bills+d.btBills, returned:a.returned+d.btRet,
                                  value:a.value+d.btVal}), {bills:0,returned:0,value:0});
+
+  /* Rebuild the patient-level rows in the shape the detail renderers expect, and
+     hold them to the same date / centre / OP-IP filters as the totals. */
+  const inRange = x => (!f || x.d>=f) && (!t || x.d<=t) && (!c || x.c===c);
+  const unpackM = (arr,kind) => (arr||[]).map(a=>({name:a[0], kind,
+    m: a[1] ? {conf:a[1], item:{item:a[2]}} : null}));
+  const dgAll = (s.dg||[]).filter(inRange).map(x=>({
+    patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), net:x.n, bucket:x.b,
+    back: x.k ? {date:parseDate(x.k.d), type:x.k.t, total:x.k.v, days:x.k.y, n:x.k.c} : null}));
+  const rows = (s.enc||[]).filter(x=>inRange(x) && (!ty || x.t===ty)).map(x=>({
+    patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
+    dTxt:x.dT||"", pTxt:x.pT||"", drugTxt:x.gT||"", expD:x.eD, expDrug:x.eG,
+    hasD:!!x.hD, hasP:!!x.hP, convD:!!x.cD, convP:!!x.cP, bought:!!x.bt, buyRev:x.bv,
+    dItems:splitItems(x.dT), pItems:splitItems(x.pT),
+    dMatch:unpackM(x.dM,"D"), pMatch:unpackM(x.pM,"P"), bD:[], bP:[]}));
+
   return {per, tot, byEnc:[encOf("OP analysis","op"), encOf("IP analysis","ip"), both],
           pharmPer: centers.map(cc=>pharm(cc, sel.filter(d=>d.c===cc))),
           pharmTot: pharm("All centers", sel),
           pharmNote: s.pharmNote, backTrack: bt,
-          rows:[], dgAll:[], drugRows:[]};
+          rows, dgAll, drugRows: rows.filter(r=>r.drugTxt.trim()!=="")};
 }
 function publishSnapshot(){
   if(!LAST || SNAPMODE){ alert("Load the dumps first, then publish."); return; }
@@ -1159,18 +1201,26 @@ function publishSnapshot(){
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob); a.download = "snapshot.json"; a.click();
   URL.revokeObjectURL(a.href);
-  alert("snapshot.json saved.\n\nCommit it to your repo (Add file → Upload files) and everyone\nopening the dashboard will see these numbers without uploading anything.\n\nIt contains aggregates only — no patient names or mobiles.");
+  alert("snapshot.json saved ("+Math.round(blob.size/1024)+" KB).\n\n"+
+    "Commit it to your repo (Add file → Upload files) and everyone opening the\n"+
+    "dashboard sees these figures, including the patient-level tabs, without\n"+
+    "uploading anything.\n\n"+
+    "NOTE: this file contains patient names, mobile numbers and treatment types.\n"+
+    "Anyone who can reach the page can read it. Publish it only where that is\n"+
+    "acceptable — a private repo, not a public one.");
 }
 function renderSnap(){
   const A = LAST = aggregateSnap();
   renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); renderPharm(A);
+  if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
   const when = SNAP.publishedAt ? new Date(SNAP.publishedAt) : null;
   $("#coverage").innerHTML = '<div class="warnbox"><b>Shared snapshot</b> — covering '+
     esc(SNAP.minDate)+" to "+esc(SNAP.maxDate)+
     (when?", published "+dmy(when)+" at "+String(when.getHours()).padStart(2,"0")+":"+
       String(when.getMinutes()).padStart(2,"0"):"")+
-    ". Change the dates, centre or OP/IP freely — the figures re-add from stored daily totals. "+
-    "Load the exports above to work with patient-level detail.</div>";
+    ". Change the dates, centre or OP/IP freely — the figures re-add from stored daily totals."+
+    (SNAP.detail ? " Patient-level detail is included."
+                 : " Load the exports above to work with patient-level detail.")+"</div>";
 }
 function applySnapshot(s){
   SNAPMODE = true; SNAP = s;
@@ -1183,13 +1233,15 @@ function applySnapshot(s){
     .addEventListener("change",()=>{ if(SNAPMODE) renderSnap(); }));
   ["optSame","optAfter","optCenter"].forEach(id=>{ const e=$("#"+id); if(e){ e.disabled=true;
     e.closest("label").title="Fixed when the snapshot was published"; } });
+  if(!s.detail){   /* aggregates-only snapshot: the drill-downs have no data */
+    ["diag","items","patients"].forEach(t=>{
+      const el=$("#tab-"+t); if(el) el.innerHTML =
+        '<div class="card"><h2>Patient-level detail is not in this snapshot</h2>'+
+        '<p class="hint">This snapshot holds aggregates only. To work case by case, load the four exports '+
+        'using the box above — everything is processed in your browser and nothing is uploaded anywhere.</p></div>';
+    });
+  }
   renderSnap();
-  ["diag","items","patients"].forEach(t=>{
-    const el=$("#tab-"+t); if(el) el.innerHTML =
-      '<div class="card"><h2>Patient-level detail is not in the shared snapshot</h2>'+
-      '<p class="hint">The published snapshot holds aggregates only, so no patient names or mobile numbers are ever put on a public page. '+
-      'To work case by case, load the four exports using the box above — everything is processed in your browser and nothing is uploaded anywhere.</p></div>';
-  });
   $("#ctrlCard").style.display=""; $("#app").style.display=""; $("#emptyState").style.display="none";
 }
 async function tryLoadSnapshot(){
