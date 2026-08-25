@@ -404,7 +404,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "25-Aug-2026 a0371d";
+const BUILD = "25-Aug-2026 58a65c";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -631,6 +631,7 @@ function build(){
     };
   }).filter(r=>r.date);
 
+  const invHasStatus = (RAW.inv||[]).some(r=>String(get(r,"Status")||"").trim()!=="");
   INV = (RAW.inv||[]).map(r=>({
     center: centerOf(get(r,"Location")), date: parseDate(get(r,"Invoice Date")),
     invNo: String(get(r,"Invoice Number")||""), invType: String(get(r,"Invoice Type")||"").toLowerCase(),
@@ -639,11 +640,13 @@ function build(){
     patient: String(get(r,"Patient Name")||""),
     mob: normMobile(get(r,"Patient Mobile","Patient Mobile Number")),
     /* "Fresh OPD" is the Status field the billing system sets — authoritative.
-       Old/New Patient disagrees with it (some Fresh OPD rows are tagged Old), so
-       it is only a fallback for exports that carry no Status column. */
+       A BLANK Status is normal and means "not fresh"; only exports with no
+       Status data at all fall back to Old/New Patient, which disagrees with it.
+       Deciding that per file (invHasStatus) rather than per row matters: judging
+       row by row would treat every blank-status new patient as a fresh OPD. */
     status: String(get(r,"Status")||"").trim(),
-    isNew: get(r,"Status")!=null && String(get(r,"Status")).trim()!==""
-             ? /^fresh\s*opd$/i.test(String(get(r,"Status")).trim())
+    isNew: invHasStatus
+             ? /^fresh\s*opd$/i.test(String(get(r,"Status")||"").trim())
              : /^new$/i.test(String(get(r,"Old/New Patient")||"").trim()),
     net: num(get(r,"Net Billed"))
   })).filter(r=>r.date);
@@ -887,6 +890,19 @@ function render(){
   renderDiag(A); renderPharm(A); renderItems(A); renderPatients(A);
 }
 
+/* Diag % divides billed diagnostics by suggestions. If the chosen range reaches
+   beyond the dates the OP/IP exports cover, the numerator keeps counting bills
+   while the denominator runs out — the ratio inflates and can exceed 100%. */
+function coverageGap(f, t, encMin, encMax){
+  if(!encMin || !encMax) return "";
+  const before = f && f < encMin, after = t && t > encMax;
+  if(!before && !after) return "";
+  return "<b>Diag % is not reliable for this range.</b> Prescriptions are only available "+
+    dmy(parseDate(encMin))+" to "+dmy(parseDate(encMax))+
+    ", but the range you picked reaches outside that, so diagnostics bills are being counted "+
+    "against months that have no suggestions. Narrow the dates to that window, or load the "+
+    "OP/IP analysis exports for the other months. ";
+}
 function renderCoverage(A){
   const days = new Set(), p = A.V.p;
   [...A.V.bill, ...A.V.inv].forEach(r=>days.add(iso(r.date)));
@@ -896,6 +912,9 @@ function renderCoverage(A){
   const opMax = A.V.op.reduce((m,r)=>!m||r.date>m?r.date:m,null);
   const blMax = [...A.V.bill,...A.V.inv].reduce((m,r)=>!m||r.date>m?r.date:m,null);
   let msg = "";
+  const eMin = OP.reduce((m,r)=>!m||iso(r.date)<m?iso(r.date):m,""),
+        eMax = OP.reduce((m,r)=>!m||iso(r.date)>m?iso(r.date):m,"");
+  msg += coverageGap($("#fFrom").value, $("#fTo").value, eMin, eMax);
   if(miss.length) msg += "<b>No billing on "+miss.length+" day"+(miss.length>1?"s":"")+" in this range:</b> "+miss.join(", ")+". ";
   if(opMax && blMax && opMax>blMax) msg += "Prescriptions run to <b>"+dmy(opMax)+"</b> but billing only to <b>"+dmy(blMax)+"</b> — consults after "+dmy(blMax)+" can never show as converted. ";
   if(DUPES) msg += "<b>"+DUPES+" row"+(DUPES>1?"s":"")+"</b> repeat a patient, date and encounter type already present. Every row is counted, so review these if a total looks high. ";
@@ -1189,6 +1208,11 @@ function snapshotOf(A){
     schema: 3, detail: true, dg, enc, build: BUILD,
     publishedAt: new Date().toISOString(),
     minDate: all.length?all[0]:"", maxDate: all.length?all[all.length-1]:"",
+    /* Suggestions come only from the OP/IP exports. Diag % is only meaningful
+       inside this window; outside it the numerator has bills with no possible
+       denominator. */
+    encMin: enc.length ? enc.map(e=>e.d).sort()[0] : "",
+    encMax: enc.length ? enc.map(e=>e.d).sort().slice(-1)[0] : "",
     from: $("#fFrom").value, to: $("#fTo").value,
     centers: [...new Set(days.map(d=>d.c))].sort(),
     days,
@@ -1277,7 +1301,9 @@ function renderSnap(){
   renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); renderPharm(A);
   if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
   const when = SNAP.publishedAt ? new Date(SNAP.publishedAt) : null;
-  $("#coverage").innerHTML = '<div class="warnbox"><b>Shared snapshot</b> — covering '+
+  const gap = coverageGap($("#fFrom").value, $("#fTo").value, SNAP.encMin, SNAP.encMax);
+  $("#coverage").innerHTML = (gap ? '<div class="warnbox">'+gap+"</div>" : "")+
+    '<div class="warnbox"><b>Shared snapshot</b> — covering '+
     esc(SNAP.minDate)+" to "+esc(SNAP.maxDate)+
     (when?", published "+dmy(when)+" at "+String(when.getHours()).padStart(2,"0")+":"+
       String(when.getMinutes()).padStart(2,"0"):"")+
@@ -1291,7 +1317,15 @@ function renderSnap(){
 }
 function applySnapshot(s){
   SNAPMODE = true; SNAP = s;
-  $("#fFrom").value = s.from || s.minDate || ""; $("#fTo").value = s.to || s.maxDate || "";
+  /* Snapshots published before this field existed still carry the encounter
+     rows, so the window can be recovered from them. */
+  if(!s.encMin && Array.isArray(s.enc) && s.enc.length){
+    const ds = s.enc.map(e=>e.d).sort();
+    s.encMin = ds[0]; s.encMax = ds[ds.length-1];
+  }
+  /* Open on the window the prescriptions cover, not the full span of billing. */
+  $("#fFrom").value = s.encMin || s.from || s.minDate || "";
+  $("#fTo").value   = s.encMax || s.to   || s.maxDate || "";
   if(s.minDate){ $("#fFrom").min=s.minDate; $("#fTo").min=s.minDate; }
   if(s.maxDate){ $("#fFrom").max=s.maxDate; $("#fTo").max=s.maxDate; }
   $("#fCenter").innerHTML = '<option value="">All centers</option>'+
@@ -1366,7 +1400,10 @@ async function ingest(files){
     wireDetailControls();
   }
   build();
-  const all = [...BILL, ...INV, ...OP].map(r=>r.date).filter(Boolean);
+  /* Default to the window the prescriptions cover — outside it Diag % has no
+     denominator. Fall back to the full span if no encounters were loaded. */
+  const encDates = OP.map(r=>r.date).filter(Boolean);
+  const all = (encDates.length ? encDates : [...BILL, ...INV, ...OP].map(r=>r.date).filter(Boolean));
   if(all.length){
     const mn = new Date(Math.min(...all)), mx = new Date(Math.max(...all));
     if(!$("#fFrom").value) $("#fFrom").value = iso(mn);
