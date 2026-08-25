@@ -228,7 +228,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 
 <div class="card">
   <h2>1 &middot; Load the dumps</h2>
-  <p class="hint">Drop <b>billing_reports</b>, <b>invoices</b>, <b>op_analysis</b> and <b>ip_analysis</b> together — each file's type is detected from its columns, so order doesn't matter. IP is optional; without it you get OP only.</p>
+  <p class="hint">Drop <b>billing_reports</b>, <b>invoices</b>, <b>op_analysis</b> and <b>ip_analysis</b> together — each file's type is detected from its columns, so order doesn't matter. Add the <b>patient master</b> (the export with Onboarding Date) to tell genuine walk-ins from returning patients. Loading a second file of the same type adds to it rather than replacing it.</p>
   <div id="drop">
     <div style="font-size:26px;line-height:1;margin-bottom:8px">&#128194;</div>
     <div><b>Drop .xlsx / .csv files here</b> or click to browse</div>
@@ -240,6 +240,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <div class="fchip" data-k="inv"><span class="dot"></span>Invoices (one row per bill)</div>
     <div class="fchip" data-k="op"><span class="dot"></span>OP analysis (prescriptions)</div>
     <div class="fchip" data-k="ip"><span class="dot"></span>IP analysis (prescriptions)</div>
+    <div class="fchip" data-k="pat"><span class="dot"></span>Patient master (optional)</div>
   </div>
 </div>
 
@@ -282,7 +283,8 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
       <b>Suggested diagnostics</b> — every row in the OP and IP exports whose “Diagnostics Suggested” cell has any content, counted together.<br>
       <b>Every diagnostics bill lands in exactly one scenario.</b>
       <b>①</b> a Fresh OPD consultation earlier the same month · <b>②</b> a follow-up OPD consultation earlier the same month · <b>③</b> no OPD, but a chemo/immuno/IP bill on an <i>earlier day</i> that month. Those three add up to <b>Counted</b>, and Diag % = Counted ÷ Suggested.<br>
-      <b>④ Diag w/o OPD</b> — walk-in diagnostics with no consultation of any kind; reported separately and never inside Counted. <b>⊘ Same-day session</b> — the only prior bill is a chemo/immuno bill on the same day, so the tests belong to that session and are excluded.<br>
+      <b>④ Diag w/o OPD</b> — the patient has <i>never</i> consulted Oncare up to that date: a genuine direct walk-in. <b>⑤ Returning patient</b> — no consultation this month, but they did consult earlier, so the test is not this month's conversion nor a new walk-in. <b>⊘ Same-day session</b> — the only prior bill is a chemo/immuno bill on the same day, so the tests belong to that session. None of these three sit inside Counted.<br>
+      ④ and ⑤ are split using the patient master's <b>Onboarding Date</b>, matched on Hospital ID: onboarded on an earlier day means the patient already existed. Without that file the split falls back to whatever invoice history is loaded.<br>
       <b>Expected ₹</b> — the advised value, from Diagnostics Cost. <b>Billed ₹</b> — everything invoiced as Diagnostics at that center in the period, including patients who were never advised, so Capture % can exceed 100%.
     </p>
     <div class="tblwrap"><table id="sumTbl"></table></div>
@@ -304,7 +306,8 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <div class="ctrls" style="margin-bottom:14px">
       <div class="fld"><label for="dBucket">Scenario</label><select id="dBucket">
         <option value="">All scenarios</option>
-        <option value="noopd">④ Diagnostics w/o OPD</option>
+        <option value="noopd">④ Diagnostics w/o OPD (never consulted)</option>
+        <option value="returned">⑤ Returning patient (consulted earlier)</option>
         <option value="fresh">① Fresh OPD → diagnostics</option>
         <option value="followup">② Follow-up OPD → diagnostics</option>
         <option value="prior">③ Prior IP/treatment → diagnostics</option>
@@ -544,10 +547,12 @@ function matchItem(sugName, billedItems){
 }
 
 /* ------------------------------------------------------------- file intake -- */
-const RAW = {bill:null, inv:null, op:null, ip:null};
+const RAW = {bill:null, inv:null, op:null, ip:null, pat:null};
 function detect(cols, fname){
   const has = n => cols.some(c => c.toLowerCase().trim() === n);
   const n = String(fname||"").toLowerCase();
+  /* Patient master: one row per patient with the date they were onboarded. */
+  if(has("onboarding date") && has("hospital id")) return "pat";
   if(has("diagnostics suggested") || has("drugs suggested")){
     /* Filename wins when it says so; otherwise the OP export is the one that
        carries a Type (OP/IP) column and the IP export does not. */
@@ -567,15 +572,43 @@ async function readFile(file){
   if(!rows.length) return;
   const kind = detect(Object.keys(rows[0]), file.name);
   if(!kind){ alert("Could not tell what kind of file \"" + file.name + "\" is — expected a billing report, invoices or OP analysis export."); return; }
-  RAW[kind] = rows;
+  /* Loading a second file of the same kind ADDS to it — that is how an older
+     invoice export is brought in so "never consulted before" can be judged
+     against real history. Rows already present are ignored, so re-loading the
+     same file is harmless. */
+  const sig = r => {
+    const g = k => String(r[k]==null?"":r[k]);
+    return kind==="bill" ? g("Invoice Number")+"|"+g("Item Name")+"|"+g("Item Billed Date")+"|"+g("Net Billed")+"|"+g("Quantity")
+         : kind==="inv"  ? g("Invoice Number")+"|"+g("Invoice Date")+"|"+g("Procedure Type")+"|"+g("Net Billed")
+         : kind==="pat"  ? g("Hospital ID")+"|"+g("Onboarding Date")
+         : g("Patient Mobile")+"|"+g("Invoice Date")+"|"+g("Patient Name")+"|"+g("Doctor Name");
+  };
+  if(!RAW[kind]) RAW[kind] = [];
+  const have = new Set(RAW[kind].map(sig));
+  let added = 0;
+  rows.forEach(r=>{ const s=sig(r); if(!have.has(s)){ have.add(s); RAW[kind].push(r); added++; } });
   const chip = document.querySelector('.fchip[data-k="'+kind+'"]');
-  if(chip){ chip.classList.add("ok"); chip.lastChild.textContent = chip.lastChild.textContent.split(" — ")[0] + " — " + rows.length.toLocaleString() + " rows"; }
+  if(chip){ chip.classList.add("ok");
+    chip.lastChild.textContent = chip.lastChild.textContent.split(" — ")[0] + " — " +
+      RAW[kind].length.toLocaleString() + " rows" + (added<rows.length ? " ("+(rows.length-added)+" dup skipped)" : ""); }
 }
 
 /* --------------------------------------------------------------- modelling -- */
 let BILL=[], INV=[], OP=[], DUPES=0;
+/* Hospital ID -> the date the patient was first onboarded. Hospital ID is the
+   only key that is unique and always present; mobile is missing on most rows of
+   the master, so it is not used here. */
+let ONBOARD = new Map();
+const hid = v => String(v==null?"":v).replace(/\.0+$/,"").trim();
 function build(){
   SYN = synGroups();
+  ONBOARD = new Map();
+  (RAW.pat||[]).forEach(r=>{
+    const k = hid(get(r,"Hospital ID")), d = parseDate(get(r,"Onboarding Date"));
+    if(!k || !d) return;
+    const prev = ONBOARD.get(k);        // keep the earliest if a patient repeats
+    if(!prev || d < prev) ONBOARD.set(k, d);
+  });
   const reD = new RegExp(CFG.diag,"i"), reP = new RegExp(CFG.pharm,"i");
 
   BILL = (RAW.bill||[]).map(r=>{
@@ -597,6 +630,7 @@ function build(){
     center: centerOf(get(r,"Location")), date: parseDate(get(r,"Invoice Date")),
     invNo: String(get(r,"Invoice Number")||""), invType: String(get(r,"Invoice Type")||"").toLowerCase(),
     procType: String(get(r,"Procedure Type")||"").trim().toUpperCase(),
+    hid: hid(get(r,"Hospital ID")),
     patient: String(get(r,"Patient Name")||""),
     mob: normMobile(get(r,"Patient Mobile","Patient Mobile Number")),
     /* "Fresh OPD" is the Status field the billing system sets — authoritative.
@@ -712,7 +746,10 @@ function analyse(){
        prior    - no OPD, but a chemo/immuno/IP bill on an EARLIER day that month
        sameday  - only a chemo/immuno bill on the same day: the tests belong to
                   that session, so they are not a conversion
-       noopd    - no consultation of any kind: walk-in diagnostics */
+       returned - no consultation this month, but this patient HAS consulted
+                  Oncare before — a returning patient, not a walk-in
+       noopd    - never consulted Oncare at any point up to this test: a genuine
+                  direct walk-in for diagnostics */
   function classify(d){
     const sm = c => c.date.getFullYear()===d.date.getFullYear() && c.date.getMonth()===d.date.getMonth();
     const ok = c => c.mob===d.mob && sm(c) && (!sameCtr || c.center===d.center);
@@ -721,6 +758,13 @@ function analyse(){
     const t = TRTinv.filter(ok);
     if(t.some(c=>c.date<d.date)) return "prior";
     if(t.some(c=>c.date.getTime()===d.date.getTime())) return "sameday";
+    /* Walk-in or not. The patient master answers this outright: onboarded on an
+       earlier day means they were already an Oncare patient. Without it, fall
+       back to whatever invoice history is loaded, which only reaches as far back
+       as the oldest export. */
+    const ob = ONBOARD.get(d.hid);
+    if(ob) return ob < d.date ? "returned" : "noopd";
+    if(OPDinv.some(c=>c.mob===d.mob && c.date<=d.date)) return "returned";
     return "noopd";
   }
   const COUNTED = new Set(["fresh","followup","prior"]);
@@ -776,8 +820,10 @@ function analyse(){
       bFollow: dgAll.filter(i=>i.center===c && i.bucket==="followup").length,
       bPrior:  dgAll.filter(i=>i.center===c && i.bucket==="prior").length,
       bNoOpd:  dgAll.filter(i=>i.center===c && i.bucket==="noopd").length,
+      bReturn: dgAll.filter(i=>i.center===c && i.bucket==="returned").length,
       bSameDay:dgAll.filter(i=>i.center===c && i.bucket==="sameday").length,
       noOpdRev:dgAll.filter(i=>i.center===c && i.bucket==="noopd").reduce((a,i)=>a+i.net,0),
+      returnRev:dgAll.filter(i=>i.center===c && i.bucket==="returned").reduce((a,i)=>a+i.net,0),
       /* Expected = value the doctor advised. Billed = everything invoiced as
          Diagnostics at this center in the period, not only the advised patients. */
       expRev: sd.reduce((a,r)=>a+r.expD,0),
@@ -785,7 +831,7 @@ function analyse(){
       sugP: sp.length, bilP: sp.filter(r=>r.convP).length};
   });
   const KEYS = ["opd","fresh","sugD","bilD","expRev","bilRev","sugP","bilP",
-                "bFresh","bFollow","bPrior","bNoOpd","bSameDay","noOpdRev"];
+                "bFresh","bFollow","bPrior","bNoOpd","bReturn","bSameDay","noOpdRev","returnRev"];
   const tot = per.reduce((a,b)=>{ KEYS.forEach(k=>a[k]+=b[k]||0); return a; },
     Object.assign({center:"All centers"}, ...KEYS.map(k=>({[k]:0}))));
   /* Back-tracking: for every diagnostics bill, what did this patient do NEXT?
@@ -849,7 +895,16 @@ function renderCoverage(A){
   if(opMax && blMax && opMax>blMax) msg += "Prescriptions run to <b>"+dmy(opMax)+"</b> but billing only to <b>"+dmy(blMax)+"</b> — consults after "+dmy(blMax)+" can never show as converted. ";
   if(DUPES) msg += "<b>"+DUPES+" row"+(DUPES>1?"s":"")+"</b> repeat a patient, date and encounter type already present. Every row is counted, so review these if a total looks high. ";
   if(A.dgDrop) msg += "<b>"+A.dgDrop+" of "+A.dgTotal+" diagnostics bills</b> sit outside Counted — "+
-    A.tot.bNoOpd+" walk-in with no consultation, "+A.tot.bSameDay+" belonging to the same day's chemo/immuno session. ";
+    A.tot.bNoOpd+" never consulted, "+(A.tot.bReturn||0)+" returning patients consulted earlier, "+
+    A.tot.bSameDay+" belonging to the same day's chemo/immuno session. ";
+  /* "Never consulted" is only as good as the history available. */
+  if(A.tot.bNoOpd && !ONBOARD.size){
+    const earliest = INV.reduce((m,i)=>!m||i.date<m?i.date:m,null);
+    if(earliest && p.f && earliest >= p.f) msg +=
+      "<b>Note on ④:</b> the loaded invoices start "+dmy(earliest)+
+      ", so a patient who last consulted before that is counted as never having consulted. "+
+      "Add the patient master (with Onboarding Date) to make this exact. ";
+  }
   $("#coverage").innerHTML = msg ? '<div class="warnbox">'+msg+"</div>" : "";
 }
 
@@ -886,7 +941,7 @@ function bar(v,max,color){
 function renderSummary(A){
   const head = ["Center","Consultations","Fresh OPD","Suggested diagnostics",
                 "① Fresh OPD → diag","② Follow-up → diag","③ Prior IP → diag","Counted","Diag %",
-                "Expected ₹","Billed ₹","④ Diag w/o OPD","④ Revenue","⊘ Same-day session"];
+                "Expected ₹","Billed ₹","④ Diag w/o OPD","④ Revenue","⑤ Returning patient","⊘ Same-day session"];
   let h = "<thead><tr>"+head.map(x=>"<th>"+x+"</th>").join("")+"</tr></thead><tbody>";
   const line = (r,cls) => {
     const dp = r.sugD?r.bilD/r.sugD:null;
@@ -899,6 +954,7 @@ function renderSummary(A){
       "<td>"+money(r.expRev)+"</td><td>"+money(r.bilRev)+"</td>"+
       '<td style="color:var(--series-pharm)">'+r.bNoOpd+"</td>"+
       '<td style="color:var(--series-pharm)">'+money(r.noOpdRev)+"</td>"+
+      '<td class="muted">'+(r.bReturn||0)+"</td>"+
       '<td class="muted">'+r.bSameDay+"</td></tr>";
   };
   A.per.forEach(r=>{ h += line(r,""); });
@@ -935,7 +991,7 @@ function renderChart(A){
 
 const BUCKET = {fresh:["① Fresh OPD","hi"], followup:["② Follow-up OPD","hi"],
                 prior:["③ Prior IP","md"], sameday:["⊘ Same-day session","n"],
-                noopd:["④ No OPD","no"]};
+                noopd:["④ Never consulted","no"], returned:["⑤ Returning patient","n"]};
 function renderDiag(A){
   const bf=$("#dBucket").value, bk=$("#dBack").value, q=$("#dSrch").value.trim().toLowerCase();
   let list = A.dgAll.slice().sort((a,b)=>a.date-b.date);
@@ -1068,8 +1124,9 @@ let SNAPMODE = false, SNAP = null;
    reach outside the chosen range stay correct. */
 function blankDay(d,c){
   const side = () => ({n:0,sugD:0,expRev:0,sugP:0,bilP:0,pSug:0,pBought:0,pAdv:0,pBil:0});
-  return {d, c, opd:0, fresh:0, bilD:0, bFresh:0, bFollow:0, bPrior:0, bNoOpd:0, bSameDay:0,
-          bilRev:0, noOpdRev:0, btBills:0, btRet:0, btVal:0, op:side(), ip:side()};
+  return {d, c, opd:0, fresh:0, bilD:0, bFresh:0, bFollow:0, bPrior:0, bNoOpd:0, bReturn:0,
+          bSameDay:0, bilRev:0, noOpdRev:0, returnRev:0, btBills:0, btRet:0, btVal:0,
+          op:side(), ip:side()};
 }
 function snapshotOf(A){
   const map = new Map(), inv = new Map();   // inv: day|centre -> Set of invoice numbers
@@ -1086,6 +1143,7 @@ function snapshotOf(A){
     const x = cell(d.date,d.center);
     if(d.bucket==="fresh") x.bFresh++; else if(d.bucket==="followup") x.bFollow++;
     else if(d.bucket==="prior") x.bPrior++; else if(d.bucket==="sameday") x.bSameDay++;
+    else if(d.bucket==="returned"){ x.bReturn++; x.returnRev += d.net; }
     else { x.bNoOpd++; x.noOpdRev += d.net;
            x.btBills++; if(d.back){ x.btRet++; x.btVal += d.back.total; } }
     if(d.bucket==="fresh"||d.bucket==="followup"||d.bucket==="prior"){ x.bilD++; x.bilRev += d.net; }
@@ -1101,7 +1159,7 @@ function snapshotOf(A){
   const days = [...map.values()].map(x=>{
     x.opd   = (inv.get(x.d+"|"+x.c+"|opd")   || new Set()).size;
     x.fresh = (inv.get(x.d+"|"+x.c+"|fresh") || new Set()).size;
-    ["bilRev","noOpdRev","btVal"].forEach(k=>x[k]=Math.round(x[k]));
+    ["bilRev","noOpdRev","returnRev","btVal"].forEach(k=>x[k]=Math.round(x[k]));
     ["op","ip"].forEach(s=>["expRev","pAdv","pBil"].forEach(k=>x[s][k]=Math.round(x[s][k])));
     return x;
   }).sort((a,b)=> a.d===b.d ? a.c.localeCompare(b.c) : a.d.localeCompare(b.d));
@@ -1142,10 +1200,10 @@ function aggregateSnap(){
   const sides = d => ty==="OP" ? [d.op] : ty==="IP" ? [d.ip] : [d.op,d.ip];
   const mk = (center,rows) => {
     const o = {center, opd:0,fresh:0,sugD:0,bilD:0,bFresh:0,bFollow:0,bPrior:0,bNoOpd:0,
-               bSameDay:0,expRev:0,bilRev:0,noOpdRev:0,sugP:0,bilP:0};
+               bReturn:0,bSameDay:0,expRev:0,bilRev:0,noOpdRev:0,returnRev:0,sugP:0,bilP:0};
     rows.forEach(d=>{
-      ["opd","fresh","bilD","bFresh","bFollow","bPrior","bNoOpd","bSameDay","bilRev","noOpdRev"]
-        .forEach(k=>o[k]+=d[k]);
+      ["opd","fresh","bilD","bFresh","bFollow","bPrior","bNoOpd","bReturn","bSameDay",
+       "bilRev","noOpdRev","returnRev"].forEach(k=>o[k]+=d[k]||0);
       sides(d).forEach(x=>{ o.sugD+=x.sugD; o.expRev+=x.expRev; o.sugP+=x.sugP; o.bilP+=x.bilP; });
     });
     return o;
@@ -1261,11 +1319,13 @@ function exportCsv(){
   const L = [];
   L.push(["Center","Consultations","Fresh OPD","Suggested diagnostics",
           "1 Fresh OPD to diag","2 Follow-up to diag","3 Prior IP to diag","Counted","Diagnostics %",
-          "Expected revenue","Billed revenue","4 Diag without OPD","4 Revenue","Same-day sessions excluded",
+          "Expected revenue","Billed revenue","4 Never consulted","4 Revenue",
+          "5 Returning patient","5 Revenue","Same-day sessions excluded",
           "Suggested pharmacy","Billed pharmacy","Pharmacy %"].map(q).join(","));
   [...LAST.per, LAST.tot].forEach(r=>L.push([r.center,r.opd,r.fresh,r.sugD,
     r.bFresh,r.bFollow,r.bPrior,r.bilD, r.sugD?Math.round(r.bilD/r.sugD*100):"",
-    Math.round(r.expRev), Math.round(r.bilRev), r.bNoOpd, Math.round(r.noOpdRev), r.bSameDay,
+    Math.round(r.expRev), Math.round(r.bilRev), r.bNoOpd, Math.round(r.noOpdRev),
+    r.bReturn||0, Math.round(r.returnRev||0), r.bSameDay,
     r.sugP,r.bilP,r.sugP?Math.round(r.bilP/r.sugP*100):""].map(q).join(",")));
   L.push(""); L.push(["Patient","Mobile","Center","Date","Doctor","OP/IP","Advised item","Kind","Billed?","Confidence","Matched line"].map(q).join(","));
   allItems(LAST).forEach(x=>L.push([x.r.patient,x.r.mob,x.r.center,dmy(x.r.date),x.r.doctor,x.r.type,x.name,
