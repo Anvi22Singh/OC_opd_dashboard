@@ -260,6 +260,20 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 </div>
 
 <div id="app" style="display:none">
+<nav class="tabs" id="areas" style="margin-bottom:6px">
+  <button aria-selected="true" data-a="diagnostics">Diagnostic analysis</button>
+  <button aria-selected="false" data-a="pharmacy">Pharmacy analysis</button>
+  <button aria-selected="false" data-a="radiation">Radiation backtracking</button>
+</nav>
+<section id="area-pharmacy" class="area" style="display:none">
+  <div class="card"><h2>Pharmacy analysis</h2>
+    <p class="hint">Reserved for the dedicated pharmacy work. The existing take-home drugs view is still under <b>Diagnostic analysis → Pharmacy</b> until this is built out.</p></div>
+</section>
+<section id="area-radiation" class="area" style="display:none">
+  <div class="card"><h2>Radiation backtracking</h2>
+    <p class="hint">Not built yet. It needs the same thing the diagnostics work needed: a source that says what radiation was advised, and invoices tagged with the radiation procedure type to match against.</p></div>
+</section>
+<div id="area-diagnostics" class="area">
 <nav class="tabs" id="tabs">
   <button aria-selected="true" data-t="summary">Center summary</button>
   <button aria-selected="false" data-t="diag">Diagnostics dump</button>
@@ -303,7 +317,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 <section class="tab" id="tab-diag">
   <div class="card">
     <h2>Every diagnostics bill, by scenario</h2>
-    <p class="hint">Pick a scenario to see exactly which patients sit behind that number. <b>Came back after?</b> shows the patient's next Oncare invoice of any kind after this test — the answer to whether walk-in diagnostics patients ever return.</p>
+    <p class="hint">Pick a scenario to see exactly which patients sit behind that number. One row per bill, so a patient billed several times appears several times. <b>Came back after?</b> shows the patient's next Oncare invoice of any kind after this test.</p>
     <div class="ctrls" style="margin-bottom:14px">
       <div class="fld"><label for="dBucket">Scenario</label><select id="dBucket">
         <option value="">All scenarios</option>
@@ -346,7 +360,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     </div>
     <div class="kpis" id="itemKpis"></div>
     <div id="itemNote"></div>
-    <div class="sect">Most-advised items that were never billed</div>
+    <div class="sect">Every distinct test / drug advised, and how often it was billed</div>
     <div class="tblwrap" style="margin-bottom:20px"><table id="gapTbl"></table></div>
     <div class="sect">Every advised item</div>
     <div class="tblwrap"><table id="itemTbl"></table></div>
@@ -358,10 +372,21 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <h2>Patient-level detail</h2>
     <p class="hint">One row per OPD consultation that carried a suggestion.</p>
     <div class="ctrls" style="margin-bottom:14px">
-      <div class="fld"><label for="pSrch">Search</label><input class="srch" id="pSrch" placeholder="Patient, mobile or doctor"></div>
+      <div class="fld"><label for="pCenter">Center</label><select id="pCenter"><option value="">All centers</option></select></div>
+      <div class="fld"><label for="pType">OP / IP</label><select id="pType">
+        <option value="">Both</option><option value="OP">OP only</option><option value="IP">IP only</option></select></div>
+      <div class="fld"><label for="pAdv">Advised</label><select id="pAdv">
+        <option value="">Diagnostics or pharmacy</option>
+        <option value="D">Diagnostics only</option>
+        <option value="P">Pharmacy only</option>
+        <option value="B">Both diagnostics and pharmacy</option>
+        <option value="anyD">Any diagnostics</option>
+        <option value="anyP">Any pharmacy</option></select></div>
       <div class="fld"><label for="pStat">Show</label><select id="pStat">
         <option value="">All</option><option value="miss">Missed conversions only</option><option value="conv">Converted only</option></select></div>
+      <div class="fld"><label for="pSrch">Search</label><input class="srch" id="pSrch" placeholder="Patient, mobile or doctor"></div>
     </div>
+    <div class="kpis" id="patKpis"></div>
     <div class="tblwrap"><table id="patTbl"></table></div>
   </div>
 </section>
@@ -391,11 +416,12 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <span class="muted" id="cfgMsg" style="margin-left:12px;font-size:12.5px"></span>
   </div>
 </section>
-</div>
+</div><!-- /area-diagnostics -->
+</div><!-- /app -->
 
 <div class="empty" id="emptyState">
   <div style="font-size:34px;margin-bottom:10px">&#128202;</div>
-  Load the three files above to build the dashboard.
+  Load the files above to build the dashboard.
 </div>
 </main>
 
@@ -404,7 +430,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "25-Aug-2026 977d37";
+const BUILD = "31-Aug-2026 9b44d1";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -727,8 +753,13 @@ function linkedTo(row, list){
 /* ---------------------------------------------------------------- analysis -- */
 function encStats(rr){
   const sd = rr.filter(r=>r.hasD), sp = rr.filter(r=>r.hasP);
+  const dr = rr.filter(r=>r.drugTxt && r.drugTxt.trim()!=="");
   return {n:rr.length, sugD:sd.length, bilD:sd.filter(r=>r.convD).length,
-          sugP:sp.length, bilP:sp.filter(r=>r.convP).length};
+          sugP:sp.length, bilP:sp.filter(r=>r.convP).length,
+          /* value advised at these encounters, from the analysis exports */
+          advD: sd.reduce((a,r)=>a+(r.expD||0),0),
+          advDrug: dr.reduce((a,r)=>a+(r.expDrug||0),0),
+          patients: new Set(rr.map(r=>r.mob||r.patient)).size};
 }
 function analyse(){
   const V = view();
@@ -761,8 +792,15 @@ function analyse(){
   function classify(d){
     const sm = c => c.date.getFullYear()===d.date.getFullYear() && c.date.getMonth()===d.date.getMonth();
     const ok = c => c.mob===d.mob && sm(c) && (!sameCtr || c.center===d.center);
+    /* Attribute the test to the MOST RECENT consultation before it, not to any
+       consultation that month. A patient seen fresh on the 8th and again as a
+       follow-up on the 12th, whose test is billed on the 13th, converts the
+       follow-up — the fresh visit did not produce it. */
     const o = OPDinv.filter(c=>ok(c) && c.date<=d.date);
-    if(o.length) return o.some(c=>c.isNew) ? "fresh" : "followup";
+    if(o.length){
+      const latest = Math.max(...o.map(c=>c.date.getTime()));
+      return o.some(c=>c.date.getTime()===latest && c.isNew) ? "fresh" : "followup";
+    }
     const t = TRTinv.filter(ok);
     if(t.some(c=>c.date<d.date)) return "prior";
     if(t.some(c=>c.date.getTime()===d.date.getTime())) return "sameday";
@@ -801,6 +839,13 @@ function analyse(){
                convD: bD.length>0, convP: bP.length>0};
     r.dMatch = o.dItems.map(it=>({...it, kind:"D", m:matchItem(it.name, linkedTo(o, dgLines))}));
     r.pMatch = o.pItems.map(it=>({...it, kind:"P", m:matchItem(it.name, bP)}));
+    /* Was this OP consultation a fresh OPD or a follow-up? Read it from the OPD
+       invoice raised for that patient on that day. IP rows have no such split. */
+    if(r.type==="OP"){
+      const same = OPDinv.filter(i=>i.mob===r.mob && i.center===r.center &&
+                                    i.date.getTime()===r.date.getTime());
+      r.opdKind = same.length ? (same.some(i=>i.isNew) ? "fresh" : "followup") : "unknown";
+    } else r.opdKind = null;
     return r;
   });
   const ty = $("#fType").value;
@@ -809,10 +854,16 @@ function analyse(){
      type, so billed diagnostics cannot be attributed to OP vs IP — only the
      combined figure is meaningful. */
   const dgCount = nCounted(dgAll);
+  const opRows = all.filter(r=>r.type==="OP");
   const byEnc = [
-    {label:"OP analysis", ...encStats(all.filter(r=>r.type==="OP")), bilD:null},
-    {label:"IP analysis", ...encStats(all.filter(r=>r.type==="IP")), bilD:null},
-    {label:"Both",             ...encStats(all), bilD:dgCount}
+    {label:"OP — fresh OPD",  ...encStats(opRows.filter(r=>r.opdKind==="fresh")),    bilD:null},
+    {label:"OP — follow-up",  ...encStats(opRows.filter(r=>r.opdKind==="followup")), bilD:null},
+    ...(opRows.some(r=>r.opdKind==="unknown")
+        ? [{label:"OP — no OPD bill that day", ...encStats(opRows.filter(r=>r.opdKind==="unknown")), bilD:null}]
+        : []),
+    {label:"OP analysis (all)", ...encStats(opRows), bilD:null},
+    {label:"IP analysis",       ...encStats(all.filter(r=>r.type==="IP")), bilD:null},
+    {label:"Both",              ...encStats(all), bilD:dgCount}
   ];
   /* An OPD billing is a consultation bill — Procedure Type "OPD". Invoice Type
      "opd" is far broader: it covers every bill raised during an OPD-type visit
@@ -958,15 +1009,18 @@ function renderKpis(A){
 }
 
 function renderEnc(A){
-  const head = ["Encounter","Consults","Suggested diagnostics","Billed diagnostics","Diag %","Suggested pharmacy","Billed pharmacy","Pharm %"];
+  const head = ["Encounter","Consults","Patients","Suggested diagnostics","Advised diag ₹","Billed diagnostics","Diag %",
+                "Suggested pharmacy","Advised drugs ₹","Billed pharmacy","Pharm %"];
   let h = "<thead><tr>"+head.map(x=>"<th>"+x+"</th>").join("")+"</tr></thead><tbody>";
   A.byEnc.forEach(r=>{
     const dp = (r.sugD && r.bilD!=null) ? r.bilD/r.sugD : null, pp = r.sugP?r.bilP/r.sugP:null;
-    h += '<tr class="'+(r.label==="Both"?"total":"")+'"><td>'+esc(r.label)+"</td><td>"+r.n+"</td>"+
-      "<td>"+r.sugD+'</td><td>'+(r.bilD==null?'<span class="muted">—</span>':r.bilD)+"</td>"+
+    const sub = /^OP —/.test(r.label);
+    h += '<tr class="'+(r.label==="Both"?"total":"")+'"><td'+(sub?' style="padding-left:26px"':'')+">"+
+      esc(r.label)+"</td><td>"+r.n+"</td><td>"+(r.patients==null?"—":r.patients)+"</td>"+
+      "<td>"+r.sugD+"</td><td>"+money(r.advD||0)+'</td><td>'+(r.bilD==null?'<span class="muted">—</span>':r.bilD)+"</td>"+
       '<td class="pct" style="color:'+(dp==null?"var(--text-muted)":"var(--series-diag)")+'">'+
         (dp==null?"—":Math.round(dp*100)+"% "+bar(dp,1,"var(--series-diag)"))+"</td>"+
-      "<td>"+r.sugP+"</td><td>"+r.bilP+"</td>"+
+      "<td>"+r.sugP+"</td><td>"+money(r.advDrug||0)+"</td><td>"+r.bilP+"</td>"+
       '<td class="pct" style="color:'+(pp==null?"var(--text-muted)":"var(--series-pharm)")+'">'+
         (pp==null?"—":Math.round(pp*100)+"% "+bar(pp,1,"var(--series-pharm)"))+"</td></tr>";
   });
@@ -1098,15 +1152,19 @@ function allItems(A){
 }
 function renderItems(A){
   const kind=$("#iKind").value, mf=$("#iMatch").value, q=$("#iSrch").value.trim().toLowerCase();
+  /* The Kind filter has to be applied BEFORE the KPIs and the summaries, or the
+     tiles keep reporting diagnostics and pharmacy together whatever is chosen. */
   let list = allItems(A);
-  const total = list.length, hit = list.filter(x=>x.m).length;
-  const strong = list.filter(x=>x.m && x.m.conf!=="lo").length;
+  if(kind) list = list.filter(x=>x.kind===kind);
+  const scope = list;
+  const total = scope.length, hit = scope.filter(x=>x.m).length;
+  const strong = scope.filter(x=>x.m && x.m.conf!=="lo").length;
+  const uniq = new Set(scope.map(x=>x.name.toLowerCase())).size;
   $("#itemKpis").innerHTML =
-    kpi("","Advised items", total.toLocaleString(), "individual tests &amp; drugs") +
+    kpi("","Advised items", total.toLocaleString(), uniq.toLocaleString()+" distinct tests &amp; drugs") +
     kpi("","Matched to a bill", pctTxt(hit,total), hit+" of "+total) +
     kpi("","Confident matches", pctTxt(strong,total), "excludes weak matches") +
     kpi("","Never billed", (total-hit).toLocaleString(), "no matching line item");
-  if(kind) list = list.filter(x=>x.kind===kind);
   if(mf==="y") list = list.filter(x=>x.m); else if(mf==="n") list = list.filter(x=>!x.m);
   if(q) list = list.filter(x=> x.name.toLowerCase().includes(q) || x.r.patient.toLowerCase().includes(q));
 
@@ -1116,15 +1174,21 @@ function renderItems(A){
       'Narrowing the dates re-filters which rows you see, but a handful of matches may still reflect bills just outside your range — '+
       'headline counts are unaffected. Load the exports for matching that tracks your date range exactly.</div>'
     : "";
-  const gaps = {};
-  allItems(A).filter(x=>!x.m).forEach(x=>{
+  /* Every distinct test/drug advised in the current scope, with how often it was
+     advised and how often it actually got billed. Follows all the filters above. */
+  const uq = {};
+  scope.forEach(x=>{
     const k = x.kind+"|"+x.name.toLowerCase();
-    (gaps[k] = gaps[k] || {name:x.name, kind:x.kind, n:0})['n']++;
+    const g = uq[k] = uq[k] || {name:x.name, kind:x.kind, n:0, billed:0};
+    g.n++; if(x.m) g.billed++;
   });
-  const gl = Object.values(gaps).sort((a,b)=>b.n-a.n).slice(0,15);
-  $("#gapTbl").innerHTML = "<thead><tr><th>Item</th><th>Type</th><th>Times advised, never billed</th></tr></thead><tbody>"+
-    (gl.length? gl.map(g=>"<tr><td>"+esc(g.name)+'</td><td class="muted">'+(g.kind==="D"?"Diagnostics":"Pharmacy")+
-      "</td><td>"+g.n+"</td></tr>").join("") : '<tr><td colspan="3" class="muted">Everything advised was billed.</td></tr>')+"</tbody>";
+  const ul = Object.values(uq).sort((a,b)=>b.n-a.n);
+  $("#gapTbl").innerHTML = "<thead><tr><th>Item</th><th>Type</th><th>Times advised</th><th>Billed</th><th>Never billed</th><th>Billed %</th></tr></thead><tbody>"+
+    (ul.length? ul.slice(0,60).map(g=>"<tr><td>"+esc(g.name)+'</td><td class="muted">'+(g.kind==="D"?"Diagnostics":"Pharmacy")+
+      "</td><td>"+g.n+"</td><td>"+g.billed+"</td><td>"+(g.n-g.billed)+
+      '</td><td class="pct" style="color:'+(g.billed?"var(--series-diag)":"var(--bad)")+'">'+Math.round(g.billed/g.n*100)+"%</td></tr>").join("")
+      : '<tr><td colspan="6" class="muted">Nothing advised in this scope.</td></tr>')+"</tbody>"+
+    (ul.length>60 ? '<tfoot><tr><td colspan="6" class="muted">Showing the 60 most-advised of '+ul.length+" distinct items.</td></tr></tfoot>" : "");
 
   const cap = list.slice(0,600);
   $("#itemTbl").innerHTML = "<thead><tr><th>Patient</th><th>Center</th><th>Date</th><th>Type</th><th>Advised item</th><th>Status</th><th>Matched billed line</th></tr></thead><tbody>"+
@@ -1138,10 +1202,39 @@ function renderItems(A){
 
 function renderPatients(A){
   const q=$("#pSrch").value.trim().toLowerCase(), st=$("#pStat").value;
+  const ct=$("#pCenter")?$("#pCenter").value:"", ty=$("#pType")?$("#pType").value:"",
+        adv=$("#pAdv")?$("#pAdv").value:"";
+  /* Keep the centre list in step with whatever data is loaded. */
+  const sel=$("#pCenter");
+  if(sel){
+    const cs=[...new Set(A.rows.map(r=>r.center))].sort();
+    if(sel.dataset.built!==cs.join("|")){
+      sel.innerHTML='<option value="">All centers</option>'+cs.map(c=>'<option>'+esc(c)+"</option>").join("");
+      sel.dataset.built=cs.join("|"); sel.value=cs.includes(ct)?ct:"";
+    }
+  }
   let list = A.rows.filter(r=>r.hasD||r.hasP);
+  if(ct) list = list.filter(r=>r.center===ct);
+  if(ty) list = list.filter(r=>r.type===ty);
+  if(adv==="D")    list = list.filter(r=>r.hasD && !r.hasP);
+  else if(adv==="P")    list = list.filter(r=>r.hasP && !r.hasD);
+  else if(adv==="B")    list = list.filter(r=>r.hasD && r.hasP);
+  else if(adv==="anyD") list = list.filter(r=>r.hasD);
+  else if(adv==="anyP") list = list.filter(r=>r.hasP);
   if(st==="miss") list = list.filter(r=>(r.hasD&&!r.convD)||(r.hasP&&!r.convP));
   if(st==="conv") list = list.filter(r=>(r.hasD&&r.convD)||(r.hasP&&r.convP));
   if(q) list = list.filter(r=> r.patient.toLowerCase().includes(q) || r.mob.includes(q) || r.doctor.toLowerCase().includes(q));
+  const kp=$("#patKpis");
+  if(kp){
+    const dOnly=list.filter(r=>r.hasD&&!r.hasP).length, pOnly=list.filter(r=>r.hasP&&!r.hasD).length,
+          both=list.filter(r=>r.hasD&&r.hasP).length;
+    kp.innerHTML =
+      kpi("","Consultations shown", list.length.toLocaleString(),
+          new Set(list.map(r=>r.mob||r.patient)).size+" distinct patients") +
+      kpi("diag","Diagnostics only", dOnly.toLocaleString(), pctTxt(dOnly,list.length)+" of those shown") +
+      kpi("pharm","Pharmacy only", pOnly.toLocaleString(), pctTxt(pOnly,list.length)+" of those shown") +
+      kpi("","Both advised", both.toLocaleString(), pctTxt(both,list.length)+" of those shown");
+  }
   const cell = (has,conv) => has ? (conv?'<span class="pill hi">billed</span>':'<span class="pill no">not billed</span>') : '<span class="muted">—</span>';
   $("#patTbl").innerHTML = "<thead><tr><th>Patient</th><th>Center</th><th>Date</th><th>Doctor</th><th>OP/IP</th>"+
     "<th>Diagnostics advised</th><th>Diag status</th><th>Pharmacy advised</th><th>Pharm status</th></tr></thead><tbody>"+
@@ -1456,7 +1549,8 @@ const TABHTML = {};
 ["diag","items","patients"].forEach(t=>{ const el=$("#tab-"+t); if(el) TABHTML[t]=el.innerHTML; });
 function on(id, ev, fn){ const e=$("#"+id); if(e) e.addEventListener(ev, fn); }
 function wireDetailControls(){
-  ["iKind","iMatch","pStat"].forEach(id=>on(id,"change",()=>{ if(LAST){renderItems(LAST);renderPatients(LAST);} }));
+  ["iKind","iMatch"].forEach(id=>on(id,"change",()=>{ if(LAST) renderItems(LAST); }));
+  ["pStat","pCenter","pType","pAdv"].forEach(id=>on(id,"change",()=>{ if(LAST) renderPatients(LAST); }));
   ["dBucket","dBack"].forEach(id=>on(id,"change",()=>{ if(LAST) renderDiag(LAST); }));
   on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
   on("iSrch","input",()=>{ if(LAST) renderItems(LAST); });
@@ -1470,6 +1564,11 @@ $("#themeBtn").addEventListener("click",()=>{
   const next = cur==="dark" ? "light" : cur==="light" ? "dark"
     : (matchMedia("(prefers-color-scheme: dark)").matches ? "light":"dark");
   document.documentElement.setAttribute("data-theme", next);
+});
+$("#areas").addEventListener("click",e=>{
+  const b = e.target.closest("button[data-a]"); if(!b) return;
+  [...$("#areas").children].forEach(x=>x.setAttribute("aria-selected", x===b));
+  document.querySelectorAll(".area").forEach(s=>s.style.display = s.id==="area-"+b.dataset.a ? "" : "none");
 });
 $("#tabs").addEventListener("click",e=>{
   const b = e.target.closest("button[data-t]"); if(!b) return;
