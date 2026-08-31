@@ -430,7 +430,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "31-Aug-2026 9b44d1";
+const BUILD = "31-Aug-2026 583ba4";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1312,6 +1312,7 @@ function snapshotOf(A){
   const enc = A.allRows.map(r=>({p:r.patient, m:r.mob, c:r.center, d:iso(r.date),
     r:r.doctor, t:r.type, dT:r.dTxt, pT:r.pTxt, gT:r.drugTxt,
     eD:Math.round(r.expD), eG:Math.round(r.expDrug),
+    k:r.opdKind||null,
     hD:r.hasD?1:0, hP:r.hasP?1:0, cD:r.convD?1:0, cP:r.convP?1:0,
     bt:r.bought?1:0, bv:Math.round(r.buyRev||0),
     dM:packM(r.dMatch||[]), pM:packM(r.pMatch||[])}));
@@ -1340,6 +1341,16 @@ function aggregateSnap(){
   const c = $("#fCenter").value, ty = $("#fType").value;
   const sel = s.days.filter(d => (!f || d.d>=f) && (!t || d.d<=t) && (!c || d.c===c));
   const sides = d => ty==="OP" ? [d.op] : ty==="IP" ? [d.ip] : [d.op,d.ip];
+  const inRange = x => (!f || x.d>=f) && (!t || x.d<=t) && (!c || x.c===c);
+  const unpackM = (arr,kind) => (arr||[]).map(a=>({name:a[0], kind,
+    m: a[1] ? {conf:a[1], item:{item:a[2]}} : null}));
+  const unpackEnc = x => ({
+    patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
+    opdKind:x.k||null, dTxt:x.dT||"", pTxt:x.pT||"", drugTxt:x.gT||"",
+    expD:x.eD, expDrug:x.eG,
+    hasD:!!x.hD, hasP:!!x.hP, convD:!!x.cD, convP:!!x.cP, bought:!!x.bt, buyRev:x.bv,
+    dItems:splitItems(x.dT), pItems:splitItems(x.pT),
+    dMatch:unpackM(x.dM,"D"), pMatch:unpackM(x.pM,"P"), bD:[], bP:[]});
   const mk = (center,rows) => {
     const o = {center, opd:0,fresh:0,sugD:0,bilD:0,bFresh:0,bFollow:0,bPrior:0,bNoOpd:0,
                bReturn:0,bSameDay:0,expRev:0,bilRev:0,noOpdRev:0,returnRev:0,sugP:0,bilP:0};
@@ -1353,13 +1364,23 @@ function aggregateSnap(){
   const centers = [...new Set(sel.map(d=>d.c))].sort();
   const per = centers.map(cc=>mk(cc, sel.filter(d=>d.c===cc)));
   const tot = mk("All centers", sel);
-  const encOf = (label,key) => {
-    const o={label,n:0,sugD:0,sugP:0,bilP:0,bilD:null};
-    sel.forEach(d=>{ const x=d[key]; o.n+=x.n; o.sugD+=x.sugD; o.sugP+=x.sugP; o.bilP+=x.bilP; });
-    return o;
-  };
-  const both = {label:"Both", n:encOf("",'op').n+encOf("",'ip').n,
-    sugD:tot.sugD, sugP:tot.sugP, bilP:tot.bilP, bilD:tot.bilD};
+  /* Built from the stored encounter rows, exactly as the live path does, so the
+     advised-value and patient columns and the fresh/follow-up split all appear.
+     Deliberately ignores the OP/IP filter: this table exists to compare them. */
+  const encRows = (s.enc||[]).filter(inRange).map(unpackEnc);
+  const opAll = encRows.filter(r=>r.type==="OP");
+  const hasKind = opAll.some(r=>r.opdKind);
+  const byEnc = [
+    ...(hasKind ? [
+      {label:"OP — fresh OPD", ...encStats(opAll.filter(r=>r.opdKind==="fresh")),    bilD:null},
+      {label:"OP — follow-up", ...encStats(opAll.filter(r=>r.opdKind==="followup")), bilD:null},
+      ...(opAll.some(r=>r.opdKind==="unknown")
+          ? [{label:"OP — no OPD bill that day", ...encStats(opAll.filter(r=>r.opdKind==="unknown")), bilD:null}] : [])
+    ] : []),
+    {label: hasKind ? "OP analysis (all)" : "OP analysis", ...encStats(opAll), bilD:null},
+    {label:"IP analysis", ...encStats(encRows.filter(r=>r.type==="IP")), bilD:null},
+    {label:"Both", ...encStats(encRows), bilD:tot.bilD}
+  ];
   const pharm = (center,rows) => { const o={center,sug:0,bought:0,adv:0,bil:0};
     rows.forEach(d=>sides(d).forEach(x=>{o.sug+=x.pSug;o.bought+=x.pBought;o.adv+=x.pAdv;o.bil+=x.pBil;}));
     return o; };
@@ -1368,18 +1389,10 @@ function aggregateSnap(){
 
   /* Rebuild the patient-level rows in the shape the detail renderers expect, and
      hold them to the same date / centre / OP-IP filters as the totals. */
-  const inRange = x => (!f || x.d>=f) && (!t || x.d<=t) && (!c || x.c===c);
-  const unpackM = (arr,kind) => (arr||[]).map(a=>({name:a[0], kind,
-    m: a[1] ? {conf:a[1], item:{item:a[2]}} : null}));
   const dgAll = (s.dg||[]).filter(inRange).map(x=>({
     patient:x.p, mob:x.m, hid:x.h||"", center:x.c, date:parseDate(x.d), net:x.n, bucket:x.b,
     back: x.k ? {date:parseDate(x.k.d), type:x.k.t, total:x.k.v, days:x.k.y, n:x.k.c} : null}));
-  const rows = (s.enc||[]).filter(x=>inRange(x) && (!ty || x.t===ty)).map(x=>({
-    patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
-    dTxt:x.dT||"", pTxt:x.pT||"", drugTxt:x.gT||"", expD:x.eD, expDrug:x.eG,
-    hasD:!!x.hD, hasP:!!x.hP, convD:!!x.cD, convP:!!x.cP, bought:!!x.bt, buyRev:x.bv,
-    dItems:splitItems(x.dT), pItems:splitItems(x.pT),
-    dMatch:unpackM(x.dM,"D"), pMatch:unpackM(x.pM,"P"), bD:[], bP:[]}));
+  const rows = encRows.filter(r=>!ty || r.type===ty);
 
   /* Scenario columns are patient counts, so they are recomputed from the bill
      rows rather than added up across days — the same patient can be billed on
@@ -1393,9 +1406,10 @@ function aggregateSnap(){
     bNoOpd:np(rr,"noopd"), bReturn:np(rr,"returned"), bSameDay:np(rr,"sameday")});
   per.forEach(p=>setB(p, dgAll.filter(d=>d.center===p.center)));
   setB(tot, dgAll);
-  both.bilD = tot.bilD;     // the combined row mirrors the recomputed total
+  const bothRow = byEnc[byEnc.length-1];
+  if(bothRow) bothRow.bilD = tot.bilD;   // combined row mirrors the recomputed total
 
-  return {per, tot, byEnc:[encOf("OP analysis","op"), encOf("IP analysis","ip"), both],
+  return {per, tot, byEnc,
           pharmPer: centers.map(cc=>pharm(cc, sel.filter(d=>d.c===cc))),
           pharmTot: pharm("All centers", sel),
           pharmNote: s.pharmNote, backTrack: bt,
