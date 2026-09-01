@@ -266,18 +266,50 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
   <button aria-selected="false" data-a="radiation">Radiation backtracking</button>
 </nav>
 <section id="area-pharmacy" class="area" style="display:none">
-  <div class="card"><h2>Pharmacy analysis</h2>
-    <p class="hint">Reserved for the dedicated pharmacy work. The existing take-home drugs view is still under <b>Diagnostic analysis → Pharmacy</b> until this is built out.</p></div>
-</section>
+<div id="tab-pharm">
+  <div class="card">
+    <h2>Take-home drugs: advised vs bought</h2>
+    <p class="hint">Counted from the <b>Drugs Suggested</b> column of both exports. A purchase is an invoice tagged Procedure Type <b>“Others”</b> for the same patient on the suggestion date <i>or any date after</i> — patients often collect on their next chemo visit, so later purchases count.</p>
+    <div class="kpis" id="pharmKpis"></div>
+    <div class="tblwrap"><table id="pharmTbl"></table></div>
+    <div class="warnbox" style="margin-top:16px" id="pharmNote"></div>
+  </div>
+</div>
+
 <section id="area-radiation" class="area" style="display:none">
-  <div class="card"><h2>Radiation backtracking</h2>
-    <p class="hint">Not built yet. It needs the same thing the diagnostics work needed: a source that says what radiation was advised, and invoices tagged with the radiation procedure type to match against.</p></div>
+  <div class="card">
+    <h2>Radiation backtracking</h2>
+    <p class="hint">A consultation counts as radiation when the doctor is on the radiation-oncologist list (editable in <b>Rules &amp; mapping</b>). From there: did the patient go on to any procedure at Oncare, which one, and did they return for a follow-up consultation afterwards. This section has its own dates because radiation billing runs across the whole file, not just the prescription window.</p>
+    <div class="ctrls">
+      <div class="fld"><label for="rFrom">From</label><input type="date" id="rFrom"></div>
+      <div class="fld"><label for="rTo">To</label><input type="date" id="rTo"></div>
+      <div class="fld"><label for="rCenter">Center</label><select id="rCenter"><option value="">All centers</option></select></div>
+      <div class="fld"><label for="rConv">Show</label><select id="rConv">
+        <option value="">All patients</option><option value="y">Converted only</option><option value="n">Not converted</option></select></div>
+      <div class="fld"><label for="rSrch">Search</label><input class="srch" id="rSrch" placeholder="Patient or doctor"></div>
+    </div>
+  </div>
+  <div class="kpis" id="radKpis"></div>
+  <div class="card">
+    <h2>Month on month</h2>
+    <p class="hint">Radiation consultations and what they turned into, beside radiation revenue actually invoiced that month. The two are not a ratio — revenue in a month can come from a consultation in an earlier one.</p>
+    <div class="tblwrap"><table id="radMonthTbl"></table></div>
+  </div>
+  <div class="card">
+    <h2>What they converted to</h2>
+    <div class="tblwrap"><table id="radProcTbl"></table></div>
+  </div>
+  <div class="card">
+    <h2>Patient by patient</h2>
+    <p class="hint">One row per patient, from their first radiation consultation in the period.</p>
+    <div class="tblwrap"><table id="radPatTbl"></table></div>
+    <div id="radNote"></div>
+  </div>
 </section>
 <div id="area-diagnostics" class="area">
 <nav class="tabs" id="tabs">
   <button aria-selected="true" data-t="summary">Center summary</button>
   <button aria-selected="false" data-t="diag">Diagnostics dump</button>
-  <button aria-selected="false" data-t="pharm">Pharmacy</button>
   <button aria-selected="false" data-t="items">Item-level detail</button>
   <button aria-selected="false" data-t="patients">Patients</button>
   <button aria-selected="false" data-t="settings">Rules &amp; mapping</button>
@@ -290,6 +322,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <h2>OP vs IP</h2>
     <p class="hint">Rows advised diagnostics or pharmacy, split by encounter type — OP from the OP analysis export, IP from the IP analysis export. Billed diagnostics shows only on the combined row: every diagnostics invoice is Invoice Type “opd” and carries no encounter type, so it cannot be split.</p>
     <div class="tblwrap"><table id="encTbl"></table></div>
+    <div id="encNote"></div>
   </div>
   <div class="card">
     <h2>Conversion by center</h2>
@@ -337,30 +370,19 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
   </div>
 </section>
 
-<section class="tab" id="tab-pharm">
-  <div class="card">
-    <h2>Take-home drugs: advised vs bought</h2>
-    <p class="hint">Counted from the <b>Drugs Suggested</b> column of both exports. A purchase is an invoice tagged Procedure Type <b>“Others”</b> for the same patient on the suggestion date <i>or any date after</i> — patients often collect on their next chemo visit, so later purchases count.</p>
-    <div class="kpis" id="pharmKpis"></div>
-    <div class="tblwrap"><table id="pharmTbl"></table></div>
-    <div class="warnbox" style="margin-top:16px" id="pharmNote"></div>
-  </div>
-</section>
 
 <section class="tab" id="tab-items">
   <div class="card">
-    <h2>Which advised items actually got billed</h2>
-    <p class="hint">Each advised test/drug is matched individually against the patient's billed line items. Free text vs vendor SKUs is imperfect — every row carries a confidence, so treat <span class="pill lo">weak</span> as needing a human look. Add synonyms in the Rules tab to improve matching.</p>
+    <h2>Which advised tests actually got billed</h2>
+    <p class="hint">Each advised test is matched individually against the patient's billed line items. Free text vs vendor SKUs is imperfect — every row carries a confidence, so treat <span class="pill lo">weak</span> as needing a human look. Add synonyms in the Rules tab to improve matching.</p>
     <div class="ctrls" style="margin-bottom:14px">
-      <div class="fld"><label for="iKind">Kind</label><select id="iKind">
-        <option value="">Diagnostics + pharmacy</option><option value="D">Diagnostics</option><option value="P">Pharmacy</option></select></div>
       <div class="fld"><label for="iMatch">Match</label><select id="iMatch">
         <option value="">All</option><option value="y">Billed</option><option value="n">Not billed</option></select></div>
       <div class="fld"><label for="iSrch">Search item / patient</label><input class="srch" id="iSrch" placeholder="e.g. PET, CBC, Dolo"></div>
     </div>
     <div class="kpis" id="itemKpis"></div>
     <div id="itemNote"></div>
-    <div class="sect">Every distinct test / drug advised, and how often it was billed</div>
+    <div class="sect">Every distinct test advised, and how often it was billed</div>
     <div class="tblwrap" style="margin-bottom:20px"><table id="gapTbl"></table></div>
     <div class="sect">Every advised item</div>
     <div class="tblwrap"><table id="itemTbl"></table></div>
@@ -406,6 +428,11 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     </div>
   </div>
   <div class="card">
+    <h2>Radiation oncologists</h2>
+    <p class="hint">One name per line. A consultation by any of these counts as a radiation OPD. Spelling is forgiving — "Dr. Ajay GV" also matches "Ajay G V" — and first+last name is enough.</p>
+    <textarea id="cfgRad" style="min-height:150px"></textarea>
+  </div>
+  <div class="card">
     <h2>Item synonyms</h2>
     <p class="hint">One group per line, comma separated — anything on the same line is treated as the same item when matching advice to bills.</p>
     <textarea id="cfgSyn" style="min-height:160px"></textarea>
@@ -430,7 +457,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "31-Aug-2026 583ba4";
+const BUILD = "01-Sep-2026 a83d40";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -446,6 +473,9 @@ const DEF = {
   ].join("\n"),
   diag: "diagn|invest|radiol|patholog|\\blab\\b",
   pharm: "pharmac",
+  radDocs: ["Dr. Anita Malik","Dr. Deepika Chauhan","Dr. Ajay GV","Dr. Madhusudhan N",
+    "Dr. Indu Bansal","Dr. Jyotika Jain","Mohan kumar s","rajeev a g","manoj sharma",
+    "dinesh singh"].join("\n"),
   syn: [
     "cbc, haemogram, hemogram, complete blood count, blood count",
     "lft, liver function",
@@ -468,7 +498,7 @@ const LSK = "oncare_postopd_cfg_v1";
 let CFG = loadCfg();
 function loadCfg(){
   try{ const r = JSON.parse(localStorage.getItem(LSK)); if(r && r.diag) return r; }catch(e){}
-  return {centers:DEF.centers, diag:DEF.diag, pharm:DEF.pharm, syn:DEF.syn};
+  return {centers:DEF.centers, diag:DEF.diag, pharm:DEF.pharm, syn:DEF.syn, radDocs:DEF.radDocs};
 }
 function saveCfg(){ try{ localStorage.setItem(LSK, JSON.stringify(CFG)); }catch(e){} }
 
@@ -610,7 +640,11 @@ async function readFile(file){
   const sig = r => {
     const g = k => String(r[k]==null?"":r[k]);
     return kind==="bill" ? g("Invoice Number")+"|"+g("Item Name")+"|"+g("Item Billed Date")+"|"+g("Net Billed")+"|"+g("Quantity")
-         : kind==="inv"  ? g("Invoice Number")+"|"+g("Invoice Date")+"|"+g("Procedure Type")+"|"+g("Net Billed")
+         /* Invoice numbers repeat across centres, so Location and the patient are
+            part of the identity — without them a real bill can be dropped as a
+            duplicate. */
+         : kind==="inv"  ? g("Invoice Number")+"|"+g("Invoice Date")+"|"+g("Procedure Type")+"|"+
+                           g("Net Billed")+"|"+g("Location")+"|"+g("Patient Name")
          : kind==="pat"  ? g("Hospital ID")+"|"+g("Onboarding Date")
          : g("Patient Mobile")+"|"+g("Invoice Date")+"|"+g("Patient Name")+"|"+g("Doctor Name");
   };
@@ -663,6 +697,7 @@ function build(){
     invNo: String(get(r,"Invoice Number")||""), invType: String(get(r,"Invoice Type")||"").toLowerCase(),
     procType: String(get(r,"Procedure Type")||"").trim().toUpperCase(),
     hid: hid(get(r,"Hospital ID")),
+    doctor: String(get(r,"Doctor Name")||"").trim(),
     patient: String(get(r,"Patient Name")||""),
     mob: normMobile(get(r,"Patient Mobile","Patient Mobile Number")),
     /* "Fresh OPD" is the Status field the billing system sets — authoritative.
@@ -952,7 +987,7 @@ function render(){
   build();
   const A = LAST = analyse();
   renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A);
-  renderDiag(A); renderPharm(A); renderItems(A); renderPatients(A);
+  renderDiag(A); renderPharm(A); renderItems(A); renderPatients(A); renderRadiation();
 }
 
 /* Diag % divides billed diagnostics by suggestions. If the chosen range reaches
@@ -1009,22 +1044,24 @@ function renderKpis(A){
 }
 
 function renderEnc(A){
-  const head = ["Encounter","Consults","Patients","Suggested diagnostics","Advised diag ₹","Billed diagnostics","Diag %",
-                "Suggested pharmacy","Advised drugs ₹","Billed pharmacy","Pharm %"];
+  const head = ["Encounter","Consults","Patients","Suggested diagnostics","Advised diag ₹","Billed diagnostics","Diag %"];
   let h = "<thead><tr>"+head.map(x=>"<th>"+x+"</th>").join("")+"</tr></thead><tbody>";
   A.byEnc.forEach(r=>{
-    const dp = (r.sugD && r.bilD!=null) ? r.bilD/r.sugD : null, pp = r.sugP?r.bilP/r.sugP:null;
+    const dp = (r.sugD && r.bilD!=null) ? r.bilD/r.sugD : null;
     const sub = /^OP —/.test(r.label);
     h += '<tr class="'+(r.label==="Both"?"total":"")+'"><td'+(sub?' style="padding-left:26px"':'')+">"+
       esc(r.label)+"</td><td>"+r.n+"</td><td>"+(r.patients==null?"—":r.patients)+"</td>"+
       "<td>"+r.sugD+"</td><td>"+money(r.advD||0)+'</td><td>'+(r.bilD==null?'<span class="muted">—</span>':r.bilD)+"</td>"+
       '<td class="pct" style="color:'+(dp==null?"var(--text-muted)":"var(--series-diag)")+'">'+
-        (dp==null?"—":Math.round(dp*100)+"% "+bar(dp,1,"var(--series-diag)"))+"</td>"+
-      "<td>"+r.sugP+"</td><td>"+money(r.advDrug||0)+"</td><td>"+r.bilP+"</td>"+
-      '<td class="pct" style="color:'+(pp==null?"var(--text-muted)":"var(--series-pharm)")+'">'+
-        (pp==null?"—":Math.round(pp*100)+"% "+bar(pp,1,"var(--series-pharm)"))+"</td></tr>";
+        (dp==null?"—":Math.round(dp*100)+"% "+bar(dp,1,"var(--series-diag)"))+"</td></tr>";
   });
   $("#encTbl").innerHTML = h+"</tbody>";
+  /* Older snapshots predate the fresh/follow-up flag; say so rather than quietly
+     showing one combined OP row as though the split did not exist. */
+  const note = $("#encNote");
+  if(note) note.innerHTML = A.byEnc.some(r=>/^OP —/.test(r.label)) ? "" :
+    '<div class="warnbox" style="margin-top:12px">The fresh-OPD / follow-up split is missing because this snapshot '+
+    'was published before that field existed. Load the exports and publish a new snapshot to see it.</div>';
 }
 function bar(v,max,color){
   const w = max? Math.round(v/max*100):0;
@@ -1033,10 +1070,13 @@ function bar(v,max,color){
 function renderSummary(A){
   const head = ["Center","Consultations","Fresh OPD","Suggested diagnostics",
                 "① Fresh OPD → diag","② Follow-up → diag","③ Prior IP → diag","Counted","Diag %",
-                "Expected ₹","Billed ₹","④ Diag w/o OPD","④ Revenue","⑤ Returning patient","⊘ Same-day session"];
+                "Expected ₹","Billed ₹","Billed %","④ Diag w/o OPD","④ Revenue",
+                "⑤ Returning patient","⑤ Revenue","⊘ Same-day session"];
   let h = "<thead><tr>"+head.map(x=>"<th>"+x+"</th>").join("")+"</tr></thead><tbody>";
   const line = (r,cls) => {
     const dp = r.sugD?r.bilD/r.sugD:null;
+    /* Billed % — diagnostics revenue actually invoiced against the value advised. */
+    const cap = r.expRev ? r.bilRev/r.expRev : null;
     return '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
       "<td>"+r.opd+"</td><td>"+r.fresh+"</td><td>"+r.sugD+"</td>"+
       "<td>"+r.bFresh+"</td><td>"+r.bFollow+"</td><td>"+r.bPrior+"</td>"+
@@ -1044,9 +1084,12 @@ function renderSummary(A){
       '<td class="pct" style="color:'+(dp==null?"var(--text-muted)":"var(--series-diag)")+'">'+
         (dp==null?"—":Math.round(dp*100)+"% "+bar(dp,1,"var(--series-diag)"))+"</td>"+
       "<td>"+money(r.expRev)+"</td><td>"+money(r.bilRev)+"</td>"+
+      '<td class="pct" style="color:'+(cap==null?"var(--text-muted)":"var(--series-diag)")+'">'+
+        (cap==null?"—":Math.round(cap*100)+"%")+"</td>"+
       '<td style="color:var(--series-pharm)">'+r.bNoOpd+"</td>"+
       '<td style="color:var(--series-pharm)">'+money(r.noOpdRev)+"</td>"+
       '<td class="muted">'+(r.bReturn||0)+"</td>"+
+      '<td class="muted">'+money(r.returnRev||0)+"</td>"+
       '<td class="muted">'+r.bSameDay+"</td></tr>";
   };
   A.per.forEach(r=>{ h += line(r,""); });
@@ -1151,17 +1194,17 @@ function allItems(A){
   return out;
 }
 function renderItems(A){
-  const kind=$("#iKind").value, mf=$("#iMatch").value, q=$("#iSrch").value.trim().toLowerCase();
-  /* The Kind filter has to be applied BEFORE the KPIs and the summaries, or the
-     tiles keep reporting diagnostics and pharmacy together whatever is chosen. */
-  let list = allItems(A);
-  if(kind) list = list.filter(x=>x.kind===kind);
+  const mf=$("#iMatch").value, q=$("#iSrch").value.trim().toLowerCase();
+  /* Diagnostics only — this view lives under Diagnostic analysis. Advised drugs
+     are handled in the Pharmacy area. Filtering happens BEFORE the KPIs so the
+     tiles report the same population as the tables. */
+  let list = allItems(A).filter(x=>x.kind==="D");
   const scope = list;
   const total = scope.length, hit = scope.filter(x=>x.m).length;
   const strong = scope.filter(x=>x.m && x.m.conf!=="lo").length;
   const uniq = new Set(scope.map(x=>x.name.toLowerCase())).size;
   $("#itemKpis").innerHTML =
-    kpi("","Advised items", total.toLocaleString(), uniq.toLocaleString()+" distinct tests &amp; drugs") +
+    kpi("","Advised tests", total.toLocaleString(), uniq.toLocaleString()+" distinct tests") +
     kpi("","Matched to a bill", pctTxt(hit,total), hit+" of "+total) +
     kpi("","Confident matches", pctTxt(strong,total), "excludes weak matches") +
     kpi("","Never billed", (total-hit).toLocaleString(), "no matching line item");
@@ -1237,14 +1280,158 @@ function renderPatients(A){
   }
   const cell = (has,conv) => has ? (conv?'<span class="pill hi">billed</span>':'<span class="pill no">not billed</span>') : '<span class="muted">—</span>';
   $("#patTbl").innerHTML = "<thead><tr><th>Patient</th><th>Center</th><th>Date</th><th>Doctor</th><th>OP/IP</th>"+
-    "<th>Diagnostics advised</th><th>Diag status</th><th>Pharmacy advised</th><th>Pharm status</th></tr></thead><tbody>"+
+    "<th>Diagnostics advised</th><th>Diag status</th></tr></thead><tbody>"+
     (list.length? list.slice(0,600).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(r.date)+
       "</td><td>"+esc(r.doctor)+'</td><td class="muted">'+esc(r.type)+"</td>"+
       '<td style="text-align:left;white-space:normal;max-width:290px">'+(r.dItems.length?esc(r.dItems.map(i=>i.name).join(", ")):'<span class="muted">—</span>')+"</td>"+
       "<td>"+cell(r.hasD,r.convD)+"</td>"+
-      '<td style="text-align:left;white-space:normal;max-width:290px">'+(r.pItems.length?esc(r.pItems.map(i=>i.name).join(", ")):'<span class="muted">—</span>')+"</td>"+
-      "<td>"+cell(r.hasP,r.convP)+"</td></tr>").join("")
-      : '<tr><td colspan="9" class="muted">No consultations match.</td></tr>')+"</tbody>";
+      "</tr>").join("")
+      : '<tr><td colspan="7" class="muted">No consultations match.</td></tr>')+"</tbody>";
+}
+
+/* -------------------------------------------------------------- radiation -- */
+/* Doctor names are written inconsistently ("Ajay GV" / "Ajay G V", "Manoj Sharma" /
+   "Manoj Kumar Sharma"), so match on letters only and also accept a first+last
+   name match. */
+const radKey = s => String(s==null?"":s).toLowerCase().replace(/^\s*dr\.?\s+/,"").replace(/[^a-z]/g,"");
+function radNames(){ return CFG.radDocs.split("\n").map(x=>x.trim()).filter(Boolean); }
+function radMatcher(){
+  const keys = new Set(radNames().map(radKey));
+  const ends = new Set(radNames().map(n=>{
+    const t=String(n).toLowerCase().replace(/^\s*dr\.?\s+/,"").replace(/[^a-z ]/g," ").split(/\s+/).filter(Boolean);
+    return t.length>1 ? t[0]+"|"+t[t.length-1] : "";
+  }).filter(Boolean));
+  return doc => {
+    const k = radKey(doc); if(!k) return false;
+    if(keys.has(k)) return true;
+    const t = String(doc).toLowerCase().replace(/^\s*dr\.?\s+/,"").replace(/[^a-z ]/g," ").split(/\s+/).filter(Boolean);
+    return t.length>1 && ends.has(t[0]+"|"+t[t.length-1]);
+  };
+}
+/* Anything that is not a consultation, a test or a sundry charge is a procedure. */
+const PROCTYPES = new Set(["RADIATION","CHEMOTHERAPY","TARGETED CHEMOTHERAPY","PAID IMMUNOTHERAPY",
+  "PAP IMMUNOTHERAPY","DAY CARE","MEDICAL MANAGEMENT","SURGERY"]);
+function analyseRadiation(){
+  const f=$("#rFrom").value, t=$("#rTo").value, c=$("#rCenter").value;
+  const isRad = radMatcher();
+  const inWin = d => (!f || iso(d)>=f) && (!t || iso(d)<=t);
+  const okC   = r => !c || r.center===c;
+  const pid   = r => r.hid || r.mob || r.patient;
+  const radOpd = INV.filter(i=>i.procType==="OPD" && i.date && isRad(i.doctor) && inWin(i.date) && okC(i));
+  const procs  = INV.filter(i=>i.date && PROCTYPES.has(i.procType));
+  const opdAll = INV.filter(i=>i.procType==="OPD" && i.date);
+  const byPat = new Map();
+  radOpd.forEach(i=>{ const k=pid(i); if(!byPat.has(k)) byPat.set(k,[]); byPat.get(k).push(i); });
+  const rows = [...byPat.entries()].map(([k,visits])=>{
+    visits.sort((a,b)=>a.date-b.date);
+    const first = visits[0];
+    const after = procs.filter(p=>pid(p)===k && p.date>=first.date).sort((a,b)=>a.date-b.date);
+    const p0 = after[0] || null;
+    const fu = p0 ? opdAll.filter(o=>pid(o)===k && o.date>p0.date).sort((a,b)=>a.date-b.date) : [];
+    return {id:k, patient:first.patient, center:first.center, doctor:first.doctor,
+            firstOpd:first.date, opds:visits.length,
+            converted:!!p0, proc:p0?p0.procType:null, procDate:p0?p0.date:null,
+            days:p0?Math.round((p0.date-first.date)/86400000):null,
+            procRev:after.reduce((a,p)=>a+p.net,0),
+            radRev:after.filter(p=>p.procType==="RADIATION").reduce((a,p)=>a+p.net,0),
+            followUp:fu.length?fu[0]:null,
+            fuSameMonth:!!(p0 && fu.length && fu[0].date.getFullYear()===p0.date.getFullYear()
+                            && fu[0].date.getMonth()===p0.date.getMonth())};
+  }).sort((a,b)=>a.firstOpd-b.firstOpd);
+  /* Radiation revenue stands on its own: it is billed whenever it is billed,
+     regardless of which month the consultation happened in. */
+  const radBills = INV.filter(i=>i.procType==="RADIATION" && i.date && inWin(i.date) && okC(i));
+  const months = {};
+  const M = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+  radOpd.forEach(i=>{ const m=months[M(i.date)] = months[M(i.date)] || blankRadMonth();
+                      m.opds++; m.opdPat.add(pid(i)); });
+  rows.filter(r=>r.converted).forEach(r=>{ const m=months[M(r.firstOpd)] = months[M(r.firstOpd)] || blankRadMonth();
+                      m.conv++; });
+  radBills.forEach(i=>{ const m=months[M(i.date)] = months[M(i.date)] || blankRadMonth();
+                      m.rev+=i.net; m.bills++; m.revPat.add(pid(i)); });
+  const monthRows = Object.keys(months).sort().map(k=>({month:k, ...months[k],
+    opdPat:months[k].opdPat.size, revPat:months[k].revPat.size}));
+  const unmatched = radNames().filter(n=>!INV.some(i=>isRad(i.doctor) && radKey(i.doctor)===radKey(n)));
+  const matched = [...new Set(INV.filter(i=>isRad(i.doctor)).map(i=>i.doctor))].sort();
+  /* Radiation billed under someone who is not on the list — worth surfacing. */
+  const offList = [...new Set(INV.filter(i=>i.procType==="RADIATION" && !isRad(i.doctor)).map(i=>i.doctor))]
+                  .filter(Boolean).sort();
+  return {rows, monthRows, radBills, matched, unmatched, offList};
+}
+function blankRadMonth(){ return {opds:0, opdPat:new Set(), conv:0, rev:0, bills:0, revPat:new Set()}; }
+
+function renderRadiation(){
+  if(!INV.length){ return; }
+  const sel=$("#rCenter");
+  const cs=[...new Set(INV.map(i=>i.center))].filter(Boolean).sort();
+  if(sel && sel.dataset.built!==cs.join("|")){
+    const keep=sel.value;
+    sel.innerHTML='<option value="">All centers</option>'+cs.map(x=>'<option>'+esc(x)+"</option>").join("");
+    sel.dataset.built=cs.join("|"); sel.value=cs.includes(keep)?keep:"";
+  }
+  if(!$("#rFrom").value || !$("#rTo").value){
+    const ds=INV.map(i=>i.date).filter(Boolean);
+    if(ds.length){ $("#rFrom").value=iso(new Date(Math.min(...ds)));
+                   $("#rTo").value  =iso(new Date(Math.max(...ds))); }
+  }
+  const A = analyseRadiation();
+  const conv = A.rows.filter(r=>r.converted);
+  const fu   = conv.filter(r=>r.followUp);
+  $("#radKpis").innerHTML =
+    kpi("","Radiation consultations", A.rows.reduce((a,r)=>a+r.opds,0).toLocaleString(),
+        A.rows.length+" distinct patients") +
+    kpi("diag","Converted to a procedure", pctTxt(conv.length,A.rows.length),
+        conv.length+" of "+A.rows.length+" patients") +
+    kpi("diag","Radiation revenue", money(A.radBills.reduce((a,i)=>a+i.net,0)),
+        A.radBills.length+" radiation invoices") +
+    kpi("pharm","Returned after the procedure", pctTxt(fu.length,conv.length),
+        fu.length+" of "+conv.length+", "+conv.filter(r=>r.fuSameMonth).length+" in the same month");
+
+  let h="<thead><tr><th>Month</th><th>Radiation consults</th><th>Patients</th><th>Converted</th><th>Conversion %</th>"+
+        "<th>Radiation invoices</th><th>Patients billed</th><th>Radiation revenue</th></tr></thead><tbody>";
+  const tt={opds:0,opdPat:0,conv:0,bills:0,revPat:0,rev:0};
+  A.monthRows.forEach(m=>{
+    Object.keys(tt).forEach(k=>tt[k]+=m[k]||0);
+    const cv=m.opdPat?m.conv/m.opdPat:null;
+    h+="<tr><td>"+esc(m.month)+"</td><td>"+m.opds+"</td><td>"+m.opdPat+"</td><td>"+m.conv+"</td>"+
+       '<td class="pct" style="color:'+(cv==null?"var(--text-muted)":"var(--series-diag)")+'">'+
+         (cv==null?"—":Math.round(cv*100)+"% "+bar(Math.min(cv,1),1,"var(--series-diag)"))+"</td>"+
+       "<td>"+m.bills+"</td><td>"+m.revPat+"</td><td>"+money(m.rev)+"</td></tr>";
+  });
+  h+='<tr class="total"><td>All months</td><td>'+tt.opds+"</td><td>"+A.rows.length+"</td><td>"+tt.conv+"</td>"+
+     '<td class="pct" style="color:var(--series-diag)">'+(A.rows.length?Math.round(tt.conv/A.rows.length*100)+"%":"—")+"</td>"+
+     "<td>"+tt.bills+"</td><td>—</td><td>"+money(tt.rev)+"</td></tr></tbody>";
+  $("#radMonthTbl").innerHTML=h;
+
+  const pc={}; conv.forEach(r=>{ const k=r.proc||"—"; (pc[k]=pc[k]||{n:0,rev:0}); pc[k].n++; pc[k].rev+=r.procRev; });
+  const pl=Object.entries(pc).sort((a,b)=>b[1].n-a[1].n);
+  $("#radProcTbl").innerHTML="<thead><tr><th>First procedure after the consultation</th><th>Patients</th><th>Share</th><th>Their total procedure revenue</th></tr></thead><tbody>"+
+    (pl.length?pl.map(([k,v])=>"<tr><td>"+esc(k)+"</td><td>"+v.n+'</td><td class="pct">'+Math.round(v.n/conv.length*100)+
+      "%</td><td>"+money(v.rev)+"</td></tr>").join("")
+      : '<tr><td colspan="4" class="muted">No conversions in this period.</td></tr>')+"</tbody>";
+
+  const cf=$("#rConv").value, q=$("#rSrch").value.trim().toLowerCase();
+  let list=A.rows;
+  if(cf==="y") list=list.filter(r=>r.converted); else if(cf==="n") list=list.filter(r=>!r.converted);
+  if(q) list=list.filter(r=>r.patient.toLowerCase().includes(q)||String(r.doctor).toLowerCase().includes(q));
+  $("#radPatTbl").innerHTML="<thead><tr><th>Patient</th><th>Center</th><th>Radiation consult</th><th>Doctor</th><th>Consults</th>"+
+    "<th>Converted to</th><th>After</th><th>Procedure revenue</th><th>Follow-up consult</th></tr></thead><tbody>"+
+    (list.length? list.slice(0,600).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(r.firstOpd)+
+      "</td><td>"+esc(r.doctor)+"</td><td>"+r.opds+"</td>"+
+      "<td>"+(r.converted?'<span class="pill hi">'+esc(r.proc)+"</span>":'<span class="pill no">not converted</span>')+"</td>"+
+      '<td class="muted">'+(r.converted?r.days+"d":"—")+"</td>"+
+      "<td>"+(r.converted?money(r.procRev):"—")+"</td>"+
+      "<td>"+(r.followUp? dmy(r.followUp.date)+(r.fuSameMonth?' <span class="pill hi">same month</span>':"")
+              : r.converted?'<span class="pill no">never returned</span>':'<span class="muted">—</span>')+"</td></tr>").join("")
+      : '<tr><td colspan="9" class="muted">No radiation consultations in this period.</td></tr>')+"</tbody>";
+
+  let note="";
+  if(A.unmatched.length) note += "<b>Not found in the billing data:</b> "+A.unmatched.map(esc).join(", ")+
+    ". Either they have not billed in this file or the name is spelled differently — check the spellings in Rules &amp; mapping. ";
+  if(A.offList.length) note += "<b>Radiation billed under doctors who are not on the list:</b> "+A.offList.map(esc).join(", ")+
+    ". Add them if they are radiation oncologists, otherwise their consultations are not being counted as radiation. ";
+  if(A.matched.length) note += "<br><span class='muted'>Matched in the data: "+A.matched.map(esc).join(", ")+"</span>";
+  $("#radNote").innerHTML = note ? '<div class="warnbox" style="margin-top:14px">'+note+"</div>" : "";
 }
 
 /* --------------------------------------------------------------- snapshot -- */
@@ -1503,12 +1690,14 @@ function exportCsv(){
   const L = [];
   L.push(["Center","Consultations","Fresh OPD","Suggested diagnostics",
           "1 Fresh OPD to diag","2 Follow-up to diag","3 Prior IP to diag","Counted","Diagnostics %",
-          "Expected revenue","Billed revenue","4 Never consulted","4 Revenue",
+          "Expected revenue","Billed revenue","Billed %","4 Never consulted","4 Revenue",
           "5 Returning patient","5 Revenue","Same-day sessions excluded",
           "Suggested pharmacy","Billed pharmacy","Pharmacy %"].map(q).join(","));
   [...LAST.per, LAST.tot].forEach(r=>L.push([r.center,r.opd,r.fresh,r.sugD,
     r.bFresh,r.bFollow,r.bPrior,r.bilD, r.sugD?Math.round(r.bilD/r.sugD*100):"",
-    Math.round(r.expRev), Math.round(r.bilRev), r.bNoOpd, Math.round(r.noOpdRev),
+    Math.round(r.expRev), Math.round(r.bilRev),
+    r.expRev?Math.round(r.bilRev/r.expRev*100):"",
+    r.bNoOpd, Math.round(r.noOpdRev),
     r.bReturn||0, Math.round(r.returnRev||0), r.bSameDay,
     r.sugP,r.bilP,r.sugP?Math.round(r.bilP/r.sugP*100):""].map(q).join(",")));
   L.push(""); L.push(["Patient","Mobile","Center","Date","Doctor","OP/IP","Advised item","Kind","Billed?","Confidence","Matched line"].map(q).join(","));
@@ -1563,10 +1752,12 @@ const TABHTML = {};
 ["diag","items","patients"].forEach(t=>{ const el=$("#tab-"+t); if(el) TABHTML[t]=el.innerHTML; });
 function on(id, ev, fn){ const e=$("#"+id); if(e) e.addEventListener(ev, fn); }
 function wireDetailControls(){
-  ["iKind","iMatch"].forEach(id=>on(id,"change",()=>{ if(LAST) renderItems(LAST); }));
+  ["iMatch"].forEach(id=>on(id,"change",()=>{ if(LAST) renderItems(LAST); }));
   ["pStat","pCenter","pType","pAdv"].forEach(id=>on(id,"change",()=>{ if(LAST) renderPatients(LAST); }));
   ["dBucket","dBack"].forEach(id=>on(id,"change",()=>{ if(LAST) renderDiag(LAST); }));
   on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
+  ["rFrom","rTo","rCenter","rConv"].forEach(id=>on(id,"change",()=>{ if(INV.length) renderRadiation(); }));
+  on("rSrch","input",()=>{ if(INV.length) renderRadiation(); });
   on("iSrch","input",()=>{ if(LAST) renderItems(LAST); });
   on("pSrch","input",()=>{ if(LAST) renderPatients(LAST); });
 }
@@ -1589,16 +1780,18 @@ $("#tabs").addEventListener("click",e=>{
   [...$("#tabs").children].forEach(x=>x.setAttribute("aria-selected", x===b));
   document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("on", s.id==="tab-"+b.dataset.t));
 });
-function fillCfg(){ $("#cfgCenters").value=CFG.centers; $("#cfgDiag").value=CFG.diag; $("#cfgPharm").value=CFG.pharm; $("#cfgSyn").value=CFG.syn; }
+function fillCfg(){ $("#cfgCenters").value=CFG.centers; $("#cfgDiag").value=CFG.diag; $("#cfgPharm").value=CFG.pharm; $("#cfgSyn").value=CFG.syn;
+  if($("#cfgRad")) $("#cfgRad").value=CFG.radDocs||DEF.radDocs; }
 $("#saveCfg").addEventListener("click",()=>{
   CFG = {centers:$("#cfgCenters").value, diag:$("#cfgDiag").value.trim()||DEF.diag,
-         pharm:$("#cfgPharm").value.trim()||DEF.pharm, syn:$("#cfgSyn").value};
+         pharm:$("#cfgPharm").value.trim()||DEF.pharm, syn:$("#cfgSyn").value,
+         radDocs:$("#cfgRad")?$("#cfgRad").value:CFG.radDocs};
   try{ new RegExp(CFG.diag); new RegExp(CFG.pharm); }
   catch(err){ $("#cfgMsg").textContent="Invalid regular expression — not saved."; return; }
   saveCfg(); render(); $("#cfgMsg").textContent="Saved and recalculated.";
   setTimeout(()=>$("#cfgMsg").textContent="",2600);
 });
-$("#resetCfg").addEventListener("click",()=>{ CFG={centers:DEF.centers,diag:DEF.diag,pharm:DEF.pharm,syn:DEF.syn};
+$("#resetCfg").addEventListener("click",()=>{ CFG={centers:DEF.centers,diag:DEF.diag,pharm:DEF.pharm,syn:DEF.syn,radDocs:DEF.radDocs};
   saveCfg(); fillCfg(); render(); $("#cfgMsg").textContent="Reset to defaults."; setTimeout(()=>$("#cfgMsg").textContent="",2600); });
 $("#buildTag").textContent = " · build " + BUILD;
 fillCfg();
