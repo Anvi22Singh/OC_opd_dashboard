@@ -236,6 +236,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <div class="muted" style="font-size:12px;margin-top:5px">Nothing leaves this machine — everything is parsed in the browser.</div>
     <input type="file" id="fileInput" multiple accept=".xlsx,.xls,.csv" style="display:none">
   </div>
+  <div id="loadStatus"></div>
   <div class="files" id="fileChips">
     <div class="fchip" data-k="bill"><span class="dot"></span>Billing report (line items)</div>
     <div class="fchip" data-k="inv"><span class="dot"></span>Invoices (one row per bill)</div>
@@ -457,7 +458,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "01-Sep-2026 a83d40";
+const BUILD = "02-Sep-2026 55b4f8";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -630,9 +631,9 @@ async function readFile(file){
   const wb = XLSX.read(new Uint8Array(buf), {type:"array"});
   const ws = wb.Sheets[wb.SheetNames[0]];
   const rows = XLSX.utils.sheet_to_json(ws, {defval:null, raw:true});
-  if(!rows.length) return;
+  if(!rows.length){ throw new Error("the sheet is empty"); }
   const kind = detect(Object.keys(rows[0]), file.name);
-  if(!kind){ alert("Could not tell what kind of file \"" + file.name + "\" is — expected a billing report, invoices or OP analysis export."); return; }
+  if(!kind){ throw new Error("could not tell what kind of export this is — no recognised columns"); }
   /* Loading a second file of the same kind ADDS to it — that is how an older
      invoice export is brought in so "never consulted before" can be judged
      against real history. Rows already present are ignored, so re-loading the
@@ -1716,11 +1717,39 @@ drop.addEventListener("click",()=>fi.click());
 drop.addEventListener("dragover",e=>{e.preventDefault();drop.classList.add("over");});
 drop.addEventListener("dragleave",()=>drop.classList.remove("over"));
 drop.addEventListener("drop",async e=>{ e.preventDefault(); drop.classList.remove("over"); await ingest(e.dataTransfer.files); });
+/* Accept a drop anywhere on the page. Missing the box otherwise makes the
+   browser navigate to the file, which looks like the upload silently failing. */
+document.addEventListener("dragover", e=>{ if(e.dataTransfer && [...e.dataTransfer.types].includes("Files")){
+  e.preventDefault(); drop.classList.add("over"); } });
+document.addEventListener("dragleave", e=>{ if(!e.relatedTarget) drop.classList.remove("over"); });
+document.addEventListener("drop", async e=>{
+  if(!(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length)) return;
+  if(drop.contains(e.target)) return;              // the box handler already ran
+  e.preventDefault(); drop.classList.remove("over");
+  await ingest(e.dataTransfer.files);
+});
 fi.addEventListener("change",async e=>{ await ingest(e.target.files); fi.value=""; });
 
+/* Reading is reported on the page, not through alerts: a 30 MB export takes a
+   noticeable moment, and a file that fails must say so where it can be seen. */
+function loadMsg(html, cls){ const el=$("#loadStatus");
+  if(el) el.innerHTML = html ? '<div class="warnbox" style="margin-top:14px;'+
+    (cls==="ok"?"background:rgba(26,127,75,.10);border-color:rgba(26,127,75,.35)":"")+'">'+html+"</div>" : ""; }
 async function ingest(files){
-  for(const f of files){ try{ await readFile(f); }catch(err){ alert("Could not read "+f.name+": "+err.message); } }
-  if(!RAW.bill && !RAW.inv && !RAW.op && !RAW.ip) return;
+  const list=[...files], done=[], failed=[];
+  for(let n=0;n<list.length;n++){
+    const f=list[n];
+    loadMsg("Reading <b>"+esc(f.name)+"</b> ("+(f.size/1048576).toFixed(1)+" MB) — file "+(n+1)+" of "+list.length+"…");
+    await new Promise(r=>setTimeout(r,0));          // let the message paint
+    try{ await readFile(f); done.push(f.name); }
+    catch(err){ failed.push(esc(f.name)+" — "+esc(err.message)); }
+  }
+  if(failed.length) loadMsg("<b>Could not read "+failed.length+" file"+(failed.length>1?"s":"")+":</b><br>"+failed.join("<br>"));
+  else if(done.length) loadMsg("Loaded "+done.length+" file"+(done.length>1?"s":"")+".", "ok");
+  if(!RAW.bill && !RAW.inv && !RAW.op && !RAW.ip){
+    if(!failed.length) loadMsg("Nothing was loaded — no recognised export in what you dropped.");
+    return;
+  }
   if(SNAPMODE){   /* uploading real data leaves shared-snapshot mode */
     SNAPMODE = false; SNAP = null;
     Object.keys(TABHTML).forEach(t=>{ const el=$("#tab-"+t); if(el) el.innerHTML = TABHTML[t]; });
