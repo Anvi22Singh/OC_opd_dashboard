@@ -459,7 +459,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "02-Sep-2026 f900eb";
+const BUILD = "02-Sep-2026 bf55d4";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -499,8 +499,18 @@ const DEF = {
 const LSK = "oncare_postopd_cfg_v1";
 let CFG = loadCfg();
 function loadCfg(){
-  try{ const r = JSON.parse(localStorage.getItem(LSK)); if(r && r.diag) return r; }catch(e){}
-  return {centers:DEF.centers, diag:DEF.diag, pharm:DEF.pharm, syn:DEF.syn, radDocs:DEF.radDocs};
+  /* Layer whatever was saved on top of the defaults. A config stored before a
+     setting existed would otherwise leave that key undefined, and the first
+     thing to read it throws — which is exactly how the radiation tab broke for
+     anyone who had saved settings earlier. */
+  const base = {centers:DEF.centers, diag:DEF.diag, pharm:DEF.pharm, syn:DEF.syn, radDocs:DEF.radDocs};
+  try{
+    const r = JSON.parse(localStorage.getItem(LSK));
+    if(r && typeof r === "object"){
+      Object.keys(base).forEach(k=>{ if(typeof r[k]==="string" && r[k]!=="") base[k]=r[k]; });
+    }
+  }catch(e){}
+  return base;
 }
 function saveCfg(){ try{ localStorage.setItem(LSK, JSON.stringify(CFG)); }catch(e){} }
 
@@ -721,6 +731,7 @@ function build(){
     return {
       center: centerOf(get(r,"Location")), date: parseDate(get(r,"Invoice Date")),
       patient: String(get(r,"Patient Name")||""), mob: normMobile(get(r,"Patient Mobile")),
+      hid: hid(get(r,"Hospital ID")),
       doctor: String(get(r,"Doctor Name")||""),
       /* Split by which export the row came from, not by the OP file's own
          Type column — that column marks some of its rows IP, which would move
@@ -885,6 +896,16 @@ function analyse(){
     } else r.opdKind = null;
     return r;
   });
+  /* A patient can only be fresh once. Where several OP records carry the fresh
+     tag — two doctors writing separately on the same visit, say — the earliest
+     keeps it and the rest become follow-ups, so fresh consults and fresh
+     patients agree and match the one Fresh OPD invoice in billing. */
+  const seenFresh = new Set();
+  all.filter(r=>r.type==="OP" && r.opdKind==="fresh")
+     .sort((a,b)=>a.date-b.date)
+     .forEach(r=>{ const k=r.hid||r.mob||r.patient;
+       if(seenFresh.has(k)) r.opdKind="followup"; else seenFresh.add(k); });
+
   const ty = $("#fType").value;
   const rows = ty ? all.filter(r=>r.type===ty) : all;
   /* Every diagnostics invoice is Invoice Type "opd" and carries no encounter
@@ -989,7 +1010,15 @@ function render(){
   build();
   const A = LAST = analyse();
   renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A);
-  renderDiag(A); renderPharm(A); renderItems(A); renderPatients(A); renderRadiation();
+  renderDiag(A); renderPharm(A); renderItems(A); renderPatients(A);
+  /* Radiation is independent of the rest; if it fails it must say so in its own
+     panel rather than aborting the render and leaving the page half-drawn. */
+  try{ renderRadiation(); }
+  catch(err){
+    const n=$("#radNote");
+    if(n) n.innerHTML = '<div class="warnbox" style="margin-top:14px"><b>Radiation section failed to build:</b> '+
+      esc(err.message)+'. The rest of the dashboard is unaffected.</div>';
+  }
 }
 
 /* Diag % divides billed diagnostics by suggestions. If the chosen range reaches
@@ -1296,7 +1325,7 @@ function renderPatients(A){
    "Manoj Kumar Sharma"), so match on letters only and also accept a first+last
    name match. */
 const radKey = s => String(s==null?"":s).toLowerCase().replace(/^\s*dr\.?\s+/,"").replace(/[^a-z]/g,"");
-function radNames(){ return CFG.radDocs.split("\n").map(x=>x.trim()).filter(Boolean); }
+function radNames(){ return String(CFG.radDocs||DEF.radDocs).split("\n").map(x=>x.trim()).filter(Boolean); }
 function radMatcher(){
   const keys = new Set(radNames().map(radKey));
   const ends = new Set(radNames().map(n=>{
