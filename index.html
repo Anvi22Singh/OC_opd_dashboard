@@ -496,7 +496,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "02-Sep-2026 b15d1c";
+const BUILD = "02-Sep-2026 20106e";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1391,7 +1391,6 @@ function radBuild(){
   const pid = r => r.hid || r.mob || r.patient;
   const radOpd = INV.filter(i=>i.procType==="OPD" && i.date && isRad(i.doctor));
   const radTx  = INV.filter(i=>i.procType==="RADIATION" && i.date);
-  const advised = new Set(OP.filter(o=>/radiat/i.test(o.treat||"")).map(o=>o.hid||o.mob||o.patient));
   const byPat = new Map();
   radOpd.forEach(i=>{ const k=pid(i); if(!byPat.has(k)) byPat.set(k,[]); byPat.get(k).push(i); });
   const rows = [...byPat.entries()].map(([k,visits])=>{
@@ -1405,24 +1404,27 @@ function radBuild(){
     const dg = after.filter(i=>i.procType==="DIAGNOSTICS");
     const mm = after.filter(i=>MMTYPES.has(i.procType));
     const back = (fu.length||dg.length||mm.length) > 0;
-    const firstBack = back ? [...fu,...dg,...mm].sort((a,b)=>a.date-b.date)[0] : null;
-    const outcome = !started ? "Did not start radiation"
-      : mm.length ? "Medical management / chemo"
-      : (fu.length && dg.length) ? "Follow-up + diagnostics"
-      : dg.length ? "Diagnostics only"
-      : fu.length ? "Follow-up only" : "NEVER returned";
-    const stage = (!started && advised.has(k)) ? "Radiation advised — not started"
-      : !started ? "OPD done — radiation not recorded as advised"
+    /* One patient, one bucket. The category is whatever brought them back FIRST,
+       so a follow-up that later leads to a scan counts as a follow-up and not as
+       both. The buckets therefore add up to the retained count exactly. */
+    const cand = [...fu.map(i=>({i,r:0,t:"Follow-up consultation"})),
+                  ...dg.map(i=>({i,r:1,t:"Diagnostics"})),
+                  ...mm.map(i=>({i,r:2,t:"Medical management / chemo"}))]
+                 .sort((a,b)=> a.i.date-b.i.date || a.r-b.r);
+    const firstBack = cand.length ? cand[0].i : null;
+    const cameFor   = cand.length ? cand[0].t : null;
+    const outcome = !started ? "Did not start radiation" : (cameFor || "NEVER returned");
+    const stage = !started ? "OPD done — radiation not started"
       : back ? "Radiation done — returned to Oncare"
       : "Radiation done — never returned";
     return {id:k, patient:first.patient, center:first.center, doctor:first.doctor,
       firstOpd:iso(first.date), opds:visits.length, opdRev:sum2(visits,v=>v.net),
-      advised:advised.has(k), started,
+      started,
       radStart:started?iso(tx[0].date):null, radEnd:started?iso(radEnd):null,
       hospital:started?(tx[0].referrer||"—"):null,
       radRev:sum2(tx,t=>t.net),
       daysToStart:started?Math.round((tx[0].date-first.date)/86400000):null,
-      fu:fu.length>0, dg:dg.length>0, mm:mm.length>0, back,
+      cameFor, back,
       fuRev:sum2(fu,i=>i.net), dgRev:sum2(dg,i=>i.net), mmRev:sum2(mm,i=>i.net),
       postRev:sum2(after,i=>i.net),
       firstBack:firstBack?iso(firstBack.date):null,
@@ -1434,7 +1436,7 @@ function radBuild(){
   const offList = [...new Set(INV.filter(i=>i.procType==="RADIATION" && !isRad(i.doctor)).map(i=>i.doctor))]
                   .filter(Boolean).sort();
   const bills = radTx.map(i=>({d:iso(i.date), c:i.center, n:i.net, p:pid(i), h:i.referrer||"—"}));
-  return {rows, bills, matched, unmatched, offList, advisedKnown: OP.length>0};
+  return {rows, bills, matched, unmatched, offList};
 }
 
 function radAggregate(src){
@@ -1454,8 +1456,7 @@ function radAggregate(src){
       key:k, patients:v.length, started:v.filter(r=>r.started).length,
       retained:v.filter(r=>r.back).length,
       radRev:sum2(v,r=>r.radRev), postRev:sum2(v,r=>r.postRev)})).sort((a,b)=>b.patients-a.patients),
-    matched:src.matched||[], unmatched:src.unmatched||[], offList:src.offList||[],
-    advisedKnown:src.advisedKnown};
+    matched:src.matched||[], unmatched:src.unmatched||[], offList:src.offList||[]};
 }
 
 function renderRadiation(){
@@ -1488,10 +1489,10 @@ function renderRadiation(){
   }
   const A = radAggregate(src);
   const R=A.rows, S=A.started, n=R.length;
-  const adv=R.filter(r=>r.advised).length, back=S.filter(r=>r.back).length, lost=S.length-back;
+  const back=S.filter(r=>r.back).length, lost=S.length-back;
+  const cameFor = t => S.filter(r=>r.cameFor===t).length;
   const pct=(a,b)=> b?Math.round(a/b*100)+"%":"—";
-  say(A.advisedKnown ? "" :
-    "<b>The advised stage is incomplete.</b> It reads Treatment Suggested from the OP analysis export — load that file, covering the full period, to complete it.");
+  say("");
 
   $("#radKpis").innerHTML =
     kpi("","Radiation OPDs", R.reduce((a,r)=>a+r.opds,0).toLocaleString(), n+" patients billed by Oncare") +
@@ -1504,13 +1505,12 @@ function renderRadiation(){
     "</td><td>"+pct(v,n)+'</td><td class="muted">'+note+"</td></tr>";
   $("#radFunnelTbl").innerHTML="<thead><tr><th>Stage</th><th>Patients</th><th>% of previous</th><th>% of OPD</th><th></th></tr></thead><tbody>"+
     frow("1 &middot; Radiation OPD done", n, null, "billed by Oncare — a visit made straight to a partner hospital without telling us is not here") +
-    frow("2 &middot; Radiation advised", adv, n, "from Treatment Suggested on the consultation") +
-    frow("3 &middot; Radiation started at partner hospital", S.length, n, "<b>OPD → radiation conversion</b>") +
-    frow("4 &middot; Follow-up consultation at Oncare", S.filter(r=>r.fu).length, S.length, "after the last radiation bill") +
-    frow("5 &middot; Diagnostics at Oncare", S.filter(r=>r.dg).length, S.length, "PET CT, labs and the rest") +
-    frow("6 &middot; Medical management / chemo", S.filter(r=>r.mm).length, S.length, "the highest-value way back in") +
-    frow("7 &middot; RETAINED — came back in any form", back, S.length, "follow-up or diagnostics or admission") +
-    frow("8 &middot; NEVER came back", lost, S.length, "<b>the number to drive down</b>") + "</tbody>";
+    frow("2 &middot; Radiation started at partner hospital", S.length, n, "<b>OPD → radiation conversion</b>") +
+    frow("3 &middot; Came back for a follow-up consultation", cameFor("Follow-up consultation"), S.length, "counted here even if a scan followed") +
+    frow("4 &middot; Came back for diagnostics", cameFor("Diagnostics"), S.length, "came back for a test first") +
+    frow("5 &middot; Came back for medical management / chemo", cameFor("Medical management / chemo"), S.length, "the highest-value way back in") +
+    frow("6 &middot; RETAINED — came back at all", back, S.length, "<b>rows 3 + 4 + 5, each patient once</b>") +
+    frow("7 &middot; DROPPED — never came back", lost, S.length, "<b>the number to drive down</b>") + "</tbody>";
 
   const oc={}; S.forEach(r=>oc[r.outcome]=(oc[r.outcome]||0)+1);
   $("#radOutcomeTbl").innerHTML="<thead><tr><th>Outcome</th><th>Patients</th><th>% of treated</th><th>Revenue after treatment</th></tr></thead><tbody>"+
@@ -1567,16 +1567,17 @@ function renderRadiation(){
   else if(cf==="lost") list=list.filter(r=>r.started&&!r.back);
   if(q) list=list.filter(r=>(r.patient+" "+r.doctor+" "+(r.hospital||"")).toLowerCase().includes(q));
   $("#radPatTbl").innerHTML="<thead><tr><th>Patient</th><th>Center</th><th>Radiation OPD</th><th>Doctor</th>"+
-    "<th>Advised</th><th>Started</th><th>Partner hospital</th><th>Treatment ended</th><th>Oncare share</th>"+
-    "<th>Came back</th><th>After</th><th>Post-radiation ₹</th><th>Outcome</th></tr></thead><tbody>"+
+    "<th>Started</th><th>Partner hospital</th><th>Treatment ended</th><th>Oncare share</th>"+
+    "<th>Came back</th><th>After</th><th>Came back for</th><th>Post-radiation ₹</th></tr></thead><tbody>"+
     (list.length?list.slice(0,600).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(parseDate(r.firstOpd))+
-      "</td><td>"+esc(r.doctor)+'</td><td class="muted">'+(r.advised?"yes":"—")+"</td>"+
+      "</td><td>"+esc(r.doctor)+'</td>'+
       "<td>"+(r.started?dmy(parseDate(r.radStart)):'<span class="pill no">did not start</span>')+"</td>"+
       "<td>"+esc(r.hospital||"—")+"</td><td>"+(r.radEnd?dmy(parseDate(r.radEnd)):"—")+"</td>"+
       "<td>"+(r.started?money(r.radRev):"—")+"</td>"+
       "<td>"+(!r.started?'<span class="muted">—</span>':r.back?dmy(parseDate(r.firstBack)):'<span class="pill no">never</span>')+"</td>"+
       '<td class="muted">'+(r.daysBack!=null?r.daysBack+"d":"—")+"</td>"+
-      "<td>"+(r.postRev?money(r.postRev):"—")+'</td><td class="muted">'+esc(r.outcome)+"</td></tr>").join("")
+      '<td>'+(r.cameFor?'<span class="pill hi">'+esc(r.cameFor)+'</span>':'<span class="muted">—</span>')+"</td>"+
+      "<td>"+(r.postRev?money(r.postRev):"—")+"</td></tr>").join("")
       :'<tr><td colspan="13" class="muted">No patients match.</td></tr>')+"</tbody>";
 
   let note="";
