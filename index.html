@@ -280,39 +280,71 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 
 <section id="area-radiation" class="area" style="display:none">
   <div class="card">
-    <h2>Radiation backtracking</h2>
-    <p class="hint">A consultation counts as radiation when the doctor is on the radiation-oncologist list (editable in <b>Rules &amp; mapping</b>). From there: did the patient go on to any procedure at Oncare, which one, and did they return for a follow-up consultation afterwards. This section has its own dates because radiation billing runs across the whole file, not just the prescription window.</p>
+    <h2>Radiation tracking — end to end</h2>
+    <p class="hint">Every radiation patient from the consultation that started them, through treatment at a partner hospital, to whether they came back to Oncare afterwards. Built entirely from the billing and prescription exports — nothing to fill in by hand.</p>
     <div class="ctrls">
       <div class="fld"><label for="rFrom">From</label><input type="date" id="rFrom"></div>
       <div class="fld"><label for="rTo">To</label><input type="date" id="rTo"></div>
       <div class="fld"><label for="rCenter">Center</label><select id="rCenter"><option value="">All centers</option></select></div>
+      <div class="fld"><label for="rHosp">Partner hospital</label><select id="rHosp"><option value="">All hospitals</option></select></div>
       <div class="fld"><label for="rConv">Show</label><select id="rConv">
-        <option value="">All patients</option><option value="y">Converted only</option><option value="n">Not converted</option></select></div>
-      <div class="fld"><label for="rSrch">Search</label><input class="srch" id="rSrch" placeholder="Patient or doctor"></div>
+        <option value="">All patients</option>
+        <option value="started">Started radiation</option>
+        <option value="notstarted">Did not start</option>
+        <option value="retained">Came back after</option>
+        <option value="lost">Never came back</option></select></div>
+      <div class="fld"><label for="rSrch">Search</label><input class="srch" id="rSrch" placeholder="Patient, doctor or hospital"></div>
     </div>
   </div>
   <div id="radTop"></div>
   <div class="kpis" id="radKpis"></div>
+
   <div class="card">
-    <h2>Month on month</h2>
-    <p class="hint">Radiation consultations and what they turned into, beside radiation revenue actually invoiced that month. The two are not a ratio — revenue in a month can come from a consultation in an earlier one.</p>
-    <div class="tblwrap"><table id="radMonthTbl"></table></div>
+    <h2>A &middot; The funnel</h2>
+    <p class="hint">Each stage as a count of patients, against the stage before it and against the top line.</p>
+    <div class="tblwrap"><table id="radFunnelTbl"></table></div>
   </div>
+
+  <div class="card">
+    <h2>B &middot; Where the patient went after radiation</h2>
+    <div class="tblwrap"><table id="radOutcomeTbl"></table></div>
+  </div>
+
+  <div class="card">
+    <h2>C &middot; Key ratios</h2>
+    <div class="tblwrap"><table id="radRatioTbl"></table></div>
+  </div>
+
+  <div class="card">
+    <h2>D &middot; Revenue in Oncare's books</h2>
+    <p class="hint">What Oncare actually billed. The partner hospital's own radiation billing is not in these exports — only Oncare's share of it.</p>
+    <div class="tblwrap"><table id="radRevTbl"></table></div>
+  </div>
+
+  <div class="card">
+    <h2>E &middot; Where patients are lost</h2>
+    <div class="tblwrap"><table id="radLeakTbl"></table></div>
+  </div>
+
+  <div class="card">
+    <h2>By partner hospital</h2>
+    <p class="hint">Which hospital returns your patients. Taken from Referrer Name on the radiation bill.</p>
+    <div class="tblwrap"><table id="radHospTbl"></table></div>
+  </div>
+
   <div class="card">
     <h2>By center</h2>
     <div class="tblwrap"><table id="radCenterTbl"></table></div>
   </div>
-  <div class="card">
-    <h2>What they converted to</h2>
-    <div class="tblwrap"><table id="radProcTbl"></table></div>
-  </div>
+
   <div class="card">
     <h2>Patient by patient</h2>
-    <p class="hint">One row per patient, from their first radiation consultation in the period.</p>
+    <p class="hint">One row per patient. Use the Show filter above to isolate who never came back — that is the call list.</p>
     <div class="tblwrap"><table id="radPatTbl"></table></div>
     <div id="radNote"></div>
   </div>
 </section>
+
 <div id="area-diagnostics" class="area">
 <nav class="tabs" id="tabs">
   <button aria-selected="true" data-t="summary">Center summary</button>
@@ -464,7 +496,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "02-Sep-2026 2222e0";
+const BUILD = "02-Sep-2026 b15d1c";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -715,6 +747,7 @@ function build(){
     procType: String(get(r,"Procedure Type")||"").trim().toUpperCase(),
     hid: hid(get(r,"Hospital ID")),
     doctor: String(get(r,"Doctor Name")||"").trim(),
+    referrer: String(get(r,"Referrer Name")||"").trim(),
     patient: String(get(r,"Patient Name")||""),
     mob: normMobile(get(r,"Patient Mobile","Patient Mobile Number")),
     /* "Fresh OPD" is the Status field the billing system sets — authoritative.
@@ -1344,187 +1377,213 @@ function radMatcher(){
     return t.length>1 && ends.has(t[0]+"|"+t[t.length-1]);
   };
 }
-/* Anything that is not a consultation, a test or a sundry charge is a procedure. */
-const PROCTYPES = new Set(["RADIATION","CHEMOTHERAPY","TARGETED CHEMOTHERAPY","PAID IMMUNOTHERAPY",
-  "PAP IMMUNOTHERAPY","DAY CARE","MEDICAL MANAGEMENT","SURGERY"]);
-/* Built once over the WHOLE dataset so it can be stored in a snapshot; the date
-   and centre filters are applied afterwards, in radAggregate. */
+/* Routes back into Oncare after treatment. */
+const MMTYPES = new Set(["MEDICAL MANAGEMENT","CHEMOTHERAPY","TARGETED CHEMOTHERAPY",
+  "PAID IMMUNOTHERAPY","PAP IMMUNOTHERAPY","DAY CARE","SURGERY"]);
+const sum2 = (arr,f) => arr.reduce((a,x)=>a+(f(x)||0),0);
+
+/* Built once over the whole dataset so it can travel in a snapshot; date, centre
+   and hospital filters are applied afterwards in radAggregate. Treatment end is
+   the LAST radiation bill — the discharge summary is not in these exports, and
+   the final bill lands within days of it. */
 function radBuild(){
   const isRad = radMatcher();
-  const pid   = r => r.hid || r.mob || r.patient;
+  const pid = r => r.hid || r.mob || r.patient;
   const radOpd = INV.filter(i=>i.procType==="OPD" && i.date && isRad(i.doctor));
-  const procs  = INV.filter(i=>i.date && PROCTYPES.has(i.procType));
-  const opdAll = INV.filter(i=>i.procType==="OPD" && i.date);
+  const radTx  = INV.filter(i=>i.procType==="RADIATION" && i.date);
+  const advised = new Set(OP.filter(o=>/radiat/i.test(o.treat||"")).map(o=>o.hid||o.mob||o.patient));
   const byPat = new Map();
   radOpd.forEach(i=>{ const k=pid(i); if(!byPat.has(k)) byPat.set(k,[]); byPat.get(k).push(i); });
   const rows = [...byPat.entries()].map(([k,visits])=>{
     visits.sort((a,b)=>a.date-b.date);
     const first = visits[0];
-    const after = procs.filter(p=>pid(p)===k && p.date>=first.date).sort((a,b)=>a.date-b.date);
-    const p0 = after[0] || null;
-    const fu = p0 ? opdAll.filter(o=>pid(o)===k && o.date>p0.date).sort((a,b)=>a.date-b.date) : [];
+    const tx = radTx.filter(t=>pid(t)===k).sort((a,b)=>a.date-b.date);
+    const started = tx.length>0;
+    const radEnd = started ? tx[tx.length-1].date : null;
+    const after = started ? INV.filter(i=>pid(i)===k && i.date>radEnd).sort((a,b)=>a.date-b.date) : [];
+    const fu = after.filter(i=>i.procType==="OPD");
+    const dg = after.filter(i=>i.procType==="DIAGNOSTICS");
+    const mm = after.filter(i=>MMTYPES.has(i.procType));
+    const back = (fu.length||dg.length||mm.length) > 0;
+    const firstBack = back ? [...fu,...dg,...mm].sort((a,b)=>a.date-b.date)[0] : null;
+    const outcome = !started ? "Did not start radiation"
+      : mm.length ? "Medical management / chemo"
+      : (fu.length && dg.length) ? "Follow-up + diagnostics"
+      : dg.length ? "Diagnostics only"
+      : fu.length ? "Follow-up only" : "NEVER returned";
+    const stage = (!started && advised.has(k)) ? "Radiation advised — not started"
+      : !started ? "OPD done — radiation not recorded as advised"
+      : back ? "Radiation done — returned to Oncare"
+      : "Radiation done — never returned";
     return {id:k, patient:first.patient, center:first.center, doctor:first.doctor,
-            firstOpd:first.date, opds:visits.length,
-            converted:!!p0, proc:p0?p0.procType:null, procDate:p0?p0.date:null,
-            days:p0?Math.round((p0.date-first.date)/86400000):null,
-            procRev:after.reduce((a,p)=>a+p.net,0),
-            radRev:after.filter(p=>p.procType==="RADIATION").reduce((a,p)=>a+p.net,0),
-            followUp:fu.length?fu[0]:null,
-            fuSameMonth:!!(p0 && fu.length && fu[0].date.getFullYear()===p0.date.getFullYear()
-                            && fu[0].date.getMonth()===p0.date.getMonth())};
-  }).sort((a,b)=>a.firstOpd-b.firstOpd);
-  /* Radiation revenue stands on its own: it is billed whenever it is billed,
-     regardless of which month the consultation happened in. */
-  const bills = INV.filter(i=>i.procType==="RADIATION" && i.date)
-                   .map(i=>({d:iso(i.date), c:i.center, n:i.net, p:pid(i)}));
+      firstOpd:iso(first.date), opds:visits.length, opdRev:sum2(visits,v=>v.net),
+      advised:advised.has(k), started,
+      radStart:started?iso(tx[0].date):null, radEnd:started?iso(radEnd):null,
+      hospital:started?(tx[0].referrer||"—"):null,
+      radRev:sum2(tx,t=>t.net),
+      daysToStart:started?Math.round((tx[0].date-first.date)/86400000):null,
+      fu:fu.length>0, dg:dg.length>0, mm:mm.length>0, back,
+      fuRev:sum2(fu,i=>i.net), dgRev:sum2(dg,i=>i.net), mmRev:sum2(mm,i=>i.net),
+      postRev:sum2(after,i=>i.net),
+      firstBack:firstBack?iso(firstBack.date):null,
+      daysBack:firstBack?Math.round((firstBack.date-radEnd)/86400000):null,
+      outcome, stage};
+  }).sort((a,b)=> a.firstOpd<b.firstOpd?-1:1);
   const unmatched = radNames().filter(n=>!INV.some(i=>isRad(i.doctor) && radKey(i.doctor)===radKey(n)));
   const matched = [...new Set(INV.filter(i=>isRad(i.doctor)).map(i=>i.doctor))].sort();
-  /* Radiation billed under someone who is not on the list — worth surfacing. */
   const offList = [...new Set(INV.filter(i=>i.procType==="RADIATION" && !isRad(i.doctor)).map(i=>i.doctor))]
                   .filter(Boolean).sort();
-  return {rows: rows.map(r=>({...r, firstOpd:iso(r.firstOpd),
-            procDate:r.procDate?iso(r.procDate):null,
-            followUp:r.followUp?{d:iso(r.followUp.date), t:r.followUp.procType}:null})),
-          bills, matched, unmatched, offList};
+  const bills = radTx.map(i=>({d:iso(i.date), c:i.center, n:i.net, p:pid(i), h:i.referrer||"—"}));
+  return {rows, bills, matched, unmatched, offList, advisedKnown: OP.length>0};
 }
-function blankRadMonth(){ return {opds:0, opdPat:new Set(), conv:0, rev:0, bills:0, revPat:new Set()}; }
 
-/* Apply the section's own date / centre filters and roll up. Works the same on
-   live data and on a published snapshot. */
 function radAggregate(src){
   const f=$("#rFrom").value, t=$("#rTo").value, c=$("#rCenter").value;
+  const hsel = $("#rHosp") ? $("#rHosp").value : "";
   const inWin = d => (!f || d>=f) && (!t || d<=t);
-  const rows  = (src.rows||[]).filter(r=>inWin(r.firstOpd) && (!c || r.center===c));
-  const bills = (src.bills||[]).filter(b=>inWin(b.d) && (!c || b.c===c));
-  const months = {}, M = s => s.slice(0,7);
-  const cell = k => months[k] = months[k] || blankRadMonth();
-  rows.forEach(r=>{ const m=cell(M(r.firstOpd)); m.opds+=r.opds; m.opdPat.add(r.id); if(r.converted) m.conv++; });
-  bills.forEach(b=>{ const m=cell(M(b.d)); m.rev+=b.n; m.bills++; m.revPat.add(b.p); });
-  const monthRows = Object.keys(months).sort().map(k=>({month:k, ...months[k],
-    opdPat:months[k].opdPat.size, revPat:months[k].revPat.size}));
-  /* Per centre, so radiation reads like the rest of the dashboard. */
-  const centers = [...new Set([...rows.map(r=>r.center), ...bills.map(b=>b.c)])].sort();
-  const perCenter = centers.map(cc=>{
-    const rr=rows.filter(r=>r.center===cc), bb=bills.filter(b=>b.c===cc);
-    const cv=rr.filter(r=>r.converted);
-    return {center:cc, patients:rr.length, consults:rr.reduce((a,r)=>a+r.opds,0),
-            converted:cv.length, procRev:cv.reduce((a,r)=>a+r.procRev,0),
-            bills:bb.length, rev:bb.reduce((a,b)=>a+b.n,0),
-            returned:cv.filter(r=>r.followUp).length};
-  });
-  return {rows, bills, monthRows, perCenter,
-          matched:src.matched||[], unmatched:src.unmatched||[], offList:src.offList||[]};
+  let rows = (src.rows||[]).filter(r=>inWin(r.firstOpd) && (!c || r.center===c));
+  if(hsel) rows = rows.filter(r=>r.hospital===hsel);
+  const bills = (src.bills||[]).filter(b=>inWin(b.d) && (!c || b.c===c) && (!hsel || b.h===hsel));
+  const started = rows.filter(r=>r.started);
+  const group = (arr,keyf) => { const m={}; arr.forEach(x=>{ const k=keyf(x); (m[k]=m[k]||[]).push(x); }); return m; };
+  return {rows, bills, started,
+    perHosp: Object.entries(group(started,r=>r.hospital||"—")).map(([k,v])=>({
+      key:k, patients:v.length, started:v.length, retained:v.filter(r=>r.back).length,
+      radRev:sum2(v,r=>r.radRev), postRev:sum2(v,r=>r.postRev)})).sort((a,b)=>b.patients-a.patients),
+    perCenter: Object.entries(group(rows,r=>r.center)).map(([k,v])=>({
+      key:k, patients:v.length, started:v.filter(r=>r.started).length,
+      retained:v.filter(r=>r.back).length,
+      radRev:sum2(v,r=>r.radRev), postRev:sum2(v,r=>r.postRev)})).sort((a,b)=>b.patients-a.patients),
+    matched:src.matched||[], unmatched:src.unmatched||[], offList:src.offList||[],
+    advisedKnown:src.advisedKnown};
 }
 
 function renderRadiation(){
-  /* Live data when files are loaded, otherwise whatever the snapshot carries —
-     so a shared snapshot shows this section too. */
   const src = INV.length ? radBuild() : (SNAP && SNAP.rad) ? SNAP.rad : null;
   const top = $("#radTop");
   const say = m => { if(top) top.innerHTML = m ? '<div class="warnbox">'+m+"</div>" : ""; };
-  /* An empty section must say why it is empty — a blank card is indistinguishable
-     from a broken one. */
-  if(!src){
-    say(SNAPMODE
-      ? "This shared snapshot was published before the radiation section existed, so it carries no radiation data. "+
-        "Publish a new snapshot, or load the exports here to see it."
-      : "No invoices are loaded yet. Drop the exports above.");
-    ["#radKpis","#radMonthTbl","#radCenterTbl","#radProcTbl","#radPatTbl"].forEach(s=>{const e=$(s); if(e) e.innerHTML="";});
+  const clear = () => ["#radKpis","#radFunnelTbl","#radOutcomeTbl","#radRatioTbl","#radRevTbl",
+    "#radLeakTbl","#radHospTbl","#radCenterTbl","#radPatTbl"].forEach(x=>{const e=$(x); if(e) e.innerHTML="";});
+  if(!src){ clear(); say(SNAPMODE
+      ? "This shared snapshot was published before the radiation section existed. Publish a new snapshot, or load the exports here."
+      : "No invoices loaded yet. Drop the exports above."); return; }
+  if(!(src.rows||[]).length){
+    clear();
+    const docs=[...new Set(INV.filter(i=>i.procType==="OPD").map(i=>i.doctor).filter(Boolean))];
+    say("<b>No radiation consultations found.</b> "+INV.filter(i=>i.procType==="OPD").length.toLocaleString()+
+        " OPD invoices are loaded across "+docs.length+" doctors, but none matched the radiation-oncologist list. "+
+        "Check the spellings in <b>Rules &amp; mapping</b>."+
+        (docs.length?"<br><span class='muted'>Doctors seen: "+docs.slice(0,40).map(esc).join(", ")+(docs.length>40?" …":"")+"</span>":""));
     return;
   }
-  if(!(src.rows||[]).length){
-    const opdN = INV.filter(i=>i.procType==="OPD").length;
-    const docs = [...new Set(INV.filter(i=>i.procType==="OPD").map(i=>i.doctor).filter(Boolean))];
-    say("<b>No radiation consultations found.</b> There are "+opdN.toLocaleString()+" OPD invoices loaded and "+
-        docs.length+" distinct doctors among them, but none matched the radiation-oncologist list. "+
-        "Check the spellings in <b>Rules &amp; mapping → Radiation oncologists</b> against the names actually in your data."+
-        (docs.length? "<br><span class='muted'>Doctors seen on OPD invoices: "+docs.slice(0,40).map(esc).join(", ")+
-          (docs.length>40?" …":"")+"</span>" : ""));
-  } else say("");
-  const sel=$("#rCenter");
-  const cs=[...new Set([...(src.rows||[]).map(r=>r.center), ...(src.bills||[]).map(b=>b.c)])].filter(Boolean).sort();
-  if(sel && sel.dataset.built!==cs.join("|")){
-    const keep=sel.value;
-    sel.innerHTML='<option value="">All centers</option>'+cs.map(x=>'<option>'+esc(x)+"</option>").join("");
-    sel.dataset.built=cs.join("|"); sel.value=cs.includes(keep)?keep:"";
-  }
+  const fill=(sel,vals,allLabel)=>{ const e=$(sel); if(!e) return;
+    const j=vals.join("|"); if(e.dataset.built===j) return; const keep=e.value;
+    e.innerHTML='<option value="">'+allLabel+"</option>"+vals.map(v=>'<option>'+esc(v)+"</option>").join("");
+    e.dataset.built=j; e.value=vals.includes(keep)?keep:""; };
+  fill("#rCenter",[...new Set(src.rows.map(r=>r.center))].filter(Boolean).sort(),"All centers");
+  fill("#rHosp",[...new Set(src.rows.filter(r=>r.started).map(r=>r.hospital))].filter(Boolean).sort(),"All hospitals");
   if(!$("#rFrom").value || !$("#rTo").value){
-    const ds=[...(src.rows||[]).map(r=>r.firstOpd), ...(src.bills||[]).map(b=>b.d)].filter(Boolean).sort();
+    const ds=src.rows.map(r=>r.firstOpd).filter(Boolean).sort();
     if(ds.length){ $("#rFrom").value=ds[0]; $("#rTo").value=ds[ds.length-1]; }
   }
   const A = radAggregate(src);
-  const conv = A.rows.filter(r=>r.converted);
-  const fu   = conv.filter(r=>r.followUp);
+  const R=A.rows, S=A.started, n=R.length;
+  const adv=R.filter(r=>r.advised).length, back=S.filter(r=>r.back).length, lost=S.length-back;
+  const pct=(a,b)=> b?Math.round(a/b*100)+"%":"—";
+  say(A.advisedKnown ? "" :
+    "<b>The advised stage is incomplete.</b> It reads Treatment Suggested from the OP analysis export — load that file, covering the full period, to complete it.");
+
   $("#radKpis").innerHTML =
-    kpi("","Radiation consultations", A.rows.reduce((a,r)=>a+r.opds,0).toLocaleString(),
-        A.rows.length+" distinct patients") +
-    kpi("diag","Converted to a procedure", pctTxt(conv.length,A.rows.length),
-        conv.length+" of "+A.rows.length+" patients") +
-    kpi("diag","Radiation revenue", money(A.bills.reduce((a,b)=>a+b.n,0)),
-        A.bills.length+" radiation invoices") +
-    kpi("pharm","Returned after the procedure", pctTxt(fu.length,conv.length),
-        fu.length+" of "+conv.length+", "+conv.filter(r=>r.fuSameMonth).length+" in the same month");
+    kpi("","Radiation OPDs", R.reduce((a,r)=>a+r.opds,0).toLocaleString(), n+" patients billed by Oncare") +
+    kpi("diag","Started radiation", pct(S.length,n), S.length+" of "+n+" patients") +
+    kpi("diag","Came back after", pct(back,S.length), back+" of "+S.length+" treated") +
+    kpi("pharm","NEVER came back", lost.toLocaleString(), pct(lost,S.length)+" of those treated") +
+    kpi("","Post-radiation revenue", money(sum2(S,r=>r.postRev)), "earned after treatment ended");
 
-  let h="<thead><tr><th>Month</th><th>Radiation consults</th><th>Patients</th><th>Converted</th><th>Conversion %</th>"+
-        "<th>Radiation invoices</th><th>Patients billed</th><th>Radiation revenue</th></tr></thead><tbody>";
-  const tt={opds:0,opdPat:0,conv:0,bills:0,revPat:0,rev:0};
-  A.monthRows.forEach(m=>{
-    Object.keys(tt).forEach(k=>tt[k]+=m[k]||0);
-    const cv=m.opdPat?m.conv/m.opdPat:null;
-    h+="<tr><td>"+esc(m.month)+"</td><td>"+m.opds+"</td><td>"+m.opdPat+"</td><td>"+m.conv+"</td>"+
-       '<td class="pct" style="color:'+(cv==null?"var(--text-muted)":"var(--series-diag)")+'">'+
-         (cv==null?"—":Math.round(cv*100)+"% "+bar(Math.min(cv,1),1,"var(--series-diag)"))+"</td>"+
-       "<td>"+m.bills+"</td><td>"+m.revPat+"</td><td>"+money(m.rev)+"</td></tr>";
-  });
-  h+='<tr class="total"><td>All months</td><td>'+tt.opds+"</td><td>"+A.rows.length+"</td><td>"+tt.conv+"</td>"+
-     '<td class="pct" style="color:var(--series-diag)">'+(A.rows.length?Math.round(tt.conv/A.rows.length*100)+"%":"—")+"</td>"+
-     "<td>"+tt.bills+"</td><td>—</td><td>"+money(tt.rev)+"</td></tr></tbody>";
-  $("#radMonthTbl").innerHTML=h;
+  const frow=(label,v,prev,note)=>"<tr><td>"+label+"</td><td><b>"+v+"</b></td><td>"+(prev==null?"—":pct(v,prev))+
+    "</td><td>"+pct(v,n)+'</td><td class="muted">'+note+"</td></tr>";
+  $("#radFunnelTbl").innerHTML="<thead><tr><th>Stage</th><th>Patients</th><th>% of previous</th><th>% of OPD</th><th></th></tr></thead><tbody>"+
+    frow("1 &middot; Radiation OPD done", n, null, "billed by Oncare — a visit made straight to a partner hospital without telling us is not here") +
+    frow("2 &middot; Radiation advised", adv, n, "from Treatment Suggested on the consultation") +
+    frow("3 &middot; Radiation started at partner hospital", S.length, n, "<b>OPD → radiation conversion</b>") +
+    frow("4 &middot; Follow-up consultation at Oncare", S.filter(r=>r.fu).length, S.length, "after the last radiation bill") +
+    frow("5 &middot; Diagnostics at Oncare", S.filter(r=>r.dg).length, S.length, "PET CT, labs and the rest") +
+    frow("6 &middot; Medical management / chemo", S.filter(r=>r.mm).length, S.length, "the highest-value way back in") +
+    frow("7 &middot; RETAINED — came back in any form", back, S.length, "follow-up or diagnostics or admission") +
+    frow("8 &middot; NEVER came back", lost, S.length, "<b>the number to drive down</b>") + "</tbody>";
 
-  let ch="<thead><tr><th>Center</th><th>Patients</th><th>Consults</th><th>Converted</th><th>Conversion %</th>"+
-         "<th>Returned after</th><th>Radiation invoices</th><th>Radiation revenue</th></tr></thead><tbody>";
-  const ct={patients:0,consults:0,converted:0,returned:0,bills:0,rev:0};
-  A.perCenter.forEach(r=>{
-    Object.keys(ct).forEach(k=>ct[k]+=r[k]||0);
-    const cv=r.patients?r.converted/r.patients:null;
-    ch+="<tr><td>"+esc(r.center)+"</td><td>"+r.patients+"</td><td>"+r.consults+"</td><td>"+r.converted+"</td>"+
-        '<td class="pct" style="color:'+(cv==null?"var(--text-muted)":"var(--series-diag)")+'">'+
-          (cv==null?"—":Math.round(cv*100)+"% "+bar(Math.min(cv,1),1,"var(--series-diag)"))+"</td>"+
-        "<td>"+r.returned+"</td><td>"+r.bills+"</td><td>"+money(r.rev)+"</td></tr>";
-  });
-  ch+='<tr class="total"><td>All centers</td><td>'+ct.patients+"</td><td>"+ct.consults+"</td><td>"+ct.converted+"</td>"+
-      '<td class="pct" style="color:var(--series-diag)">'+(ct.patients?Math.round(ct.converted/ct.patients*100)+"%":"—")+"</td>"+
-      "<td>"+ct.returned+"</td><td>"+ct.bills+"</td><td>"+money(ct.rev)+"</td></tr></tbody>";
-  $("#radCenterTbl").innerHTML=ch;
+  const oc={}; S.forEach(r=>oc[r.outcome]=(oc[r.outcome]||0)+1);
+  $("#radOutcomeTbl").innerHTML="<thead><tr><th>Outcome</th><th>Patients</th><th>% of treated</th><th>Revenue after treatment</th></tr></thead><tbody>"+
+    Object.entries(oc).sort((a,b)=>b[1]-a[1]).map(([k,v])=>"<tr><td>"+esc(k)+"</td><td>"+v+'</td><td class="pct">'+
+      pct(v,S.length)+"</td><td>"+money(sum2(S.filter(r=>r.outcome===k),r=>r.postRev))+"</td></tr>").join("")+"</tbody>";
 
-  const pc={}; conv.forEach(r=>{ const k=r.proc||"—"; (pc[k]=pc[k]||{n:0,rev:0}); pc[k].n++; pc[k].rev+=r.procRev; });
-  const pl=Object.entries(pc).sort((a,b)=>b[1].n-a[1].n);
-  $("#radProcTbl").innerHTML="<thead><tr><th>First procedure after the consultation</th><th>Patients</th><th>Share</th><th>Their total procedure revenue</th></tr></thead><tbody>"+
-    (pl.length?pl.map(([k,v])=>"<tr><td>"+esc(k)+"</td><td>"+v.n+'</td><td class="pct">'+Math.round(v.n/conv.length*100)+
-      "%</td><td>"+money(v.rev)+"</td></tr>").join("")
-      : '<tr><td colspan="4" class="muted">No conversions in this period.</td></tr>')+"</tbody>";
+  const avg=(arr,f2)=>arr.length?Math.round(arr.reduce((a,x)=>a+f2(x),0)/arr.length):null;
+  const w90=S.filter(r=>r.daysBack!=null && r.daysBack<=90).length;
+  const aStart=avg(S.filter(r=>r.daysToStart!=null),r=>r.daysToStart);
+  const aBack=avg(S.filter(r=>r.daysBack!=null),r=>r.daysBack);
+  $("#radRatioTbl").innerHTML="<thead><tr><th>Metric</th><th>Value</th><th></th></tr></thead><tbody>"+
+    [["OPD → radiation conversion", pct(S.length,n), "of every radiation OPD billed"],
+     ["Post-radiation retention", pct(back,S.length), "your core number"],
+     ["Never returned", pct(lost,S.length), "drive this down every month"],
+     ["Returned within 90 days", pct(w90,S.length), "early returns are the ones that repeat"],
+     ["Avg days: OPD → radiation start", aStart==null?"—":aStart+" days", "a longer gap means more drop-off"],
+     ["Avg days: treatment end → first return", aBack==null?"—":aBack+" days", "set your call cadence by this"],
+     ["Avg post-radiation revenue per returning patient", money(back?sum2(S.filter(r=>r.back),r=>r.postRev)/back:0), "what one retained patient is worth"]]
+    .map(x=>"<tr><td>"+x[0]+"</td><td><b>"+x[1]+'</b></td><td class="muted">'+x[2]+"</td></tr>").join("")+"</tbody>";
+
+  const opdRev=sum2(R,r=>r.opdRev), radRev=sum2(S,r=>r.radRev),
+        fuRev=sum2(S,r=>r.fuRev), dgRev=sum2(S,r=>r.dgRev), mmRev=sum2(S,r=>r.mmRev);
+  const tot=opdRev+radRev+fuRev+dgRev+mmRev;
+  $("#radRevTbl").innerHTML="<thead><tr><th>Revenue head</th><th>Amount</th><th>% of total</th><th></th></tr></thead><tbody>"+
+    [["Radiation OPD consultations",opdRev,"the consultation fee only"],
+     ["Radiation — Oncare's share",radRev,"billed by Oncare against partner-hospital treatment"],
+     ["Follow-up consultations",fuRev,"after treatment"],
+     ["Diagnostics",dgRev,"highest-margin way back in"],
+     ["Medical management / chemo",mmRev,"highest-value way back in"]]
+    .map(x=>"<tr><td>"+x[0]+"</td><td>"+money(x[1])+'</td><td class="pct">'+pct(x[1],tot)+'</td><td class="muted">'+x[2]+"</td></tr>").join("")+
+    '<tr class="total"><td>Total</td><td>'+money(tot)+"</td><td>100%</td><td></td></tr>"+
+    "<tr><td>Post-radiation revenue</td><td>"+money(fuRev+dgRev+mmRev)+'</td><td class="pct">'+pct(fuRev+dgRev+mmRev,tot)+
+    '</td><td class="muted">this is the number tracking grows</td></tr></tbody>';
+
+  const st={}; R.forEach(r=>st[r.stage]=(st[r.stage]||0)+1);
+  $("#radLeakTbl").innerHTML="<thead><tr><th>Stage</th><th>Patients</th><th>% of OPD</th></tr></thead><tbody>"+
+    Object.entries(st).sort((a,b)=>b[1]-a[1]).map(x=>"<tr><td>"+esc(x[0])+"</td><td>"+x[1]+'</td><td class="pct">'+pct(x[1],n)+"</td></tr>").join("")+"</tbody>";
+
+  const htab=(el,arr,label)=>{ const isC=label==="Center";
+    $(el).innerHTML="<thead><tr><th>"+label+"</th><th>Patients</th>"+(isC?"<th>Started</th>":"")+
+    "<th>Came back</th><th>Retention</th><th>Radiation revenue</th><th>Post-radiation revenue</th></tr></thead><tbody>"+
+    (arr.length?arr.map(r=>"<tr><td>"+esc(r.key)+"</td><td>"+r.patients+"</td>"+(isC?"<td>"+r.started+"</td>":"")+
+      "<td>"+r.retained+'</td><td class="pct" style="color:var(--series-diag)">'+pct(r.retained,isC?r.started:r.patients)+
+      "</td><td>"+money(r.radRev)+"</td><td>"+money(r.postRev)+"</td></tr>").join("")
+      :'<tr><td colspan="7" class="muted">Nothing in this period.</td></tr>')+"</tbody>"; };
+  htab("#radHospTbl",A.perHosp,"Partner hospital");
+  htab("#radCenterTbl",A.perCenter,"Center");
 
   const cf=$("#rConv").value, q=$("#rSrch").value.trim().toLowerCase();
-  let list=A.rows;
-  if(cf==="y") list=list.filter(r=>r.converted); else if(cf==="n") list=list.filter(r=>!r.converted);
-  if(q) list=list.filter(r=>r.patient.toLowerCase().includes(q)||String(r.doctor).toLowerCase().includes(q));
-  $("#radPatTbl").innerHTML="<thead><tr><th>Patient</th><th>Center</th><th>Radiation consult</th><th>Doctor</th><th>Consults</th>"+
-    "<th>Converted to</th><th>After</th><th>Procedure revenue</th><th>Follow-up consult</th></tr></thead><tbody>"+
-    (list.length? list.slice(0,600).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(parseDate(r.firstOpd))+
-      "</td><td>"+esc(r.doctor)+"</td><td>"+r.opds+"</td>"+
-      "<td>"+(r.converted?'<span class="pill hi">'+esc(r.proc)+"</span>":'<span class="pill no">not converted</span>')+"</td>"+
-      '<td class="muted">'+(r.converted?r.days+"d":"—")+"</td>"+
-      "<td>"+(r.converted?money(r.procRev):"—")+"</td>"+
-      "<td>"+(r.followUp? dmy(parseDate(r.followUp.d))+(r.fuSameMonth?' <span class="pill hi">same month</span>':"")
-              : r.converted?'<span class="pill no">never returned</span>':'<span class="muted">—</span>')+"</td></tr>").join("")
-      : '<tr><td colspan="9" class="muted">No radiation consultations in this period.</td></tr>')+"</tbody>";
+  let list=R;
+  if(cf==="started") list=list.filter(r=>r.started);
+  else if(cf==="notstarted") list=list.filter(r=>!r.started);
+  else if(cf==="retained") list=list.filter(r=>r.started&&r.back);
+  else if(cf==="lost") list=list.filter(r=>r.started&&!r.back);
+  if(q) list=list.filter(r=>(r.patient+" "+r.doctor+" "+(r.hospital||"")).toLowerCase().includes(q));
+  $("#radPatTbl").innerHTML="<thead><tr><th>Patient</th><th>Center</th><th>Radiation OPD</th><th>Doctor</th>"+
+    "<th>Advised</th><th>Started</th><th>Partner hospital</th><th>Treatment ended</th><th>Oncare share</th>"+
+    "<th>Came back</th><th>After</th><th>Post-radiation ₹</th><th>Outcome</th></tr></thead><tbody>"+
+    (list.length?list.slice(0,600).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(parseDate(r.firstOpd))+
+      "</td><td>"+esc(r.doctor)+'</td><td class="muted">'+(r.advised?"yes":"—")+"</td>"+
+      "<td>"+(r.started?dmy(parseDate(r.radStart)):'<span class="pill no">did not start</span>')+"</td>"+
+      "<td>"+esc(r.hospital||"—")+"</td><td>"+(r.radEnd?dmy(parseDate(r.radEnd)):"—")+"</td>"+
+      "<td>"+(r.started?money(r.radRev):"—")+"</td>"+
+      "<td>"+(!r.started?'<span class="muted">—</span>':r.back?dmy(parseDate(r.firstBack)):'<span class="pill no">never</span>')+"</td>"+
+      '<td class="muted">'+(r.daysBack!=null?r.daysBack+"d":"—")+"</td>"+
+      "<td>"+(r.postRev?money(r.postRev):"—")+'</td><td class="muted">'+esc(r.outcome)+"</td></tr>").join("")
+      :'<tr><td colspan="13" class="muted">No patients match.</td></tr>')+"</tbody>";
 
   let note="";
-  if(A.unmatched.length) note += "<b>Not found in the billing data:</b> "+A.unmatched.map(esc).join(", ")+
-    ". Either they have not billed in this file or the name is spelled differently — check the spellings in Rules &amp; mapping. ";
-  if(A.offList.length) note += "<b>Radiation billed under doctors who are not on the list:</b> "+A.offList.map(esc).join(", ")+
-    ". Add them if they are radiation oncologists, otherwise their consultations are not being counted as radiation. ";
-  if(A.matched.length) note += "<br><span class='muted'>Matched in the data: "+A.matched.map(esc).join(", ")+"</span>";
+  if(A.unmatched.length) note+="<b>Not found in the billing data:</b> "+A.unmatched.map(esc).join(", ")+". ";
+  if(A.offList.length) note+="<b>Radiation billed under doctors not on the list:</b> "+A.offList.map(esc).join(", ")+
+    ". Add them if they are radiation oncologists. ";
+  if(A.matched.length) note+="<br><span class='muted'>Matched: "+A.matched.map(esc).join(", ")+"</span>";
   $("#radNote").innerHTML = note ? '<div class="warnbox" style="margin-top:14px">'+note+"</div>" : "";
 }
 
