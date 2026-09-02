@@ -291,6 +291,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
       <div class="fld"><label for="rSrch">Search</label><input class="srch" id="rSrch" placeholder="Patient or doctor"></div>
     </div>
   </div>
+  <div id="radTop"></div>
   <div class="kpis" id="radKpis"></div>
   <div class="card">
     <h2>Month on month</h2>
@@ -463,7 +464,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "02-Sep-2026 435cb8";
+const BUILD = "02-Sep-2026 2222e0";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1019,8 +1020,8 @@ function render(){
      panel rather than aborting the render and leaving the page half-drawn. */
   try{ renderRadiation(); }
   catch(err){
-    const n=$("#radNote");
-    if(n) n.innerHTML = '<div class="warnbox" style="margin-top:14px"><b>Radiation section failed to build:</b> '+
+    const n=$("#radTop")||$("#radNote");
+    if(n) n.innerHTML = '<div class="warnbox"><b>Radiation section failed to build:</b> '+
       esc(err.message)+'. The rest of the dashboard is unaffected.</div>';
   }
 }
@@ -1419,7 +1420,27 @@ function renderRadiation(){
   /* Live data when files are loaded, otherwise whatever the snapshot carries —
      so a shared snapshot shows this section too. */
   const src = INV.length ? radBuild() : (SNAP && SNAP.rad) ? SNAP.rad : null;
-  if(!src || !(src.rows||[]).length && !(src.bills||[]).length){ return; }
+  const top = $("#radTop");
+  const say = m => { if(top) top.innerHTML = m ? '<div class="warnbox">'+m+"</div>" : ""; };
+  /* An empty section must say why it is empty — a blank card is indistinguishable
+     from a broken one. */
+  if(!src){
+    say(SNAPMODE
+      ? "This shared snapshot was published before the radiation section existed, so it carries no radiation data. "+
+        "Publish a new snapshot, or load the exports here to see it."
+      : "No invoices are loaded yet. Drop the exports above.");
+    ["#radKpis","#radMonthTbl","#radCenterTbl","#radProcTbl","#radPatTbl"].forEach(s=>{const e=$(s); if(e) e.innerHTML="";});
+    return;
+  }
+  if(!(src.rows||[]).length){
+    const opdN = INV.filter(i=>i.procType==="OPD").length;
+    const docs = [...new Set(INV.filter(i=>i.procType==="OPD").map(i=>i.doctor).filter(Boolean))];
+    say("<b>No radiation consultations found.</b> There are "+opdN.toLocaleString()+" OPD invoices loaded and "+
+        docs.length+" distinct doctors among them, but none matched the radiation-oncologist list. "+
+        "Check the spellings in <b>Rules &amp; mapping → Radiation oncologists</b> against the names actually in your data."+
+        (docs.length? "<br><span class='muted'>Doctors seen on OPD invoices: "+docs.slice(0,40).map(esc).join(", ")+
+          (docs.length>40?" …":"")+"</span>" : ""));
+  } else say("");
   const sel=$("#rCenter");
   const cs=[...new Set([...(src.rows||[]).map(r=>r.center), ...(src.bills||[]).map(b=>b.c)])].filter(Boolean).sort();
   if(sel && sel.dataset.built!==cs.join("|")){
