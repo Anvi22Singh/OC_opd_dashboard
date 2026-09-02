@@ -50645,8 +50645,1698 @@
    ]
   }
  ],
- "build": "02-Sep-2026 bf55d4",
- "publishedAt": "2026-09-02T05:00:16.780Z",
+ "build": "02-Sep-2026 2222e0",
+ "rad": {
+  "rows": [
+   {
+    "id": "2945",
+    "patient": "Binita Devi Nameirakpam",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-04-06",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3540",
+    "patient": "Shri Prakash",
+    "center": "Gurugram",
+    "doctor": "Jyotika Jain",
+    "firstOpd": "2026-04-08",
+    "opds": 1,
+    "converted": true,
+    "proc": "MEDICAL MANAGEMENT",
+    "procDate": "2026-07-31",
+    "days": 114,
+    "procRev": 714060,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3547",
+    "patient": "Mukesh Sharma",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-04-09",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-04-09",
+    "days": 0,
+    "procRev": 174000,
+    "radRev": 174000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3532",
+    "patient": "Sunil Kumar",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-04-11",
+    "opds": 2,
+    "converted": true,
+    "proc": "CHEMOTHERAPY",
+    "procDate": "2026-04-13",
+    "days": 2,
+    "procRev": 586525,
+    "radRev": 207200,
+    "followUp": {
+     "d": "2026-05-25",
+     "t": "OPD"
+    },
+    "fuSameMonth": false
+   },
+   {
+    "id": "3467",
+    "patient": "Goutam Swarooplal",
+    "center": "Gurugram",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-04-13",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3497",
+    "patient": "Beddo",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-04-14",
+    "opds": 2,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-04-18",
+    "days": 4,
+    "procRev": 372902,
+    "radRev": 280000,
+    "followUp": {
+     "d": "2026-04-27",
+     "t": "OPD"
+    },
+    "fuSameMonth": true
+   },
+   {
+    "id": "3577",
+    "patient": "Mohan Singh",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-04-14",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3588",
+    "patient": "Rajeshwar Aggarwal",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-04-16",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "2983",
+    "patient": "Kamlesh",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-04-16",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-04-16",
+    "days": 0,
+    "procRev": 130000,
+    "radRev": 130000,
+    "followUp": {
+     "d": "2026-04-22",
+     "t": "OPD"
+    },
+    "fuSameMonth": true
+   },
+   {
+    "id": "3617",
+    "patient": "Devki Devi",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-04-21",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-04-22",
+    "days": 1,
+    "procRev": 120000,
+    "radRev": 120000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3673",
+    "patient": "Sandeep",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-04-29",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-04-30",
+    "days": 1,
+    "procRev": 190000,
+    "radRev": 190000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3410",
+    "patient": "Prempal Singh",
+    "center": "Gurugram",
+    "doctor": "Jyotika Jain",
+    "firstOpd": "2026-04-29",
+    "opds": 1,
+    "converted": true,
+    "proc": "CHEMOTHERAPY",
+    "procDate": "2026-05-02",
+    "days": 3,
+    "procRev": 397423,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "2904",
+    "patient": "Suman Joshi",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-05-06",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-05-12",
+    "days": 6,
+    "procRev": 600752,
+    "radRev": 291752,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3731",
+    "patient": "Anand",
+    "center": "West Delhi",
+    "doctor": "Manoj Sharma",
+    "firstOpd": "2026-05-08",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-05-08",
+    "days": 0,
+    "procRev": 207000,
+    "radRev": 207000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3759",
+    "patient": "Amit Kumar  Singh",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-05-12",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-05-15",
+    "days": 3,
+    "procRev": 211200,
+    "radRev": 187200,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3754",
+    "patient": "Hanso Devi",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-05-12",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "2562",
+    "patient": "Parvathi Chandirabagathur",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-05-16",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3791",
+    "patient": "Sundeshwar",
+    "center": "Gurugram",
+    "doctor": "Jyotika Jain",
+    "firstOpd": "2026-05-16",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3805",
+    "patient": "Aganu   ram",
+    "center": "West Delhi",
+    "doctor": "Manoj Sharma",
+    "firstOpd": "2026-05-19",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3825",
+    "patient": "Swadesh Mohan",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-05-21",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3832",
+    "patient": "Vijay Kumar  Nanda",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-05-22",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-05-25",
+    "days": 3,
+    "procRev": 240000,
+    "radRev": 240000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3839",
+    "patient": "Mohammed Kaleemillah",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-05-23",
+    "opds": 2,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-05-25",
+    "days": 2,
+    "procRev": 374876,
+    "radRev": 250000,
+    "followUp": {
+     "d": "2026-07-24",
+     "t": "OPD"
+    },
+    "fuSameMonth": false
+   },
+   {
+    "id": "3843",
+    "patient": "C M Narayana Murthy",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-05-25",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3896",
+    "patient": "Ajit",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-06-01",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-06-04",
+    "days": 3,
+    "procRev": 225600,
+    "radRev": 225600,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3679",
+    "patient": "Bam Bhadhur",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-06-04",
+    "opds": 2,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-06-15",
+    "days": 11,
+    "procRev": 241100,
+    "radRev": 160400,
+    "followUp": {
+     "d": "2026-06-19",
+     "t": "OPD"
+    },
+    "fuSameMonth": true
+   },
+   {
+    "id": "3917",
+    "patient": "Gundamma Devareddy",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-06-04",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-06-05",
+    "days": 1,
+    "procRev": 52000,
+    "radRev": 52000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3971",
+    "patient": "Vikas",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-06-10",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4008",
+    "patient": "Jawahar Lal",
+    "center": "Gurugram",
+    "doctor": "Jyotika Jain",
+    "firstOpd": "2026-06-17",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-06-17",
+    "days": 0,
+    "procRev": 159400,
+    "radRev": 159400,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "2857",
+    "patient": "Rekha Bharti",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-06-18",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-06-27",
+    "days": 9,
+    "procRev": 80607,
+    "radRev": 55600,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4026",
+    "patient": "Rajbala",
+    "center": "Gurugram",
+    "doctor": "Jyotika Jain",
+    "firstOpd": "2026-06-22",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4024",
+    "patient": "Subhash Chandra Tivari",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-06-22",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-06-26",
+    "days": 4,
+    "procRev": 243000,
+    "radRev": 210000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4030",
+    "patient": "Vijaydevi Soni",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-06-23",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3837",
+    "patient": "Neelam Tayal",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-06-27",
+    "opds": 1,
+    "converted": true,
+    "proc": "CHEMOTHERAPY",
+    "procDate": "2026-07-09",
+    "days": 12,
+    "procRev": 119208,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4052",
+    "patient": "Rakesh Chandra Chatruvadi",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-06-27",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3831",
+    "patient": "Mohammad Feroz Chowdhary",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-01",
+    "opds": 2,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "2840",
+    "patient": "Shamshad Begum",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-02",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-31",
+    "days": 29,
+    "procRev": 307962,
+    "radRev": 307962,
+    "followUp": {
+     "d": "2026-08-18",
+     "t": "OPD"
+    },
+    "fuSameMonth": false
+   },
+   {
+    "id": "4059",
+    "patient": "Suresh Kumar",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-07-02",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-02",
+    "days": 0,
+    "procRev": 245000,
+    "radRev": 160000,
+    "followUp": {
+     "d": "2026-08-20",
+     "t": "OPD"
+    },
+    "fuSameMonth": false
+   },
+   {
+    "id": "4107",
+    "patient": "Sunita Jha",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-07",
+    "opds": 2,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-13",
+    "days": 6,
+    "procRev": 253035,
+    "radRev": 253035,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4108",
+    "patient": "Jasbir  Kaur",
+    "center": "Noida (Sector 70)",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-07",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-08",
+    "days": 1,
+    "procRev": 200300,
+    "radRev": 200300,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "1595",
+    "patient": "Sunil Kumar Singh",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-09",
+    "opds": 2,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4132",
+    "patient": "Varalakshmi Nagaraj",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-07-10",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-13",
+    "days": 3,
+    "procRev": 175072,
+    "radRev": 175072,
+    "followUp": {
+     "d": "2026-07-17",
+     "t": "OPD"
+    },
+    "fuSameMonth": true
+   },
+   {
+    "id": "4133",
+    "patient": "Radha Gupta",
+    "center": "West Delhi",
+    "doctor": "Manoj Sharma",
+    "firstOpd": "2026-07-10",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3758",
+    "patient": "Malay Mittal",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-07-10",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3856",
+    "patient": "Archana Rathore",
+    "center": "Greater Kailash",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-14",
+    "opds": 1,
+    "converted": true,
+    "proc": "CHEMOTHERAPY",
+    "procDate": "2026-07-25",
+    "days": 11,
+    "procRev": 88000,
+    "radRev": 0,
+    "followUp": {
+     "d": "2026-08-01",
+     "t": "OPD"
+    },
+    "fuSameMonth": false
+   },
+   {
+    "id": "4076",
+    "patient": "Rebba Chinna Veeraiah",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-07-18",
+    "opds": 1,
+    "converted": true,
+    "proc": "CHEMOTHERAPY",
+    "procDate": "2026-07-18",
+    "days": 0,
+    "procRev": 113908,
+    "radRev": 0,
+    "followUp": {
+     "d": "2026-08-07",
+     "t": "OPD"
+    },
+    "fuSameMonth": false
+   },
+   {
+    "id": "4176",
+    "patient": "Navneet Tyagi",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-20",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4194",
+    "patient": "Tanu  Mishra ",
+    "center": "Noida (Sector 70)",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-21",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-23",
+    "days": 2,
+    "procRev": 129950,
+    "radRev": 129950,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4207",
+    "patient": "Sikha",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-23",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4079",
+    "patient": "Ram Kumar giri",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-23",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-25",
+    "days": 2,
+    "procRev": 111200,
+    "radRev": 111200,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4021",
+    "patient": "Mahabir Dagar",
+    "center": "Gurugram",
+    "doctor": "Jyotika Jain",
+    "firstOpd": "2026-07-25",
+    "opds": 1,
+    "converted": true,
+    "proc": "CHEMOTHERAPY",
+    "procDate": "2026-08-04",
+    "days": 10,
+    "procRev": 40000,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4246",
+    "patient": "Sakshi  Joshi",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-07-27",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4252",
+    "patient": "Jagveer  Bhati",
+    "center": "Noida (Sector 70)",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-28",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4255",
+    "patient": "Anantha",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-07-29",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-29",
+    "days": 0,
+    "procRev": 40000,
+    "radRev": 40000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4218",
+    "patient": "Akhil Kapoor",
+    "center": "Gurugram",
+    "doctor": "Indu Bansal",
+    "firstOpd": "2026-07-29",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4260",
+    "patient": "Shamim",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-07-30",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-07-31",
+    "days": 1,
+    "procRev": 111200,
+    "radRev": 111200,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4279",
+    "patient": "Sulochana M S",
+    "center": "JP Nagar",
+    "doctor": "Ajay GV",
+    "firstOpd": "2026-08-01",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4297",
+    "patient": "Jaya",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-08-04",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4306",
+    "patient": "Nagaraju P",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-08-05",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-08-07",
+    "days": 2,
+    "procRev": 154100,
+    "radRev": 110000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "3811",
+    "patient": "Premlata",
+    "center": "Ghaziabad",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-08-06",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4318",
+    "patient": "Rajender Singh",
+    "center": "Gurugram",
+    "doctor": "Indu Bansal",
+    "firstOpd": "2026-08-08",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4343",
+    "patient": "Ram  Dutt",
+    "center": "Noida (Sector 70)",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-08-11",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4298",
+    "patient": "Pushpa  Devi",
+    "center": "Noida (Sector 70)",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-08-13",
+    "opds": 1,
+    "converted": true,
+    "proc": "RADIATION",
+    "procDate": "2026-08-14",
+    "days": 1,
+    "procRev": 220000,
+    "radRev": 190000,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4372",
+    "patient": "Balambal",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-08-14",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4386",
+    "patient": "Sushma",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-08-19",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4385",
+    "patient": "Manisha",
+    "center": "West Delhi",
+    "doctor": "Manoj Sharma",
+    "firstOpd": "2026-08-19",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4395",
+    "patient": "Maya",
+    "center": "Greater Kailash",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-08-21",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4333",
+    "patient": "Suresh Mahto",
+    "center": "JP Nagar",
+    "doctor": "Ajay G V",
+    "firstOpd": "2026-08-22",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4426",
+    "patient": "Anandi  Devi",
+    "center": "Noida (Sector 70)",
+    "doctor": "Anita Malik",
+    "firstOpd": "2026-08-24",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4434",
+    "patient": "Nandkishore Thakur",
+    "center": "West Delhi",
+    "doctor": "Dinesh Singh",
+    "firstOpd": "2026-08-25",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4430",
+    "patient": "Sukhidevi Uttamchand  Jain",
+    "center": "JP Nagar",
+    "doctor": "Ajay GV",
+    "firstOpd": "2026-08-25",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   },
+   {
+    "id": "4130",
+    "patient": "Chinnaponnu",
+    "center": "Kamala Nagar",
+    "doctor": "Mohan Kumar S",
+    "firstOpd": "2026-08-31",
+    "opds": 1,
+    "converted": false,
+    "proc": null,
+    "procDate": null,
+    "days": null,
+    "procRev": 0,
+    "radRev": 0,
+    "followUp": null,
+    "fuSameMonth": false
+   }
+  ],
+  "bills": [
+   {
+    "d": "2026-08-24",
+    "c": "JP Nagar",
+    "n": 140000,
+    "p": "4370"
+   },
+   {
+    "d": "2026-08-24",
+    "c": "Ghaziabad",
+    "n": 85600,
+    "p": "3532"
+   },
+   {
+    "d": "2026-08-14",
+    "c": "Noida (Sector 70)",
+    "n": 190000,
+    "p": "4298"
+   },
+   {
+    "d": "2026-08-11",
+    "c": "Ghaziabad",
+    "n": 209900,
+    "p": "3015"
+   },
+   {
+    "d": "2026-08-11",
+    "c": "Ghaziabad",
+    "n": 222894,
+    "p": "3244"
+   },
+   {
+    "d": "2026-08-10",
+    "c": "Greater Kailash",
+    "n": 63550,
+    "p": "4336"
+   },
+   {
+    "d": "2026-08-07",
+    "c": "JP Nagar",
+    "n": 110000,
+    "p": "4306"
+   },
+   {
+    "d": "2026-08-06",
+    "c": "Gurugram",
+    "n": 268680,
+    "p": "3231"
+   },
+   {
+    "d": "2026-07-31",
+    "c": "Ghaziabad",
+    "n": 111200,
+    "p": "4260"
+   },
+   {
+    "d": "2026-07-31",
+    "c": "Ghaziabad",
+    "n": 307962,
+    "p": "2840"
+   },
+   {
+    "d": "2026-07-29",
+    "c": "JP Nagar",
+    "n": 40000,
+    "p": "4255"
+   },
+   {
+    "d": "2026-07-29",
+    "c": "West Delhi",
+    "n": 219931,
+    "p": "4244"
+   },
+   {
+    "d": "2026-07-25",
+    "c": "Ghaziabad",
+    "n": 111200,
+    "p": "4079"
+   },
+   {
+    "d": "2026-07-23",
+    "c": "Noida (Sector 70)",
+    "n": 129950,
+    "p": "4194"
+   },
+   {
+    "d": "2026-07-23",
+    "c": "West Delhi",
+    "n": 181309,
+    "p": "3904"
+   },
+   {
+    "d": "2026-07-22",
+    "c": "West Delhi",
+    "n": 28000,
+    "p": "4059"
+   },
+   {
+    "d": "2026-07-15",
+    "c": "West Delhi",
+    "n": 26000,
+    "p": "4059"
+   },
+   {
+    "d": "2026-07-13",
+    "c": "JP Nagar",
+    "n": 175072,
+    "p": "4132"
+   },
+   {
+    "d": "2026-07-13",
+    "c": "Ghaziabad",
+    "n": 253035,
+    "p": "4107"
+   },
+   {
+    "d": "2026-07-10",
+    "c": "Greater Kailash",
+    "n": 102100,
+    "p": "2295"
+   },
+   {
+    "d": "2026-07-08",
+    "c": "Noida (Sector 70)",
+    "n": 200300,
+    "p": "4108"
+   },
+   {
+    "d": "2026-07-08",
+    "c": "West Delhi",
+    "n": 26000,
+    "p": "4059"
+   },
+   {
+    "d": "2026-07-02",
+    "c": "West Delhi",
+    "n": 80000,
+    "p": "4059"
+   },
+   {
+    "d": "2026-06-30",
+    "c": "Ghaziabad",
+    "n": 140700,
+    "p": "4024"
+   },
+   {
+    "d": "2026-06-27",
+    "c": "Ghaziabad",
+    "n": 55600,
+    "p": "2857"
+   },
+   {
+    "d": "2026-06-26",
+    "c": "Ghaziabad",
+    "n": 69300,
+    "p": "4024"
+   },
+   {
+    "d": "2026-06-24",
+    "c": "Ghaziabad",
+    "n": 40100,
+    "p": "3781"
+   },
+   {
+    "d": "2026-06-23",
+    "c": "West Delhi",
+    "n": 160000,
+    "p": "3595"
+   },
+   {
+    "d": "2026-06-17",
+    "c": "Gurugram",
+    "n": 159400,
+    "p": "4008"
+   },
+   {
+    "d": "2026-06-15",
+    "c": "Greater Kailash",
+    "n": 160400,
+    "p": "3679"
+   },
+   {
+    "d": "2026-06-09",
+    "c": "Gurugram",
+    "n": 160000,
+    "p": "3906"
+   },
+   {
+    "d": "2026-06-05",
+    "c": "JP Nagar",
+    "n": 52000,
+    "p": "3917"
+   },
+   {
+    "d": "2026-06-04",
+    "c": "Ghaziabad",
+    "n": 225600,
+    "p": "3896"
+   },
+   {
+    "d": "2026-05-31",
+    "c": "Ghaziabad",
+    "n": 40100,
+    "p": "3781"
+   },
+   {
+    "d": "2026-05-30",
+    "c": "Ghaziabad",
+    "n": 40100,
+    "p": "3781"
+   },
+   {
+    "d": "2026-05-26",
+    "c": "Ghaziabad",
+    "n": 121600,
+    "p": "3532"
+   },
+   {
+    "d": "2026-05-25",
+    "c": "West Delhi",
+    "n": 240000,
+    "p": "3832"
+   },
+   {
+    "d": "2026-05-25",
+    "c": "JP Nagar",
+    "n": 250000,
+    "p": "3839"
+   },
+   {
+    "d": "2026-05-23",
+    "c": "Ghaziabad",
+    "n": 40100,
+    "p": "3781"
+   },
+   {
+    "d": "2026-05-19",
+    "c": "Greater Kailash",
+    "n": 193300,
+    "p": "3807"
+   },
+   {
+    "d": "2026-05-15",
+    "c": "Greater Kailash",
+    "n": 187200,
+    "p": "3759"
+   },
+   {
+    "d": "2026-05-12",
+    "c": "Greater Kailash",
+    "n": 207000,
+    "p": "3700"
+   },
+   {
+    "d": "2026-05-12",
+    "c": "Ghaziabad",
+    "n": 291752,
+    "p": "2904"
+   },
+   {
+    "d": "2026-05-08",
+    "c": "West Delhi",
+    "n": 207000,
+    "p": "3731"
+   },
+   {
+    "d": "2026-05-06",
+    "c": "Ghaziabad",
+    "n": 140400,
+    "p": "3699"
+   },
+   {
+    "d": "2026-05-05",
+    "c": "Ghaziabad",
+    "n": 26700,
+    "p": "3455"
+   },
+   {
+    "d": "2026-04-30",
+    "c": "Greater Kailash",
+    "n": 190000,
+    "p": "3673"
+   },
+   {
+    "d": "2026-04-23",
+    "c": "Gurugram",
+    "n": 108000,
+    "p": "3492"
+   },
+   {
+    "d": "2026-04-22",
+    "c": "West Delhi",
+    "n": 120000,
+    "p": "3617"
+   },
+   {
+    "d": "2026-04-21",
+    "c": "Gurugram",
+    "n": 150000,
+    "p": "3616"
+   },
+   {
+    "d": "2026-04-20",
+    "c": "Ghaziabad",
+    "n": 396000,
+    "p": "3607"
+   },
+   {
+    "d": "2026-04-18",
+    "c": "Greater Kailash",
+    "n": 280000,
+    "p": "3497"
+   },
+   {
+    "d": "2026-04-16",
+    "c": "Ghaziabad",
+    "n": 62600,
+    "p": "3300"
+   },
+   {
+    "d": "2026-04-16",
+    "c": "Ghaziabad",
+    "n": 104350,
+    "p": "3455"
+   },
+   {
+    "d": "2026-04-16",
+    "c": "West Delhi",
+    "n": 130000,
+    "p": "2983"
+   },
+   {
+    "d": "2026-04-10",
+    "c": "West Delhi",
+    "n": 207000,
+    "p": "3364"
+   },
+   {
+    "d": "2026-04-09",
+    "c": "Greater Kailash",
+    "n": 174000,
+    "p": "3547"
+   },
+   {
+    "d": "2026-04-07",
+    "c": "Gurugram",
+    "n": 224256,
+    "p": "3540"
+   },
+   {
+    "d": "2026-03-31",
+    "c": "Ghaziabad",
+    "n": 31300,
+    "p": "3300"
+   },
+   {
+    "d": "2026-03-28",
+    "c": "West Delhi",
+    "n": 160400,
+    "p": "3464"
+   },
+   {
+    "d": "2026-03-25",
+    "c": "Greater Kailash",
+    "n": 180000,
+    "p": "3442"
+   },
+   {
+    "d": "2026-03-25",
+    "c": "Ghaziabad",
+    "n": 252400,
+    "p": "3448"
+   },
+   {
+    "d": "2026-03-25",
+    "c": "Ghaziabad",
+    "n": 47300,
+    "p": "3455"
+   },
+   {
+    "d": "2026-03-17",
+    "c": "Ghaziabad",
+    "n": 114300,
+    "p": "3367"
+   },
+   {
+    "d": "2026-03-12",
+    "c": "Greater Kailash",
+    "n": 283500,
+    "p": "2617"
+   },
+   {
+    "d": "2026-03-12",
+    "c": "Gurugram",
+    "n": 159400,
+    "p": "3398"
+   },
+   {
+    "d": "2026-03-11",
+    "c": "Gurugram",
+    "n": 159400,
+    "p": "3391"
+   },
+   {
+    "d": "2026-03-11",
+    "c": "Greater Kailash",
+    "n": 159400,
+    "p": "3391"
+   },
+   {
+    "d": "2026-03-11",
+    "c": "West Delhi",
+    "n": 132000,
+    "p": "3393"
+   },
+   {
+    "d": "2026-03-11",
+    "c": "Ghaziabad",
+    "n": 169400,
+    "p": "3338"
+   },
+   {
+    "d": "2026-03-10",
+    "c": "Greater Kailash",
+    "n": 230000,
+    "p": "3137"
+   },
+   {
+    "d": "2026-03-06",
+    "c": "Greater Kailash",
+    "n": 174000,
+    "p": "3337"
+   },
+   {
+    "d": "2026-03-05",
+    "c": "West Delhi",
+    "n": 152830,
+    "p": "2160"
+   },
+   {
+    "d": "2026-03-02",
+    "c": "Greater Kailash",
+    "n": 66258,
+    "p": "3329"
+   },
+   {
+    "d": "2026-02-28",
+    "c": "Greater Kailash",
+    "n": 90000,
+    "p": "3331"
+   },
+   {
+    "d": "2026-02-27",
+    "c": "West Delhi",
+    "n": 135000,
+    "p": "3332"
+   },
+   {
+    "d": "2026-02-26",
+    "c": "West Delhi",
+    "n": 130000,
+    "p": "2740"
+   },
+   {
+    "d": "2026-02-16",
+    "c": "Ghaziabad",
+    "n": 156040,
+    "p": "3238"
+   },
+   {
+    "d": "2026-02-04",
+    "c": "West Delhi",
+    "n": 140400,
+    "p": "3223"
+   },
+   {
+    "d": "2026-01-17",
+    "c": "Greater Kailash",
+    "n": 300000,
+    "p": "3153"
+   },
+   {
+    "d": "2026-01-15",
+    "c": "Greater Kailash",
+    "n": 265000,
+    "p": "3158"
+   },
+   {
+    "d": "2026-01-15",
+    "c": "Greater Kailash",
+    "n": 238500,
+    "p": "3091"
+   },
+   {
+    "d": "2026-01-07",
+    "c": "Greater Kailash",
+    "n": 68000,
+    "p": "2958"
+   }
+  ],
+  "matched": [
+   "Ajay G V",
+   "Ajay GV",
+   "Anita Malik",
+   "Deepika Chauhan",
+   "Dinesh Singh",
+   "Indu Bansal",
+   "Jyotika Jain",
+   "Manoj Kumar Sharma",
+   "Manoj Sharma",
+   "Mohan Kumar S"
+  ],
+  "unmatched": [
+   "Dr. Madhusudhan N",
+   "rajeev a g"
+  ],
+  "offList": [
+   "Manoj",
+   "Pooja Khullar"
+  ]
+ },
+ "publishedAt": "2026-09-02T05:09:29.017Z",
  "minDate": "2026-01-27",
  "maxDate": "2026-08-31",
  "encMin": "2026-08-01",
