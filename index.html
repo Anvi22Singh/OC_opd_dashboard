@@ -298,6 +298,10 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <div class="tblwrap"><table id="radMonthTbl"></table></div>
   </div>
   <div class="card">
+    <h2>By center</h2>
+    <div class="tblwrap"><table id="radCenterTbl"></table></div>
+  </div>
+  <div class="card">
     <h2>What they converted to</h2>
     <div class="tblwrap"><table id="radProcTbl"></table></div>
   </div>
@@ -459,7 +463,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "02-Sep-2026 bf55d4";
+const BUILD = "02-Sep-2026 435cb8";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1342,13 +1346,12 @@ function radMatcher(){
 /* Anything that is not a consultation, a test or a sundry charge is a procedure. */
 const PROCTYPES = new Set(["RADIATION","CHEMOTHERAPY","TARGETED CHEMOTHERAPY","PAID IMMUNOTHERAPY",
   "PAP IMMUNOTHERAPY","DAY CARE","MEDICAL MANAGEMENT","SURGERY"]);
-function analyseRadiation(){
-  const f=$("#rFrom").value, t=$("#rTo").value, c=$("#rCenter").value;
+/* Built once over the WHOLE dataset so it can be stored in a snapshot; the date
+   and centre filters are applied afterwards, in radAggregate. */
+function radBuild(){
   const isRad = radMatcher();
-  const inWin = d => (!f || iso(d)>=f) && (!t || iso(d)<=t);
-  const okC   = r => !c || r.center===c;
   const pid   = r => r.hid || r.mob || r.patient;
-  const radOpd = INV.filter(i=>i.procType==="OPD" && i.date && isRad(i.doctor) && inWin(i.date) && okC(i));
+  const radOpd = INV.filter(i=>i.procType==="OPD" && i.date && isRad(i.doctor));
   const procs  = INV.filter(i=>i.date && PROCTYPES.has(i.procType));
   const opdAll = INV.filter(i=>i.procType==="OPD" && i.date);
   const byPat = new Map();
@@ -1371,41 +1374,64 @@ function analyseRadiation(){
   }).sort((a,b)=>a.firstOpd-b.firstOpd);
   /* Radiation revenue stands on its own: it is billed whenever it is billed,
      regardless of which month the consultation happened in. */
-  const radBills = INV.filter(i=>i.procType==="RADIATION" && i.date && inWin(i.date) && okC(i));
-  const months = {};
-  const M = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
-  radOpd.forEach(i=>{ const m=months[M(i.date)] = months[M(i.date)] || blankRadMonth();
-                      m.opds++; m.opdPat.add(pid(i)); });
-  rows.filter(r=>r.converted).forEach(r=>{ const m=months[M(r.firstOpd)] = months[M(r.firstOpd)] || blankRadMonth();
-                      m.conv++; });
-  radBills.forEach(i=>{ const m=months[M(i.date)] = months[M(i.date)] || blankRadMonth();
-                      m.rev+=i.net; m.bills++; m.revPat.add(pid(i)); });
-  const monthRows = Object.keys(months).sort().map(k=>({month:k, ...months[k],
-    opdPat:months[k].opdPat.size, revPat:months[k].revPat.size}));
+  const bills = INV.filter(i=>i.procType==="RADIATION" && i.date)
+                   .map(i=>({d:iso(i.date), c:i.center, n:i.net, p:pid(i)}));
   const unmatched = radNames().filter(n=>!INV.some(i=>isRad(i.doctor) && radKey(i.doctor)===radKey(n)));
   const matched = [...new Set(INV.filter(i=>isRad(i.doctor)).map(i=>i.doctor))].sort();
   /* Radiation billed under someone who is not on the list — worth surfacing. */
   const offList = [...new Set(INV.filter(i=>i.procType==="RADIATION" && !isRad(i.doctor)).map(i=>i.doctor))]
                   .filter(Boolean).sort();
-  return {rows, monthRows, radBills, matched, unmatched, offList};
+  return {rows: rows.map(r=>({...r, firstOpd:iso(r.firstOpd),
+            procDate:r.procDate?iso(r.procDate):null,
+            followUp:r.followUp?{d:iso(r.followUp.date), t:r.followUp.procType}:null})),
+          bills, matched, unmatched, offList};
 }
 function blankRadMonth(){ return {opds:0, opdPat:new Set(), conv:0, rev:0, bills:0, revPat:new Set()}; }
 
+/* Apply the section's own date / centre filters and roll up. Works the same on
+   live data and on a published snapshot. */
+function radAggregate(src){
+  const f=$("#rFrom").value, t=$("#rTo").value, c=$("#rCenter").value;
+  const inWin = d => (!f || d>=f) && (!t || d<=t);
+  const rows  = (src.rows||[]).filter(r=>inWin(r.firstOpd) && (!c || r.center===c));
+  const bills = (src.bills||[]).filter(b=>inWin(b.d) && (!c || b.c===c));
+  const months = {}, M = s => s.slice(0,7);
+  const cell = k => months[k] = months[k] || blankRadMonth();
+  rows.forEach(r=>{ const m=cell(M(r.firstOpd)); m.opds+=r.opds; m.opdPat.add(r.id); if(r.converted) m.conv++; });
+  bills.forEach(b=>{ const m=cell(M(b.d)); m.rev+=b.n; m.bills++; m.revPat.add(b.p); });
+  const monthRows = Object.keys(months).sort().map(k=>({month:k, ...months[k],
+    opdPat:months[k].opdPat.size, revPat:months[k].revPat.size}));
+  /* Per centre, so radiation reads like the rest of the dashboard. */
+  const centers = [...new Set([...rows.map(r=>r.center), ...bills.map(b=>b.c)])].sort();
+  const perCenter = centers.map(cc=>{
+    const rr=rows.filter(r=>r.center===cc), bb=bills.filter(b=>b.c===cc);
+    const cv=rr.filter(r=>r.converted);
+    return {center:cc, patients:rr.length, consults:rr.reduce((a,r)=>a+r.opds,0),
+            converted:cv.length, procRev:cv.reduce((a,r)=>a+r.procRev,0),
+            bills:bb.length, rev:bb.reduce((a,b)=>a+b.n,0),
+            returned:cv.filter(r=>r.followUp).length};
+  });
+  return {rows, bills, monthRows, perCenter,
+          matched:src.matched||[], unmatched:src.unmatched||[], offList:src.offList||[]};
+}
+
 function renderRadiation(){
-  if(!INV.length){ return; }
+  /* Live data when files are loaded, otherwise whatever the snapshot carries —
+     so a shared snapshot shows this section too. */
+  const src = INV.length ? radBuild() : (SNAP && SNAP.rad) ? SNAP.rad : null;
+  if(!src || !(src.rows||[]).length && !(src.bills||[]).length){ return; }
   const sel=$("#rCenter");
-  const cs=[...new Set(INV.map(i=>i.center))].filter(Boolean).sort();
+  const cs=[...new Set([...(src.rows||[]).map(r=>r.center), ...(src.bills||[]).map(b=>b.c)])].filter(Boolean).sort();
   if(sel && sel.dataset.built!==cs.join("|")){
     const keep=sel.value;
     sel.innerHTML='<option value="">All centers</option>'+cs.map(x=>'<option>'+esc(x)+"</option>").join("");
     sel.dataset.built=cs.join("|"); sel.value=cs.includes(keep)?keep:"";
   }
   if(!$("#rFrom").value || !$("#rTo").value){
-    const ds=INV.map(i=>i.date).filter(Boolean);
-    if(ds.length){ $("#rFrom").value=iso(new Date(Math.min(...ds)));
-                   $("#rTo").value  =iso(new Date(Math.max(...ds))); }
+    const ds=[...(src.rows||[]).map(r=>r.firstOpd), ...(src.bills||[]).map(b=>b.d)].filter(Boolean).sort();
+    if(ds.length){ $("#rFrom").value=ds[0]; $("#rTo").value=ds[ds.length-1]; }
   }
-  const A = analyseRadiation();
+  const A = radAggregate(src);
   const conv = A.rows.filter(r=>r.converted);
   const fu   = conv.filter(r=>r.followUp);
   $("#radKpis").innerHTML =
@@ -1413,8 +1439,8 @@ function renderRadiation(){
         A.rows.length+" distinct patients") +
     kpi("diag","Converted to a procedure", pctTxt(conv.length,A.rows.length),
         conv.length+" of "+A.rows.length+" patients") +
-    kpi("diag","Radiation revenue", money(A.radBills.reduce((a,i)=>a+i.net,0)),
-        A.radBills.length+" radiation invoices") +
+    kpi("diag","Radiation revenue", money(A.bills.reduce((a,b)=>a+b.n,0)),
+        A.bills.length+" radiation invoices") +
     kpi("pharm","Returned after the procedure", pctTxt(fu.length,conv.length),
         fu.length+" of "+conv.length+", "+conv.filter(r=>r.fuSameMonth).length+" in the same month");
 
@@ -1434,6 +1460,22 @@ function renderRadiation(){
      "<td>"+tt.bills+"</td><td>—</td><td>"+money(tt.rev)+"</td></tr></tbody>";
   $("#radMonthTbl").innerHTML=h;
 
+  let ch="<thead><tr><th>Center</th><th>Patients</th><th>Consults</th><th>Converted</th><th>Conversion %</th>"+
+         "<th>Returned after</th><th>Radiation invoices</th><th>Radiation revenue</th></tr></thead><tbody>";
+  const ct={patients:0,consults:0,converted:0,returned:0,bills:0,rev:0};
+  A.perCenter.forEach(r=>{
+    Object.keys(ct).forEach(k=>ct[k]+=r[k]||0);
+    const cv=r.patients?r.converted/r.patients:null;
+    ch+="<tr><td>"+esc(r.center)+"</td><td>"+r.patients+"</td><td>"+r.consults+"</td><td>"+r.converted+"</td>"+
+        '<td class="pct" style="color:'+(cv==null?"var(--text-muted)":"var(--series-diag)")+'">'+
+          (cv==null?"—":Math.round(cv*100)+"% "+bar(Math.min(cv,1),1,"var(--series-diag)"))+"</td>"+
+        "<td>"+r.returned+"</td><td>"+r.bills+"</td><td>"+money(r.rev)+"</td></tr>";
+  });
+  ch+='<tr class="total"><td>All centers</td><td>'+ct.patients+"</td><td>"+ct.consults+"</td><td>"+ct.converted+"</td>"+
+      '<td class="pct" style="color:var(--series-diag)">'+(ct.patients?Math.round(ct.converted/ct.patients*100)+"%":"—")+"</td>"+
+      "<td>"+ct.returned+"</td><td>"+ct.bills+"</td><td>"+money(ct.rev)+"</td></tr></tbody>";
+  $("#radCenterTbl").innerHTML=ch;
+
   const pc={}; conv.forEach(r=>{ const k=r.proc||"—"; (pc[k]=pc[k]||{n:0,rev:0}); pc[k].n++; pc[k].rev+=r.procRev; });
   const pl=Object.entries(pc).sort((a,b)=>b[1].n-a[1].n);
   $("#radProcTbl").innerHTML="<thead><tr><th>First procedure after the consultation</th><th>Patients</th><th>Share</th><th>Their total procedure revenue</th></tr></thead><tbody>"+
@@ -1447,12 +1489,12 @@ function renderRadiation(){
   if(q) list=list.filter(r=>r.patient.toLowerCase().includes(q)||String(r.doctor).toLowerCase().includes(q));
   $("#radPatTbl").innerHTML="<thead><tr><th>Patient</th><th>Center</th><th>Radiation consult</th><th>Doctor</th><th>Consults</th>"+
     "<th>Converted to</th><th>After</th><th>Procedure revenue</th><th>Follow-up consult</th></tr></thead><tbody>"+
-    (list.length? list.slice(0,600).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(r.firstOpd)+
+    (list.length? list.slice(0,600).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(parseDate(r.firstOpd))+
       "</td><td>"+esc(r.doctor)+"</td><td>"+r.opds+"</td>"+
       "<td>"+(r.converted?'<span class="pill hi">'+esc(r.proc)+"</span>":'<span class="pill no">not converted</span>')+"</td>"+
       '<td class="muted">'+(r.converted?r.days+"d":"—")+"</td>"+
       "<td>"+(r.converted?money(r.procRev):"—")+"</td>"+
-      "<td>"+(r.followUp? dmy(r.followUp.date)+(r.fuSameMonth?' <span class="pill hi">same month</span>':"")
+      "<td>"+(r.followUp? dmy(parseDate(r.followUp.d))+(r.fuSameMonth?' <span class="pill hi">same month</span>':"")
               : r.converted?'<span class="pill no">never returned</span>':'<span class="muted">—</span>')+"</td></tr>").join("")
       : '<tr><td colspan="9" class="muted">No radiation consultations in this period.</td></tr>')+"</tbody>";
 
@@ -1538,6 +1580,8 @@ function snapshotOf(A){
   const all = days.map(d=>d.d);
   return {
     schema: 3, detail: true, dg, enc, build: BUILD,
+    /* Radiation travels with the snapshot so the shared page shows it too. */
+    rad: radBuild(),
     publishedAt: new Date().toISOString(),
     minDate: all.length?all[0]:"", maxDate: all.length?all[all.length-1]:"",
     /* Suggestions come only from the OP/IP exports. Diag % is only meaningful
@@ -1659,6 +1703,10 @@ function renderSnap(){
   const A = LAST = aggregateSnap();
   renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); renderPharm(A);
   if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
+  try{ renderRadiation(); }
+  catch(err){ const n=$("#radNote");
+    if(n) n.innerHTML = '<div class="warnbox" style="margin-top:14px"><b>Radiation section failed to build:</b> '+
+      esc(err.message)+'.</div>'; }
   const when = SNAP.publishedAt ? new Date(SNAP.publishedAt) : null;
   const gap = coverageGap($("#fFrom").value, $("#fTo").value, SNAP.encMin, SNAP.encMax);
   $("#coverage").innerHTML = (gap ? '<div class="warnbox">'+gap+"</div>" : "")+
