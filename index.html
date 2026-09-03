@@ -265,6 +265,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
   <button aria-selected="true" data-a="diagnostics">Diagnostic analysis</button>
   <button aria-selected="false" data-a="pharmacy">Pharmacy analysis</button>
   <button aria-selected="false" data-a="radiation">Radiation backtracking</button>
+  <button aria-selected="false" data-a="drops">Dropped patients</button>
 </nav>
 <section id="area-pharmacy" class="area" style="display:none">
 <div id="tab-pharm">
@@ -343,6 +344,38 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <div class="tblwrap"><table id="radPatTbl"></table></div>
     <div id="radNote"></div>
   </div>
+</section>
+
+<section id="area-drops" class="area" style="display:none">
+  <div class="card">
+    <h2>Dropped patients</h2>
+    <p class="hint">Who stopped coming, when, why, and from which treatment. Read from the <b>patient master</b> — the Dropped, Drop Reason and Treatment Category columns your team maintains.</p>
+    <div class="ctrls">
+      <div class="fld"><label for="dpBasis">Count by</label><select id="dpBasis">
+        <option value="drop">Month they stopped</option>
+        <option value="cohort">Month they were onboarded</option></select></div>
+      <div class="fld"><label for="dpFrom">From</label><input type="date" id="dpFrom"></div>
+      <div class="fld"><label for="dpTo">To</label><input type="date" id="dpTo"></div>
+      <div class="fld"><label for="dpCenter">Center</label><select id="dpCenter"><option value="">All centers</option></select></div>
+      <div class="fld"><label for="dpGroup">Reason</label><select id="dpGroup"><option value="">All reasons</option></select></div>
+      <div class="fld"><label for="dpProc">Procedure</label><select id="dpProc"><option value="">All procedures</option></select></div>
+      <div class="fld"><label for="dpSrch">Search</label><input class="srch" id="dpSrch" placeholder="Patient or reason"></div>
+    </div>
+  </div>
+  <div id="dpTop"></div>
+  <div class="kpis" id="dpKpis"></div>
+  <div class="card"><h2>Month on month</h2>
+    <p class="hint">Drop % is drops divided by the patients counted in that month on the basis chosen above.</p>
+    <div class="tblwrap"><table id="dpMonthTbl"></table></div></div>
+  <div class="card"><h2>Why they dropped</h2>
+    <div class="tblwrap"><table id="dpGroupTbl"></table></div></div>
+  <div class="card"><h2>Reason as recorded</h2>
+    <div class="tblwrap"><table id="dpReasonTbl"></table></div></div>
+  <div class="card"><h2>Which procedure they dropped from</h2>
+    <div class="tblwrap"><table id="dpProcTbl"></table></div></div>
+  <div class="card"><h2>Patient by patient</h2>
+    <div class="tblwrap"><table id="dpPatTbl"></table></div>
+    <div id="dpNote"></div></div>
 </section>
 
 <div id="area-diagnostics" class="area">
@@ -496,7 +529,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "02-Sep-2026 20106e";
+const BUILD = "03-Sep-2026 076f34";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -713,11 +746,20 @@ let BILL=[], INV=[], OP=[], DUPES=0;
    only key that is unique and always present; mobile is missing on most rows of
    the master, so it is not used here. */
 let ONBOARD = new Map();
+let PATIENTS = [];
 const hid = v => String(v==null?"":v).replace(/\.0+$/,"").trim();
 function build(){
   SYN = synGroups();
-  ONBOARD = new Map();
+  ONBOARD = new Map(); PATIENTS = [];
   (RAW.pat||[]).forEach(r=>{
+    PATIENTS.push({
+      id: hid(get(r,"Hospital ID")), patient: String(get(r,"Patient Name")||""),
+      center: centerOf(get(r,"Location")), onboard: parseDate(get(r,"Onboarding Date")),
+      lastInvoice: parseDate(get(r,"Last Invoice Date")),
+      dropped: /^yes$/i.test(String(get(r,"Dropped")||"").trim()),
+      reason: get(r,"Drop Reason"), category: get(r,"Treatment Category"),
+      type: String(get(r,"Type")||"").trim(), revenue: num(get(r,"Total Revenue"))
+    });
     const k = hid(get(r,"Hospital ID")), d = parseDate(get(r,"Onboarding Date"));
     if(!k || !d) return;
     const prev = ONBOARD.get(k);        // keep the earliest if a patient repeats
@@ -1051,6 +1093,7 @@ function render(){
   renderDiag(A); renderPharm(A); renderItems(A); renderPatients(A);
   /* Radiation is independent of the rest; if it fails it must say so in its own
      panel rather than aborting the render and leaving the page half-drawn. */
+  try{ renderDrops(); }catch(e){}
   try{ renderRadiation(); }
   catch(err){
     const n=$("#radTop")||$("#radNote");
@@ -1588,6 +1631,133 @@ function renderRadiation(){
   $("#radNote").innerHTML = note ? '<div class="warnbox" style="margin-top:14px">'+note+"</div>" : "";
 }
 
+/* ------------------------------------------------------------------ drops -- */
+/* Not every drop is a loss. Treatment finishing is a good outcome, and a death
+   is not recoverable — so reasons are grouped, and the addressable figure is
+   reported separately from the raw count. */
+const DROPGROUP = [
+  [/treatment complete/i,            "Completed treatment"],
+  [/rip|passed away/i,               "Died"],
+  [/not fit/i,                       "Not fit for further treatment"],
+  [/govt|scheme|cheaper|money/i,     "Cost or scheme"],
+  [/hometown|country/i,              "Moved away"],
+  [/bad experience/i,                "Bad experience"]
+];
+const dropGroup = s => { const t=String(s||"").trim();
+  if(!t || t==="nan") return "Not recorded";
+  for(const [re,g] of DROPGROUP) if(re.test(t)) return g;
+  return "Other"; };
+/* Groups we could realistically have kept. */
+const ADDRESSABLE = new Set(["Cost or scheme","Moved away","Bad experience","Other","Not recorded"]);
+
+function analyseDrops(){
+  const f=$("#dpFrom").value, t=$("#dpTo").value;
+  const basis=$("#dpBasis").value || "drop";     // drop month vs onboarding cohort
+  const cen=$("#dpCenter").value, grp=$("#dpGroup").value, proc=$("#dpProc").value;
+  const M = d => d ? iso(d).slice(0,7) : null;
+  const rows = PATIENTS.map(p=>({...p,
+    group: dropGroup(p.reason),
+    dropMonth: M(p.lastInvoice) || null,
+    cohort: M(p.onboard)}));
+  const inWin = m => m && (!f || m>=f.slice(0,7)) && (!t || m<=t.slice(0,7));
+  const scope = rows.filter(p=>{
+    const m = basis==="cohort" ? p.cohort : (p.dropMonth || p.cohort);
+    return inWin(m) && (!cen || p.center===cen);
+  });
+  let dropped = scope.filter(p=>p.dropped);
+  if(grp)  dropped = dropped.filter(p=>p.group===grp);
+  if(proc) dropped = dropped.filter(p=>p.category===proc);
+  const key = p => basis==="cohort" ? p.cohort : (p.dropMonth || p.cohort);
+  const months = {};
+  scope.forEach(p=>{ const m=key(p); if(!m) return;
+    const c = months[m] = months[m] || {month:m, total:0, dropped:0, addressable:0, revenue:0};
+    c.total++; });
+  dropped.forEach(p=>{ const m=key(p); if(!m) return;
+    const c = months[m] = months[m] || {month:m, total:0, dropped:0, addressable:0, revenue:0};
+    c.dropped++; if(ADDRESSABLE.has(p.group)) c.addressable++; c.revenue+=p.revenue||0; });
+  const byMonth = Object.values(months).sort((a,b)=>a.month<b.month?-1:1);
+  const tally = (arr,keyf) => { const m={};
+    arr.forEach(x=>{ const k=keyf(x)||"Not recorded";
+      const c=m[k]=m[k]||{key:k,n:0,rev:0}; c.n++; c.rev+=x.revenue||0; });
+    return Object.values(m).sort((a,b)=>b.n-a.n); };
+  return {scope, dropped, byMonth,
+    byGroup: tally(dropped,p=>p.group),
+    byReason: tally(dropped,p=>p.reason && String(p.reason).trim()!=="nan" ? String(p.reason).trim() : "Not recorded"),
+    byProc: tally(dropped,p=>p.category && String(p.category).trim()!=="nan" ? String(p.category).trim() : "Not recorded"),
+    basis};
+}
+
+function renderDrops(){
+  const top=$("#dpTop");
+  if(!PATIENTS.length){
+    ["#dpKpis","#dpMonthTbl","#dpGroupTbl","#dpReasonTbl","#dpProcTbl","#dpPatTbl"].forEach(s=>{const e=$(s); if(e) e.innerHTML="";});
+    if(top) top.innerHTML='<div class="warnbox">This needs the <b>patient master</b> — the export with Onboarding Date, Dropped and Drop Reason. Load it above.</div>';
+    return;
+  }
+  if(top) top.innerHTML="";
+  const fill=(sel,vals,label)=>{ const e=$(sel); if(!e) return;
+    const j=vals.join("|"); if(e.dataset.built===j) return; const keep=e.value;
+    e.innerHTML='<option value="">'+label+"</option>"+vals.map(v=>'<option>'+esc(v)+"</option>").join("");
+    e.dataset.built=j; e.value=vals.includes(keep)?keep:""; };
+  fill("#dpCenter",[...new Set(PATIENTS.map(p=>p.center))].filter(Boolean).sort(),"All centers");
+  fill("#dpGroup",[...new Set(PATIENTS.filter(p=>p.dropped).map(p=>dropGroup(p.reason)))].sort(),"All reasons");
+  fill("#dpProc",[...new Set(PATIENTS.filter(p=>p.dropped&&p.category).map(p=>String(p.category).trim()))]
+        .filter(x=>x&&x!=="nan").sort(),"All procedures");
+  if(!$("#dpFrom").value || !$("#dpTo").value){
+    const ds=PATIENTS.map(p=>p.onboard).filter(Boolean).sort((a,b)=>a-b);
+    if(ds.length){ $("#dpFrom").value=iso(ds[0]); $("#dpTo").value=iso(ds[ds.length-1]); }
+  }
+  const A=analyseDrops();
+  const pct=(a,b)=> b?Math.round(a/b*100)+"%":"—";
+  const addr=A.dropped.filter(p=>ADDRESSABLE.has(p.group)).length;
+  const done=A.dropped.filter(p=>p.group==="Completed treatment").length;
+  const died=A.dropped.filter(p=>p.group==="Died").length;
+  $("#dpKpis").innerHTML =
+    kpi("","Patients in view", A.scope.length.toLocaleString(), A.basis==="cohort"?"by onboarding month":"by month they stopped") +
+    kpi("pharm","Dropped", A.dropped.length.toLocaleString(), pct(A.dropped.length,A.scope.length)+" of them") +
+    kpi("diag","Completed treatment", done.toLocaleString(), "a good outcome, not a loss") +
+    kpi("pharm","Addressable drops", addr.toLocaleString(), "excludes completed and died ("+died+")") +
+    kpi("","Revenue from dropped patients", money(sum2(A.dropped,p=>p.revenue)), "already billed, before they left");
+
+  $("#dpMonthTbl").innerHTML="<thead><tr><th>Month</th><th>Patients</th><th>Dropped</th><th>Drop %</th>"+
+    "<th>Addressable</th><th>Revenue billed</th></tr></thead><tbody>"+
+    (A.byMonth.length?A.byMonth.map(m=>"<tr><td>"+esc(m.month)+"</td><td>"+m.total+"</td><td>"+m.dropped+"</td>"+
+      '<td class="pct" style="color:var(--series-pharm)">'+pct(m.dropped,m.total)+" "+bar(m.total?Math.min(m.dropped/m.total,1):0,1,"var(--series-pharm)")+"</td>"+
+      "<td>"+m.addressable+"</td><td>"+money(m.revenue)+"</td></tr>").join("")
+      :'<tr><td colspan="6" class="muted">Nothing in this period.</td></tr>')+
+    '<tr class="total"><td>All</td><td>'+A.scope.length+"</td><td>"+A.dropped.length+'</td><td class="pct">'+
+      pct(A.dropped.length,A.scope.length)+"</td><td>"+addr+"</td><td>"+money(sum2(A.dropped,p=>p.revenue))+"</td></tr></tbody>";
+
+  const tbl=(el,arr,label)=>{ $(el).innerHTML="<thead><tr><th>"+label+"</th><th>Patients</th><th>% of drops</th><th>Revenue billed</th></tr></thead><tbody>"+
+    (arr.length?arr.map(r=>"<tr><td>"+esc(r.key)+"</td><td>"+r.n+'</td><td class="pct">'+pct(r.n,A.dropped.length)+
+      "</td><td>"+money(r.rev)+"</td></tr>").join("")
+      :'<tr><td colspan="4" class="muted">Nothing to show.</td></tr>')+"</tbody>"; };
+  tbl("#dpGroupTbl",A.byGroup,"Reason group");
+  tbl("#dpReasonTbl",A.byReason,"Reason as recorded");
+  tbl("#dpProcTbl",A.byProc,"Procedure (Treatment Category)");
+
+  const q=$("#dpSrch").value.trim().toLowerCase();
+  let list=A.dropped;
+  if(q) list=list.filter(p=>(p.patient+" "+(p.reason||"")+" "+(p.category||"")).toLowerCase().includes(q));
+  $("#dpPatTbl").innerHTML="<thead><tr><th>Patient</th><th>Center</th><th>Onboarded</th><th>Last invoice</th>"+
+    "<th>Procedure</th><th>Reason</th><th>Group</th><th>Revenue billed</th></tr></thead><tbody>"+
+    (list.length?list.slice(0,600).map(p=>"<tr><td>"+esc(p.patient)+"</td><td>"+esc(p.center)+"</td>"+
+      "<td>"+(p.onboard?dmy(p.onboard):"—")+"</td><td>"+(p.lastInvoice?dmy(p.lastInvoice):'<span class="muted">not recorded</span>')+"</td>"+
+      "<td>"+esc(p.category&&String(p.category)!=="nan"?p.category:"—")+"</td>"+
+      "<td>"+esc(p.reason&&String(p.reason)!=="nan"?p.reason:"—")+"</td>"+
+      '<td><span class="pill '+(p.group==="Completed treatment"?"hi":p.group==="Died"?"n":"no")+'">'+esc(p.group)+"</span></td>"+
+      "<td>"+money(p.revenue)+"</td></tr>").join("")
+      :'<tr><td colspan="8" class="muted">No dropped patients match.</td></tr>')+"</tbody>";
+
+  const noRec = A.dropped.filter(p=>!p.lastInvoice).length;
+  $("#dpNote").innerHTML = '<div class="warnbox" style="margin-top:14px">'+
+    "<b>Read the drop rate carefully.</b> Of "+A.dropped.length+" drops, "+done+" completed treatment and "+died+
+    " died — neither is recoverable, so the number worth acting on is <b>"+addr+"</b>."+
+    (noRec? " Last Invoice Date is blank for "+noRec+" of them, so those fall back to their onboarding month." : "")+
+    " A drop rate by procedure is not shown because Treatment Category is only filled for patients who reached treatment, "+
+    "which would make every procedure look catastrophic.</div>";
+}
+
 /* --------------------------------------------------------------- snapshot -- */
 /* A snapshot carries ONLY computed aggregates — no patient name, mobile, invoice
    number or per-bill row ever enters it, so the file is safe to commit to a
@@ -1944,7 +2114,9 @@ function wireDetailControls(){
   ["pStat","pCenter","pType","pAdv"].forEach(id=>on(id,"change",()=>{ if(LAST) renderPatients(LAST); }));
   ["dBucket","dBack"].forEach(id=>on(id,"change",()=>{ if(LAST) renderDiag(LAST); }));
   on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
-  ["rFrom","rTo","rCenter","rConv"].forEach(id=>on(id,"change",()=>{ if(INV.length) renderRadiation(); }));
+  ["dpBasis","dpFrom","dpTo","dpCenter","dpGroup","dpProc"].forEach(id=>on(id,"change",()=>{ if(PATIENTS.length) renderDrops(); }));
+  on("dpSrch","input",()=>{ if(PATIENTS.length) renderDrops(); });
+  ["rFrom","rTo","rCenter","rHosp","rConv"].forEach(id=>on(id,"change",()=>{ if(INV.length) renderRadiation(); }));
   on("rSrch","input",()=>{ if(INV.length) renderRadiation(); });
   on("iSrch","input",()=>{ if(LAST) renderItems(LAST); });
   on("pSrch","input",()=>{ if(LAST) renderPatients(LAST); });
