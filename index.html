@@ -254,6 +254,12 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
     <div class="fld"><label for="fCenter">Center</label><select id="fCenter"><option value="">All centers</option></select></div>
     <div class="fld"><label for="fType">OP / IP</label><select id="fType">
       <option value="">Both</option><option value="OP">OP only</option><option value="IP">IP only</option></select></div>
+    <div class="fld"><label for="optWindow">Consultation within</label><select id="optWindow">
+      <option value="30">30 days before</option>
+      <option value="45" selected>45 days before</option>
+      <option value="60">60 days before</option>
+      <option value="90">90 days before</option>
+      <option value="month">the same calendar month</option></select></div>
     <label class="chk"><input type="checkbox" id="optSame" checked> Billed on the same day as suggested</label>
     <label class="chk"><input type="checkbox" id="optAfter" checked> Billed after the day of suggestion</label>
     <label class="chk"><input type="checkbox" id="optCenter" checked> Billed at the same center</label>
@@ -403,9 +409,9 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
       <b>Suggested diagnostics</b> — every row in the OP and IP exports whose “Diagnostics Suggested” cell has any content, counted together.<br>
       <b>The scenario columns count patients, not bills</b> — three tests billed to one patient on one day is one patient. Revenue still adds up every bill. Each bill lands in exactly one scenario.
       <b>①</b> a Fresh OPD consultation earlier the same month · <b>②</b> a follow-up OPD consultation earlier the same month · <b>③</b> no OPD, but a chemo/immuno/IP bill on an <i>earlier day</i> that month. Those three add up to <b>Counted</b>, and Diag % = Counted ÷ Suggested.<br>
-      <b>④ Diag w/o OPD</b> — the patient has <i>never</i> consulted Oncare up to that date: a genuine direct walk-in. <b>⑤ Returning patient</b> — no consultation this month, but they did consult earlier, so the test is not this month's conversion nor a new walk-in. <b>⊘ Same-day session</b> — the only prior bill is a chemo/immuno bill on the same day, so the tests belong to that session. None of these three sit inside Counted.<br>
+      <b>Counted = ① + ② + ③ + ⑤</b>, and Billed ₹ is their revenue added up the same way. <b>④ Diag w/o OPD</b> — the patient has <i>never</i> consulted Oncare up to that date: a genuine direct walk-in. <b>⑤ Returning patient</b> — no consultation this month, but they did consult earlier, so the test is not this month's conversion nor a new walk-in. <b>⊘ Same-day session</b> — the only prior bill is a chemo/immuno bill on the same day, so the tests belong to that session. None of these three sit inside Counted.<br>
       ④ and ⑤ are split using the patient master's <b>Onboarding Date</b>, matched on Hospital ID: onboarded on an earlier day means the patient already existed. Without that file the split falls back to whatever invoice history is loaded.<br>
-      <b>Expected ₹</b> — the advised value, from Diagnostics Cost. <b>Billed ₹</b> — everything invoiced as Diagnostics at that center in the period, including patients who were never advised, so Capture % can exceed 100%.
+      <b>Expected ₹</b> — the advised value, from Diagnostics Cost. <b>Billed ₹</b> — every diagnostics invoice at that center in the period, walk-ins included, so it ties to the diagnostics revenue in your books. Because Counted is a patient count and Billed ₹ is total revenue, the two are deliberately not the same population.
     </p>
     <div class="tblwrap"><table id="sumTbl"></table></div>
   </div>
@@ -529,7 +535,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "03-Sep-2026 076f34";
+const BUILD = "03-Sep-2026 3c85a1";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -917,8 +923,15 @@ function analyse(){
                   Oncare before — a returning patient, not a walk-in
        noopd    - never consulted Oncare at any point up to this test: a genuine
                   direct walk-in for diagnostics */
+  /* A rolling lookback, not the calendar month. Under a month rule a consultation
+     on 29 Aug producing a scan on 1 Sep was thrown out for landing either side of
+     a month boundary, which wrecked the first days of every month. */
+  const winOpt = ($("#optWindow") && $("#optWindow").value) || "45";
+  const winDays = winOpt==="month" ? null : parseInt(winOpt,10);
   function classify(d){
-    const sm = c => c.date.getFullYear()===d.date.getFullYear() && c.date.getMonth()===d.date.getMonth();
+    const sm = c => winDays==null
+      ? (c.date.getFullYear()===d.date.getFullYear() && c.date.getMonth()===d.date.getMonth())
+      : ((d.date - c.date) <= winDays*86400000 && c.date <= d.date);
     const ok = c => c.mob===d.mob && sm(c) && (!sameCtr || c.center===d.center);
     /* Attribute the test to the MOST RECENT consultation before it, not to any
        consultation that month. A patient seen fresh on the 8th and again as a
@@ -941,7 +954,10 @@ function analyse(){
     if(OPDinv.some(c=>c.mob===d.mob && c.date<=d.date)) return "returned";
     return "noopd";
   }
-  const COUNTED = new Set(["fresh","followup","prior"]);
+  /* A consultation in August that produces a scan in September is still a
+     conversion, so returning patients sit INSIDE Counted. Only walk-ins who
+     never consulted, and tests belonging to that day's chemo session, stay out. */
+  const COUNTED = new Set(["fresh","followup","prior","returned"]);
   /* Scenario columns count PATIENTS, not bills — one patient billed three times
      on the same day is one conversion, not three. Hospital ID identifies the
      patient; mobile and then name are fallbacks. Revenue still sums every bill. */
@@ -1029,10 +1045,12 @@ function analyse(){
       bSameDay:npat(dgHere,"sameday"),
       noOpdRev: sumNet(dgHere,"noopd"),
       returnRev:sumNet(dgHere,"returned"),
-      /* Expected = value the doctor advised. Billed = everything invoiced as
-         Diagnostics at this center in the period, not only the advised patients. */
+      /* Expected = value the doctor advised. Billed = EVERY diagnostics invoice
+         at this center in the period — walk-ins included — so it ties to the
+         diagnostics revenue in the books. Counted stays a patient conversion
+         count, so the two answer different questions on purpose. */
       expRev: sd.reduce((a,r)=>a+r.expD,0),
-      bilRev: dgInv.filter(i=>i.center===c).reduce((a,i)=>a+i.net,0),
+      bilRev: dgHere.reduce((a,i)=>a+i.net,0),
       sugP: sp.length, bilP: sp.filter(r=>r.convP).length};
   });
   const KEYS = ["opd","fresh","sugD","bilD","expRev","bilRev","sugP","bilP",
@@ -1181,9 +1199,8 @@ function bar(v,max,color){
 }
 function renderSummary(A){
   const head = ["Center","Consultations","Fresh OPD","Suggested diagnostics",
-                "① Fresh OPD → diag","② Follow-up → diag","③ Prior IP → diag","Counted","Diag %",
-                "Expected ₹","Billed ₹","Billed %","④ Diag w/o OPD","④ Revenue",
-                "⑤ Returning patient","⑤ Revenue","⊘ Same-day session"];
+                "① Fresh OPD → diag","② Follow-up → diag","③ Prior IP → diag","⑤ Returning patient","Counted","Diag %",
+                "Expected ₹","Billed ₹","Billed %","④ Diag w/o OPD","④ Revenue","⑤ Revenue (in Counted)","⊘ Same-day session"];
   let h = "<thead><tr>"+head.map(x=>"<th>"+x+"</th>").join("")+"</tr></thead><tbody>";
   const line = (r,cls) => {
     const dp = r.sugD?r.bilD/r.sugD:null;
@@ -1191,7 +1208,7 @@ function renderSummary(A){
     const cap = r.expRev ? r.bilRev/r.expRev : null;
     return '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
       "<td>"+r.opd+"</td><td>"+r.fresh+"</td><td>"+r.sugD+"</td>"+
-      "<td>"+r.bFresh+"</td><td>"+r.bFollow+"</td><td>"+r.bPrior+"</td>"+
+      "<td>"+r.bFresh+"</td><td>"+r.bFollow+"</td><td>"+r.bPrior+"</td><td>"+(r.bReturn||0)+"</td>"+
       "<td><b>"+r.bilD+"</b></td>"+
       '<td class="pct" style="color:'+(dp==null?"var(--text-muted)":"var(--series-diag)")+'">'+
         (dp==null?"—":Math.round(dp*100)+"% "+bar(dp,1,"var(--series-diag)"))+"</td>"+
@@ -1200,7 +1217,6 @@ function renderSummary(A){
         (cap==null?"—":Math.round(cap*100)+"%")+"</td>"+
       '<td style="color:var(--series-pharm)">'+r.bNoOpd+"</td>"+
       '<td style="color:var(--series-pharm)">'+money(r.noOpdRev)+"</td>"+
-      '<td class="muted">'+(r.bReturn||0)+"</td>"+
       '<td class="muted">'+money(r.returnRev||0)+"</td>"+
       '<td class="muted">'+r.bSameDay+"</td></tr>";
   };
@@ -1770,6 +1786,7 @@ let SNAPMODE = false, SNAP = null;
    Classification (fresh / follow-up / prior IP / same-day / no-OPD) and drug
    purchases are resolved at publish time against the FULL file, so lookups that
    reach outside the chosen range stay correct. */
+const COUNTED_B = new Set(["fresh","followup","prior","returned"]);
 function blankDay(d,c){
   const side = () => ({n:0,sugD:0,expRev:0,sugP:0,bilP:0,pSug:0,pBought:0,pAdv:0,pBil:0});
   return {d, c, opd:0, fresh:0, bilD:0, bFresh:0, bFollow:0, bPrior:0, bNoOpd:0, bReturn:0,
@@ -1794,7 +1811,10 @@ function snapshotOf(A){
     else if(d.bucket==="returned"){ x.bReturn++; x.returnRev += d.net; }
     else { x.bNoOpd++; x.noOpdRev += d.net;
            x.btBills++; if(d.back){ x.btRet++; x.btVal += d.back.total; } }
-    if(d.bucket==="fresh"||d.bucket==="followup"||d.bucket==="prior"){ x.bilD++; x.bilRev += d.net; }
+    /* Counted follows the conversion buckets; billed money follows every
+       diagnostics invoice, so the snapshot matches the live figures. */
+    if(COUNTED_B.has(d.bucket)) x.bilD++;
+    x.bilRev += d.net;
   });
   A.allRows.forEach(r=>{
     const x = cell(r.date,r.center), s = r.type==="IP" ? x.ip : x.op;
@@ -1911,7 +1931,7 @@ function aggregateSnap(){
      rows rather than added up across days — the same patient can be billed on
      several days and must still count once. */
   const pk = d => d.hid || d.mob || d.patient;
-  const CNT = new Set(["fresh","followup","prior"]);
+  const CNT = new Set(["fresh","followup","prior","returned"]);
   const np = (rr,b) => new Set(rr.filter(d=>d.bucket===b).map(pk)).size;
   const setB = (o, rr) => Object.assign(o, {
     bilD: new Set(rr.filter(d=>CNT.has(d.bucket)).map(pk)).size,
@@ -2103,7 +2123,7 @@ async function ingest(files){
   render();
 }
 
-["fFrom","fTo","fCenter","fType","optSame","optAfter","optCenter"].forEach(id=>$("#"+id).addEventListener("change",render));
+["fFrom","fTo","fCenter","fType","optSame","optAfter","optCenter","optWindow"].forEach(id=>$("#"+id).addEventListener("change",render));
 /* The detail tabs are replaced wholesale in snapshot mode, so their listeners are
    attached through a function that can be called again after they are restored. */
 const TABHTML = {};
