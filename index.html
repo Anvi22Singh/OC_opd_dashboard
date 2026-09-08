@@ -559,7 +559,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "08-Sep-2026 6c64a6";
+const BUILD = "08-Sep-2026 bdb9b3";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1903,11 +1903,13 @@ function renderPharma(){
   $("#phKpis").innerHTML =
     kpi("diag","Procedure drugs converted", pct(P.converted,P.encounters),
         P.converted+" of "+P.encounters+" consultations") +
+    kpi("diag","Procedure drugs revenue", money(P.billed),
+        "of "+money(P.advised)+" advised ("+pct(P.billed,P.advised)+")") +
     kpi("pharm","Regular drugs converted", pct(R.converted,R.encounters),
         R.converted+" of "+R.encounters+" consultations") +
-    kpi("","Advised value", money(P.advised+R.advised), "both kinds together") +
-    kpi("","Billed against advice", money(P.billed+R.billed), pct(P.billed+R.billed,P.advised+R.advised)+" of advised") +
-    kpi("pharm","Advised but never bought", (P.items-P.itemsBilled+R.items-R.itemsBilled).toLocaleString(), "individual drugs with no matching line");
+    kpi("pharm","Regular drugs revenue", money(R.billed),
+        "of "+money(R.advised)+" advised ("+pct(R.billed,R.advised)+")") +
+    kpi("","Advised but never bought", (P.items-P.itemsBilled+R.items-R.itemsBilled).toLocaleString(), "individual drugs with no matching line");
 
   const srow=(label,s,cls)=>"<tr class='"+(cls||"")+"'><td>"+label+"</td><td>"+s.encounters+"</td><td>"+s.patients+"</td>"+
     "<td>"+s.converted+'</td><td class="pct" style="color:'+(cls?"var(--series-pharm)":"var(--series-diag)")+'">'+
@@ -1919,16 +1921,20 @@ function renderPharma(){
     srow("Procedure drugs — chemo / immuno session", P) +
     srow("Regular drugs — take-home prescription", R, "x") + "</tbody>";
 
-  $("#phCenterTbl").innerHTML="<thead><tr><th>Center</th><th>Proc. advised</th><th>Proc. converted</th><th>Proc %</th>"+
-    "<th>Reg. advised</th><th>Reg. converted</th><th>Reg %</th><th>Billed ₹</th></tr></thead><tbody>"+
-    A.perCenter.map(c=>"<tr><td>"+esc(c.center)+"</td><td>"+c.proc.encounters+"</td><td>"+c.proc.converted+
+  const crow=(name,c,cls)=>"<tr class='"+(cls||"")+"'><td>"+esc(name)+"</td>"+
+    "<td>"+c.proc.encounters+"</td><td>"+c.proc.converted+
       '</td><td class="pct" style="color:var(--series-diag)">'+pct(c.proc.converted,c.proc.encounters)+"</td>"+
-      "<td>"+c.reg.encounters+"</td><td>"+c.reg.converted+
+    "<td>"+money(c.proc.advised)+"</td><td>"+money(c.proc.billed)+
+      '</td><td class="pct" style="color:var(--series-diag)">'+pct(c.proc.billed,c.proc.advised)+"</td>"+
+    "<td>"+c.reg.encounters+"</td><td>"+c.reg.converted+
       '</td><td class="pct" style="color:var(--series-pharm)">'+pct(c.reg.converted,c.reg.encounters)+"</td>"+
-      "<td>"+money(c.proc.billed+c.reg.billed)+"</td></tr>").join("")+
-    '<tr class="total"><td>All centers</td><td>'+P.encounters+"</td><td>"+P.converted+'</td><td class="pct">'+pct(P.converted,P.encounters)+
-      "</td><td>"+R.encounters+"</td><td>"+R.converted+'</td><td class="pct">'+pct(R.converted,R.encounters)+
-      "</td><td>"+money(P.billed+R.billed)+"</td></tr></tbody>";
+    "<td>"+money(c.reg.advised)+"</td><td>"+money(c.reg.billed)+
+      '</td><td class="pct" style="color:var(--series-pharm)">'+pct(c.reg.billed,c.reg.advised)+"</td></tr>";
+  $("#phCenterTbl").innerHTML="<thead><tr><th>Center</th>"+
+    "<th>Proc. advised</th><th>Proc. converted</th><th>Proc %</th><th>Proc advised ₹</th><th>Proc billed ₹</th><th>Proc billed %</th>"+
+    "<th>Reg. advised</th><th>Reg. converted</th><th>Reg %</th><th>Reg advised ₹</th><th>Reg billed ₹</th><th>Reg billed %</th></tr></thead><tbody>"+
+    A.perCenter.map(c=>crow(c.center,c)).join("")+
+    crow("All centers",{proc:P,reg:R},"total")+"</tbody>";
 
   /* The dictionary-building view: most-advised drugs with no matching line are
      either genuinely not bought, or billed under a name we do not recognise. */
