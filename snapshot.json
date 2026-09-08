@@ -11431,8 +11431,8 @@
    "pM": [
     [
      "Abemaciclib - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "Dexamethasone 4mg",
@@ -11697,7 +11697,7 @@
     ],
     [
      "Etoposide - 100mg",
-     "lo",
+     "hi",
      "FFN-POSID-ETOPOSIDE-BESI2611ZC"
     ],
     [
@@ -11707,13 +11707,13 @@
     ],
     [
      "Serplulimab - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "Serplulimab - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ]
    ]
   },
@@ -12774,7 +12774,7 @@
     ],
     [
      "Carboplatin - 150 mg",
-     "lo",
+     "hi",
      "SES - NAPROPLAT 450 MG INJ - CARBOPLATIN - NN26252C"
     ],
     [
@@ -15211,8 +15211,8 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ]
    ]
   },
@@ -15675,8 +15675,8 @@
     ],
     [
      "Bevacizumab - 100mg",
-     "lo",
-     "Irinotecan 100 mg/ml"
+     null,
+     null
     ]
    ]
   },
@@ -16379,13 +16379,13 @@
     ],
     [
      "Rituximab - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "Cyclophosphamide - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "ETOPOSIDE",
@@ -16556,7 +16556,7 @@
     ],
     [
      "Carboplatin - 450mg",
-     "lo",
+     "hi",
      "SES - NAPROPLAT 150 MG INJ - CARBOPLATIN - NN26259B"
     ],
     [
@@ -16833,8 +16833,8 @@
     ],
     [
      "Bevacizumab - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ]
    ]
   },
@@ -19208,8 +19208,8 @@
     ],
     [
      "Cyclophosphamide - 500mg",
-     "lo",
-     "HI5 - NS 500ML UNIPORT PUNISKA-UM504E01"
+     "hi",
+     "FFN - CYPHOS 200 MG INJ - CYCLOPHOSPHAMIDE - 6GCY06"
     ],
     [
      "Doxorubicin - 50mg",
@@ -19324,7 +19324,7 @@
    "pM": [
     [
      "TRASTUZUMAB - 150 MG",
-     "lo",
+     "hi",
      "HI5 - VIVITRA 440 MG INJ - TRASTUZUMAB - VB00079A"
     ],
     [
@@ -20722,8 +20722,8 @@
    "pM": [
     [
      "Paclitaxel - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "Paclitaxel - 30mg",
@@ -20752,8 +20752,8 @@
     ],
     [
      "Bevacizumab - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ]
    ]
   },
@@ -21377,8 +21377,8 @@
    "pM": [
     [
      "NIVOLUMAB PAP - 240mg",
-     null,
-     null
+     "lo",
+     "KBP-TISHTHA-40MG-NIVOLUMAB-B500073"
     ]
    ]
   },
@@ -27540,12 +27540,12 @@
    "pM": [
     [
      "Paclitaxel - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     "hi",
+     "MAH-GROSS-260MG-PACLITAXEL-IPCC250609"
     ],
     [
      "Carboplatin - 150 mg",
-     "lo",
+     "hi",
      "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
     ]
    ]
@@ -30403,18 +30403,18 @@
     ],
     [
      "Pavlitaxel 260mg",
-     "lo",
-     "MAH-GROSS-260MG-PACLITAXEL-IPCC250609"
+     null,
+     null
     ],
     [
      "Carboplatin - 600mg",
-     "lo",
+     "hi",
      "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
     ],
     [
      "Bevacizumab - 400mg",
      "hi",
-     "MAH-BEVTAS-400MG-BEVACIZUMAB-24030120"
+     "MAH-BEVATAS100MG-BEVACIZUMAB-24020113"
     ],
     [
      "Bevacizumab - 100mg",
@@ -30429,7 +30429,7 @@
     [
      "Carboplatin - 150 mg",
      "hi",
-     "SES - CARBOZEST 150 MG INJ - CARBOPLATIN - Z26-1114"
+     "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
     ]
    ]
   },
@@ -30479,8 +30479,8 @@
     ],
     [
      "Cyclophosphamide - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     "hi",
+     "YSF-CYCLOXAN 1000-CYCLOPHOSPHAMIDE-25GCP02"
     ],
     [
      "Cyclophosphamide - 1000mg",
@@ -30489,8 +30489,8 @@
     ],
     [
      "IVF NS 100ML",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ]
    ]
   },
@@ -30665,8 +30665,8 @@
     ],
     [
      "UDILIV 300MG",
-     "lo",
-     "SES - IMJUDO LQD 300 MG - TREMELIMUMAB - GAKW"
+     null,
+     null
     ],
     [
      "evion lc",
@@ -30786,8 +30786,8 @@
     ],
     [
      "Doxycycline - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "ULTRACET",
@@ -31059,8 +31059,8 @@
    "pM": [
     [
      "Abemaciclib - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "Dexamethasone 4mg",
@@ -31438,8 +31438,8 @@
     ],
     [
      "UDILIV 300MG",
-     "lo",
-     "SES - IMJUDO LQD 300 MG - TREMELIMUMAB - GAKW"
+     null,
+     null
     ],
     [
      "evion lc",
@@ -32655,8 +32655,8 @@
     ],
     [
      "Gluject 100",
-     "lo",
-     "FFN - OXALTERO 100 MG - OXALIPLATIN - BHL25097"
+     null,
+     null
     ],
     [
      "Valzaar 40",
@@ -33606,8 +33606,8 @@
     ],
     [
      "NIVOLUMAB PAP - 240mg",
-     null,
-     null
+     "lo",
+     "KBP-TISHTHA-40MG-NIVOLUMAB-B500073"
     ]
    ]
   },
@@ -34432,8 +34432,8 @@
     ],
     [
      "ERLOTINIB - 100 MG",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "CELECOXIB - 200 MG",
@@ -34563,8 +34563,8 @@
     ],
     [
      "UDILIV 300MG",
-     "lo",
-     "MAH-NEUKINE 300MCG-filgrastim-4480261"
+     null,
+     null
     ],
     [
      "MAXILIV (GLUTATHION)",
@@ -35934,8 +35934,8 @@
     ],
     [
      "GABAPIN NT 100",
-     "lo",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     null,
+     null
     ],
     [
      "CAP DEXORANGE (multivitamins +antioxidant)",
@@ -36820,8 +36820,8 @@
     ],
     [
      "Doxycycline - 100mg",
-     "lo",
-     "MAH - ZYCEVA 100 MG TAB - ERLOTINIB - CWB1039"
+     null,
+     null
     ],
     [
      "SLN - CLINSOL GEL - CLINDAMYCIN - DLPA5048",
@@ -37310,8 +37310,8 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "Thyronorm",
@@ -38236,7 +38236,7 @@
    "pM": [
     [
      "HI5 - PEGASTA INJ - PEGFILGRASTIM - 16280029",
-     "lo",
+     "md",
      "MAH-PEGSTIM 6MG PFS -PEGFILGRASTIM-BA00018C"
     ],
     [
@@ -38802,8 +38802,8 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "NEUTRA FORTE",
@@ -39009,13 +39009,13 @@
     ],
     [
      "Palbociclib -100mg",
-     "lo",
+     "hi",
      "FFN - WEBACE 75 MG CAP -PALBOCICLIB-SPOC250093"
     ],
     [
      "LAPATINIB - 250 MG",
-     "lo",
-     "MAH - AVEVA 250MG -FULVESTRANT- B500113B"
+     null,
+     null
     ],
     [
      "PAN-DSR",
@@ -39285,8 +39285,8 @@
     ],
     [
      "NIVOLUMAB PAP - 240mg",
-     null,
-     null
+     "lo",
+     "FFN-OPDYTA-100MG-NIVOLUMAB-ACX6193"
     ],
     [
      "OPDYTA 100MG (NIVOLUMAB) -EST",
@@ -39381,8 +39381,8 @@
     ],
     [
      "NIVOLUMAB PAP - 240mg",
-     null,
-     null
+     "lo",
+     "FFN-OPDYTA-100MG-NIVOLUMAB-ACX6193"
     ]
    ]
   },
@@ -39547,8 +39547,8 @@
     ],
     [
      "UDILIV 300MG",
-     "lo",
-     "MAH-NEUKINE 300MCG-filgrastim-4480261"
+     null,
+     null
     ],
     [
      "MAXILIV (GLUTATHION)",
@@ -39662,13 +39662,13 @@
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     "md",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     "lo",
+     "MAH-GROSS-30MG-PACLITAXEL-IPCA250602"
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     "md",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     "lo",
+     "MAH-GROSS-30MG-PACLITAXEL-IPCA250602"
     ],
     [
      "INJ INTAXEL 30 MG (PACLITAXEL )",
@@ -40147,8 +40147,8 @@
     ],
     [
      "Inj.Romy 250MCG",
-     null,
-     null
+     "lo",
+     "MAH-NEUKINE 300MCG-filgrastim"
     ],
     [
      "Folic Acid - 5mg",
@@ -40541,8 +40541,8 @@
     ],
     [
      "Tranexa 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "SLN - A TO Z SYRUP - 25660021",
@@ -40586,12 +40586,12 @@
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     "md",
+     "lo",
      "FFN-NANOXEL-100MG-PACLITAXEL NANOPARTICLE-87250499AB"
     ],
     [
      "Carboplatin - 150 mg",
-     "lo",
+     "hi",
      "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
     ]
    ]
@@ -40717,7 +40717,7 @@
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     "md",
+     "lo",
      "MAH - NABMITOTAX 100 MG - PROTEIN BOUND PACLITAXEL - DPCAS0526"
     ]
    ]
@@ -40829,7 +40829,7 @@
     [
      "Bevacizumab - 400mg",
      "hi",
-     "MAH-BEVTAS-400MG-BEVACIZUMAB-24030120"
+     "MAH-BEVATAS100MG-BEVACIZUMAB-24020113"
     ],
     [
      "Bevacizumab - 100mg",
@@ -41137,13 +41137,13 @@
     ],
     [
      "Levetiracetam - 500mg",
-     "lo",
-     "MAH - BIOTREXATE 500 MG - METHOTREXATE - BYC1021"
+     null,
+     null
     ],
     [
      "Doxycycline - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "VALCIVIR 500mg (VALACYCLOVIR)",
@@ -41162,8 +41162,8 @@
     ],
     [
      "shelcal 500",
-     null,
-     null
+     "lo",
+     "FFN-LEUTERO 50 MG-LEUCOVORIN CALCIUM-ADA2513CL"
     ],
     [
      "fexofenadine",
@@ -41629,8 +41629,8 @@
     ],
     [
      "Nodosis - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "Nefrosave",
@@ -41669,8 +41669,8 @@
     ],
     [
      "FFN - INTAXEL 100MG PACLITAXEL-87250201AA",
-     "lo",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     null,
+     null
     ]
    ]
   },
@@ -42098,8 +42098,8 @@
     ],
     [
      "Cyclophosphamide - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     "hi",
+     "FFN - NUPHOS-1000 MG - CYCLOPHOSPHAMIDE - 325-952"
     ]
    ]
   },
@@ -42353,8 +42353,8 @@
     ],
     [
      "Hydrocortisone 100mg",
-     "lo",
-     "PMS-CIPMOL IV 100ML-A25D016N"
+     null,
+     null
     ],
     [
      "INJ Avil",
@@ -42363,7 +42363,7 @@
     ],
     [
      "CANMAB (TRASTUZUMAB) 440 MG",
-     "md",
+     "lo",
      "MAH - ELEFTHA 440MG -TRASTUZUMAB-26030169"
     ],
     [
@@ -42460,12 +42460,12 @@
     [
      "Bevacizumab - 100mg",
      "hi",
-     "MAH-BEVATAS100MG-BEVACIZUMAB-24020108"
+     "MAH-BEVTAS-400MG-BEVACIZUMAB-24030105-"
     ],
     [
      "Bevacizumab - 100mg",
      "hi",
-     "MAH-BEVATAS100MG-BEVACIZUMAB-24020108"
+     "MAH-BEVTAS-400MG-BEVACIZUMAB-24030105-"
     ],
     [
      "Denosumab",
@@ -42556,7 +42556,7 @@
     [
      "Carboplatin - 450mg",
      "hi",
-     "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
+     "SES - CARBOZEST 150 MG INJ - CARBOPLATIN - 326-636"
     ],
     [
      "INJ OPDYTA 240mg pap (Nivolumab) -EST",
@@ -42836,7 +42836,7 @@
     ],
     [
      "Carboplatin - 600mg",
-     "lo",
+     "hi",
      "SES - CARBOZEST 150 MG INJ - CARBOPLATIN - Z26-1114"
     ],
     [
@@ -42846,8 +42846,8 @@
     ],
     [
      "FFN - WOMEB 420 MG - PERTUZUMAB - BA00146A",
-     "lo",
-     "FFN-SIGRIMA-420MG -PERTUZUMAB-BA00096B"
+     null,
+     null
     ]
    ]
   },
@@ -42937,8 +42937,8 @@
     ],
     [
      "Doxycycline - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "Immodium",
@@ -43356,8 +43356,8 @@
     ],
     [
      "Gluject 100",
-     "lo",
-     "FFN - OXALTERO 100 MG - OXALIPLATIN - BHL25097"
+     null,
+     null
     ],
     [
      "Valzaar 40",
@@ -43426,12 +43426,12 @@
     ],
     [
      "DACOTIN RTU-100MG (OXALIPLATIN)",
-     "lo",
-     "FFN - OXALTERO 100 MG - OXALIPLATIN - BHL25097"
+     null,
+     null
     ],
     [
      "leucovorin 700",
-     "lo",
+     "hi",
      "MAH - LEUTERO 50 MG INJ - CALCIUM LEUCOVORIN - OI25263"
     ],
     [
@@ -43598,8 +43598,8 @@
     ],
     [
      "FFN - INTAXEL 100MG PACLITAXEL-87250201AA",
-     "lo",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     null,
+     null
     ],
     [
      "FFN - INTAXEL-30MG-PACLITAXEL-87250204AB",
@@ -43734,13 +43734,13 @@
     ],
     [
      "NANOXEL 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "NANOXEL 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "INJ KEMOCARB 450mg (CARBOPLATIN )",
@@ -44077,7 +44077,7 @@
     ],
     [
      "Carboplatin 150mg",
-     "lo",
+     "hi",
      "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
     ]
    ]
@@ -44259,13 +44259,13 @@
     ],
     [
      "FFN - INTAXEL 100MG PACLITAXEL-87250201AA",
-     "lo",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     null,
+     null
     ],
     [
      "FFN - INTAXEL 100MG PACLITAXEL-87250201AA",
-     "lo",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     null,
+     null
     ],
     [
      "Carboplatin - 450mg",
@@ -45406,8 +45406,8 @@
     ],
     [
      "Inj.Romy 250MCG",
-     null,
-     null
+     "lo",
+     "MAH-NEUKINE 300MCG-filgrastim"
     ],
     [
      "Folic Acid - 5mg",
@@ -45466,7 +45466,7 @@
     ],
     [
      "Etoposide - 100mg",
-     "lo",
+     "hi",
      "FFN-POSID-ETOPOSIDE-BESI2438ZA"
     ],
     [
@@ -45577,8 +45577,8 @@
     ],
     [
      "SLN - A TO Z SYRUP - 25660021",
-     null,
-     null
+     "lo",
+     "ERA - ADYN LOSE SYRUP - SODIUM PICOSULFATE - BLS-26072"
     ],
     [
      "wemsure protein powder",
@@ -45607,13 +45607,13 @@
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     null,
-     null
+     "lo",
+     "MAH-GROSS-260MG-PACLITAXEL-IPCC250609"
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     null,
-     null
+     "lo",
+     "MAH-GROSS-260MG-PACLITAXEL-IPCC250609"
     ],
     [
      "IFOSMA 2 GM(ifosfamide)",
@@ -45713,7 +45713,7 @@
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     "md",
+     "lo",
      "HI5 - PACLITERO 100MG INJ-PACLITAXEL-APA2516PTD"
     ],
     [
@@ -45723,7 +45723,7 @@
     ],
     [
      "INJ KEMOCARB 150 MG (CARBOPLATIN )",
-     "md",
+     "lo",
      "SES - CARBOZEST 150 MG INJ - CARBOPLATIN - Z26-1114"
     ]
    ]
@@ -45914,12 +45914,12 @@
     ],
     [
      "Cyclophosphamide - 500mg",
-     "lo",
+     "hi",
      "FFN - NUPHOS-1000 MG - CYCLOPHOSPHAMIDE - 325-952"
     ],
     [
      "Cyclophosphamide 200mg",
-     "lo",
+     "hi",
      "FFN - NUPHOS-1000 MG - CYCLOPHOSPHAMIDE - 325-952"
     ]
    ]
@@ -46035,18 +46035,18 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "Irinotecan - 100mg",
-     "lo",
-     "FFN - IRINOTEL -100 MG-IRINOTEL-87250213AA"
+     "hi",
+     "FFN - IRINOTEL-40MG-IRINOTECAN-87240505AA"
     ],
     [
      "Irinotecan - 100mg",
-     "lo",
-     "FFN - IRINOTEL -100 MG-IRINOTEL-87250213AA"
+     "hi",
+     "FFN - IRINOTEL-40MG-IRINOTECAN-87240505AA"
     ],
     [
      "Irinotecan - 40mg",
@@ -46060,8 +46060,8 @@
     ],
     [
      "NIVOLUMAB - 100mg",
-     "lo",
-     "FFN - IRINOTEL -100 MG-IRINOTEL-87250213AA"
+     null,
+     null
     ]
    ]
   },
@@ -46267,8 +46267,8 @@
    "pM": [
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "Sompraz-DSR",
@@ -46449,8 +46449,8 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "NEUTRA FORTE",
@@ -46469,8 +46469,8 @@
     ],
     [
      "DOLO 650MG",
-     null,
-     null
+     "lo",
+     "MAH-ULTRACET-TRAMADOL AND HYDROCHLORIDE PARACETAMOL-J116057"
     ],
     [
      "TAB ULTRACET",
@@ -46489,13 +46489,13 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "FFN-GROSS-100MG -PACLITAXEL-IPCB250404",
      "lo",
-     "MAH-GROSS-100MG-PACLITAXEL-IPCB250607"
+     "MAH-GROSS-30MG-PACLITAXEL-IPCA250602"
     ],
     [
      "FFN-GROSS-30MG -PACLITAXEL-IPCA250602",
@@ -46585,8 +46585,8 @@
     ],
     [
      "ALKASOL 100ML",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "syp Cremaffin plus",
@@ -46872,12 +46872,12 @@
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     "md",
+     "lo",
      "MAH - TAXONAB 100MG -PACLITAXEL PBP-26CPP02"
     ],
     [
      "INTAXEL 100MG (PACLITAXEL )",
-     "md",
+     "lo",
      "MAH - TAXONAB 100MG -PACLITAXEL PBP-26CPP02"
     ]
    ]
@@ -46973,8 +46973,8 @@
     ],
     [
      "ALKASOL 100ML",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "Cremaffin",
@@ -46993,7 +46993,7 @@
     ],
     [
      "CANMAB (TRASTUZUMAB) 440 MG",
-     "md",
+     "lo",
      "RDP - HERSIMA 440 MG - TRASTUZUMAB - TREH2517F"
     ],
     [
@@ -47346,12 +47346,12 @@
     ],
     [
      "GROSS 100MG (PACLITAXEL )",
-     "md",
+     "lo",
      "MAH - NABMITOTAX 100 MG - PROTEIN BOUND PACLITAXEL - DPCAS0526"
     ],
     [
      "Encicarb 1000mg",
-     "lo",
+     "hi",
      "MAH-ENCICARB 1GM -FERRIC CARBOXY MALTOSE-EM250641"
     ]
    ]
@@ -48191,7 +48191,7 @@
     ],
     [
      "DAXOTEL 120 MG (DOCETAXEL)",
-     "md",
+     "lo",
      "MAH - ZYTAX 120MG-DOCETAXEL-T5IDO023A"
     ],
     [
@@ -48267,8 +48267,8 @@
     ],
     [
      "Tranexa 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "SLN - A TO Z SYRUP - 25660021",
@@ -48297,8 +48297,8 @@
     ],
     [
      "FFN-NANOXEL-100mg-PACLITAXELNANOPARTICLE-87250225AA",
-     "lo",
-     "FFN-NANOXEL-100MG-PACLITAXEL NANOPARTICLE-87250499AB"
+     null,
+     null
     ],
     [
      "INJ GROSS 30MG (PACLITAXEL )",
@@ -48313,7 +48313,7 @@
     [
      "Carboplatin 150mg",
      "hi",
-     "SES - CARBOZEST 150 MG INJ - CARBOPLATIN - Z26-1114"
+     "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
     ]
    ]
   },
@@ -49668,7 +49668,7 @@
     ],
     [
      "Carboplatin - 150 mg",
-     "lo",
+     "hi",
      "SES - CARBOZEST 450 MG INJ - CARBOPLATIN - 326-746"
     ]
    ]
@@ -53288,8 +53288,8 @@
     ],
     [
      "Doxycycline - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "VALCIVIR 500mg (VALACYCLOVIR)",
@@ -53313,8 +53313,8 @@
     ],
     [
      "shelcal 500",
-     null,
-     null
+     "lo",
+     "FFN-LEUTERO 50 MG-LEUCOVORIN CALCIUM-ADA2513CL"
     ],
     [
      "Dulcolax",
@@ -53631,8 +53631,8 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "Dom-DT",
@@ -55285,8 +55285,8 @@
     ],
     [
      "RFT on 21/08/2026",
-     null,
-     null
+     "lo",
+     "Neu - Health Package ( CBC, KFT, LFT )"
     ],
     [
      "CBC",
@@ -55310,7 +55310,7 @@
     ],
     [
      "Whole-body PET-CT on 20/08/2026",
-     "md",
+     "hi",
      "KIR - FDG WHOLE BODY PET CT SCAN"
     ]
    ],
@@ -55488,8 +55488,8 @@
     ],
     [
      "Inj.Romy 250MCG",
-     null,
-     null
+     "lo",
+     "MAH-NEUKINE 300MCG-filgrastim"
     ],
     [
      "Folic Acid - 5mg",
@@ -55548,7 +55548,7 @@
     ],
     [
      "Etoposide - 100mg",
-     "lo",
+     "hi",
      "FFN-POSID-ETOPOSIDE-BESI2438ZA"
     ],
     [
@@ -58314,7 +58314,7 @@
    "pM": [
     [
      "APRECAP - 150MG",
-     "md",
+     "hi",
      "MAH-APRECAP-APREPITANT- 125MG-05260541"
     ],
     [
@@ -58525,7 +58525,7 @@
     ],
     [
      "GSCF 300MCG",
-     "md",
+     "lo",
      "MAH-NEUKINE 300MCG-filgrastim-4480261"
     ],
     [
@@ -59421,8 +59421,8 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "NEUTRA FORTE",
@@ -60126,8 +60126,8 @@
     ],
     [
      "Nodosis - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "TAB NEFROSAVE",
@@ -60434,8 +60434,8 @@
    "pM": [
     [
      "UDILIV 300MG",
-     "lo",
-     "SES-IMJUDO LQD 300 MG INJ - TREMELIMUMAB - GAKA"
+     null,
+     null
     ],
     [
      "TAB MEGASTY 160MG",
@@ -60816,7 +60816,7 @@
    "pM": [
     [
      "Inj. G-CSF 300mcg",
-     "md",
+     "lo",
      "HI5 - GRASTIM 300MG INJ-FILGRASTIM 300MCG-15000015"
     ],
     [
@@ -61957,8 +61957,8 @@
     ],
     [
      "TAB VALCIVIR 500MG",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "TAB MONTAIR-LC",
@@ -62405,8 +62405,8 @@
     ],
     [
      "TAB REDOTIL 100MG",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "SYP MUCIANE GEL 10ML",
@@ -62818,8 +62818,8 @@
     ],
     [
      "Erlotinib - 100mg",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ]
    ]
   },
@@ -62985,8 +62985,8 @@
     ],
     [
      "ERLOTINIB - 100 MG",
-     "lo",
-     "MAH - SAFEPORT NS 100 - N1TA315"
+     null,
+     null
     ],
     [
      "CELECOXIB - 200 MG",
@@ -63197,7 +63197,7 @@
    "pM": [
     [
      "INJ GCSF 300MCG",
-     "md",
+     "lo",
      "MAH-NEUKINE 300MCG-filgrastim-4480261"
     ],
     [
@@ -63207,8 +63207,8 @@
     ],
     [
      "CAPECITABINE - 500mg",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "THYRONORM 25MCG",
@@ -63227,8 +63227,8 @@
     ],
     [
      "MAXILIV 500MG",
-     "lo",
-     "MAH - SAFEPORT NS 500ML - N1TC02"
+     null,
+     null
     ],
     [
      "Emeset 8mg",
@@ -63298,7 +63298,7 @@
    ]
   }
  ],
- "build": "08-Sep-2026 524bb9",
+ "build": "08-Sep-2026 569882",
  "rad": {
   "rows": [
    {
@@ -65926,7 +65926,7 @@
    "Pooja Khullar"
   ]
  },
- "publishedAt": "2026-09-08T07:47:44.624Z",
+ "publishedAt": "2026-09-08T09:15:23.510Z",
  "minDate": "2025-07-21",
  "maxDate": "2026-09-07",
  "encMin": "2026-08-01",
