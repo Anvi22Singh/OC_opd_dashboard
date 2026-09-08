@@ -559,7 +559,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "08-Sep-2026 524bb9";
+const BUILD = "08-Sep-2026 569882";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -710,7 +710,8 @@ function tokenize(s){
     .replace(/([a-z])(\d)/g,"$1 $2").replace(/(\d)([a-z])/g,"$1 $2")
     .replace(/[^a-z0-9]+/g," ").trim();
   const out = new Set();
-  for(const t of raw.split(" ")) if(t.length>=3 && !STOP.has(t)) out.add(t);
+  for(const t of raw.split(" "))
+    if(t.length>=3 && !STOP.has(t) && !/^\d+$/.test(t)) out.add(t);
   SYN.forEach((g,i)=>{ for(const term of g){ if(raw.includes(term)){ out.add("@"+i); break; } } });
   return out;
 }
@@ -1865,20 +1866,23 @@ function pharmaAnalyse(){
     const enc = arr.filter(r=>k==="PROC"?r.hasProc:r.hasReg);
     const items = arr.flatMap(r=>k==="PROC"?r.proc:r.reg);
     const hit = items.filter(x=>x.m);
+    const seen = new Set(); let billed = 0;
+    hit.forEach(x=>{ if(seen.has(x.m.item)) return; seen.add(x.m.item); billed += x.m.item.net||0; });
     return {encounters:enc.length,
       converted:enc.filter(r=>k==="PROC"?r.procHit:r.regHit).length,
       patients:new Set(enc.map(r=>r.hid||r.mob||r.patient)).size,
       items:items.length, itemsBilled:hit.length,
       advised:enc.reduce((a,r)=>a+(k==="PROC"?r.expProc:r.expDrug)||0,0),
-      billed:hit.reduce((a,x)=>a+(x.m.item.net||0),0)};
+      billed, linesCredited:seen.size};
   };
   const centers=[...new Set(out.map(r=>r.center))].sort();
   const drugTally = k => {
     const m={};
     out.flatMap(r=>k==="PROC"?r.proc:r.reg).forEach(x=>{
       const key=x.name.toLowerCase();
-      const c=m[key]=m[key]||{name:x.name, n:0, billed:0, rev:0};
-      c.n++; if(x.m){ c.billed++; c.rev+=x.m.item.net||0; }
+      const c=m[key]=m[key]||{name:x.name, n:0, billed:0, rev:0, _seen:new Set()};
+      c.n++;
+      if(x.m){ c.billed++; if(!c._seen.has(x.m.item)){ c._seen.add(x.m.item); c.rev+=x.m.item.net||0; } }
     });
     return Object.values(m).sort((a,b)=>b.n-a.n);
   };
