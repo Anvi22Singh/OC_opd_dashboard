@@ -274,15 +274,39 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
   <button aria-selected="false" data-a="drops">Dropped patients</button>
 </nav>
 <section id="area-pharmacy" class="area" style="display:none">
-<div id="tab-pharm">
   <div class="card">
-    <h2>Take-home drugs: advised vs bought</h2>
-    <p class="hint">Counted from the <b>Drugs Suggested</b> column of both exports. A purchase is an invoice tagged Procedure Type <b>“Others”</b> for the same patient on the suggestion date <i>or any date after</i> — patients often collect on their next chemo visit, so later purchases count.</p>
-    <div class="kpis" id="pharmKpis"></div>
-    <div class="tblwrap"><table id="pharmTbl"></table></div>
-    <div class="warnbox" style="margin-top:16px" id="pharmNote"></div>
+    <h2>Pharmacy — advised versus bought</h2>
+    <p class="hint">Every drug advised in the OP and IP analysis, matched against the <b>detailed billing report</b> line by line. A purchase counts on the suggestion date or <b>any date after it</b>, never before, and it counts wherever the line sits — including inside a chemo or immunotherapy invoice. Consumables (gloves, syringes, saline, IV sets) are excluded: they are never advised.</p>
+    <div class="ctrls">
+      <div class="fld"><label for="phKind">Drug list</label><select id="phKind">
+        <option value="REG">Regular drugs</option>
+        <option value="PROC">Procedure drugs</option></select></div>
+      <div class="fld"><label for="phMiss">Show</label><select id="phMiss">
+        <option value="">All drugs</option>
+        <option value="miss">Never billed only</option></select></div>
+      <div class="fld"><label for="phEnc">Consultations</label><select id="phEnc">
+        <option value="">Any advice</option>
+        <option value="proc">Procedure drugs advised</option>
+        <option value="reg">Regular drugs advised</option>
+        <option value="lost">Advised but not bought</option></select></div>
+      <div class="fld"><label for="phSrch">Search</label><input class="srch" id="phSrch" placeholder="Drug or patient"></div>
+    </div>
   </div>
-</div>
+  <div id="phTop"></div>
+  <div class="kpis" id="phKpis"></div>
+  <div class="card">
+    <h2>Procedure drugs vs regular drugs</h2>
+    <p class="hint">Kept apart deliberately — session drugs are dispensed with the treatment, take-home drugs are the patient's choice.</p>
+    <div class="tblwrap"><table id="phSumTbl"></table></div>
+  </div>
+  <div class="card"><h2>By center</h2>
+    <div class="tblwrap"><table id="phCenterTbl"></table></div></div>
+  <div class="card"><h2>Every drug advised</h2>
+    <p class="hint">Switch the list above between regular and procedure drugs. Filter to <b>Never billed only</b> to find the drugs to add to the synonym list.</p>
+    <div class="tblwrap"><table id="phDrugTbl"></table></div></div>
+  <div class="card"><h2>Consultation by consultation</h2>
+    <div class="tblwrap"><table id="phEncTbl"></table></div>
+    <div id="phNote"></div></div>
 </section>
 
 <section id="area-radiation" class="area" style="display:none">
@@ -535,7 +559,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "03-Sep-2026 3c85a1";
+const BUILD = "08-Sep-2026 524bb9";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -569,7 +593,20 @@ const DEF = {
     "hba1c, glycosylated haemoglobin",
     "xray, x ray, radiograph",
     "pt inr, prothrombin, pt with inr",
-    "electrolytes, serum electrolytes"
+    "electrolytes, serum electrolytes",
+    "dolo, paracetamol, pcm, calpol, neomol, crocin",
+    "ultracet, tramadol, tramadin",
+    "looz, lactulose, duphalac",
+    "chlorhexidine, mouthwash, ora ace, hexidine",
+    "emeset, ondansetron, ondem, granitero",
+    "pantop, pantoprazole, pentate, razo, rabeprazole",
+    "shelcal, calcium, goldcal",
+    "protein powder, proteinex, wemsure, neutra pro, ensure",
+    "zerodol, aceclofenac",
+    "cremaffin, laxative",
+    "filgrastim, neukine, grafeel, peg grafeel",
+    "aprecap, aprepitant",
+    "dexa, dexamethasone, dexacip"
   ].join("\n")
 };
 const LSK = "oncare_postopd_cfg_v1";
@@ -665,8 +702,13 @@ function synGroups(){
 let SYN = [];
 function tokenize(s){
   /* Drop only price parentheticals — "Haemogram(CBC)" must keep its CBC. */
+  /* Billing packs the brand and its strength into one word — DOLO650MG,
+     EMESET8MG — so split at letter/digit boundaries or "Dolo" never matches
+     "DOLO650MG". */
   const raw = String(s==null?"":s).toLowerCase()
-    .replace(/\(\s*rs[^)]*\)/g," ").replace(/[^a-z0-9]+/g," ").trim();
+    .replace(/\(\s*rs[^)]*\)/g," ")
+    .replace(/([a-z])(\d)/g,"$1 $2").replace(/(\d)([a-z])/g,"$1 $2")
+    .replace(/[^a-z0-9]+/g," ").trim();
   const out = new Set();
   for(const t of raw.split(" ")) if(t.length>=3 && !STOP.has(t)) out.add(t);
   SYN.forEach((g,i)=>{ for(const term of g){ if(raw.includes(term)){ out.add("@"+i); break; } } });
@@ -779,6 +821,7 @@ function build(){
     const item = String(get(r,"Item Name")||"");
     return {
       center: centerOf(get(r,"Location")), date: parseDate(get(r,"Invoice Date","Item Billed Date")),
+      hid: hid(get(r,"Hospital ID")),
       mob: normMobile(get(r,"Patient Mobile","Patient Mobile Number")),
       patient: String(get(r,"Patient Name")||""), invNo: String(get(r,"Invoice Number")||""),
       invType: String(get(r,"Invoice Type")||"").toLowerCase(),
@@ -828,6 +871,8 @@ function build(){
       /* Drugs Suggested on its own — the take-home prescription, kept separate
          from Procedure Drugs (given during the session). */
       drugTxt: String(get(r,"Drugs Suggested")||""),
+      procTxt: String(get(r,"Procedure Drugs")||""),
+      expProc: rsNum(get(r,"Procedure Drugs Cost")),
       expD: rsNum(get(r,"Diagnostics Cost")),
       expDrug: rsNum(get(r,"Drugs Cost")),
       dItems: splitItems(dS), pItems: splitItems(pS),
@@ -1108,9 +1153,10 @@ function render(){
   build();
   const A = LAST = analyse();
   renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A);
-  renderDiag(A); renderPharm(A); renderItems(A); renderPatients(A);
+  renderDiag(A); renderItems(A); renderPatients(A);
   /* Radiation is independent of the rest; if it fails it must say so in its own
      panel rather than aborting the render and leaving the page half-drawn. */
+  try{ renderPharma(); }catch(e){ const n=$('#phTop'); if(n) n.innerHTML='<div class="warnbox">Pharmacy section failed: '+esc(e.message)+'</div>'; }
   try{ renderDrops(); }catch(e){}
   try{ renderRadiation(); }
   catch(err){
@@ -1287,6 +1333,7 @@ function renderDiag(A){
     }).join("") : '<tr><td colspan="8" class="muted">Nothing matches these filters.</td></tr>')+"</tbody>";
 }
 function renderPharm(A){
+  if(!$("#pharmTbl")) return;   /* superseded by the Pharmacy area */
   const t=A.pharmTot;
   $("#pharmKpis").innerHTML =
     kpi("","Patients advised drugs", t.sug.toLocaleString(), "rows with a Drugs Suggested entry") +
@@ -1774,6 +1821,155 @@ function renderDrops(){
     "which would make every procedure look catastrophic.</div>";
 }
 
+/* ------------------------------------------------------------------ pharma -- */
+/* Gloves, syringes, saline and IV sets are pharmacy-department lines but are
+   never "suggested" to a patient, so they are kept out of matching. They are
+   8,000+ lines yet under 3% of pharmacy value, so nothing material is lost. */
+const CONSUMABLE = /glove|syringe|dispovan|needle|cannula|iv ?set|infusion ?set|face ?mask|swab|safeport|normal saline|\bns ?\d|romson|micro ?guard|spirit|bandage|catheter|urobag|apron|intracath|three ?way|scalp ?vein/i;
+
+/* Pharmacy lines for one patient, indexed once — a suggestion is matched against
+   every later pharmacy line for that patient, on ANY invoice type, because
+   take-home drugs are frequently billed inside a chemo or IP invoice. */
+function pharmaIndex(){
+  const idx = new Map();
+  BILL.filter(b=>b.isP && b.date && !CONSUMABLE.test(b.item)).forEach(b=>{
+    const k = b.hid || b.mob || b.patient; if(!k) return;
+    if(!idx.has(k)) idx.set(k,[]);
+    idx.get(k).push(b);
+  });
+  idx.forEach(v=>v.sort((a,b)=>a.date-b.date));
+  return idx;
+}
+
+function pharmaAnalyse(){
+  const V = view();
+  const ty = $("#fType").value;
+  const rows = (ty ? V.op.filter(r=>r.type===ty) : V.op);
+  const idx = pharmaIndex();
+  /* No upper bound on the gap: a drug advised in August and bought in October
+     still counts. Only "billed before it was advised" is excluded. */
+  const laterLines = r => (idx.get(r.hid||r.mob||r.patient)||[]).filter(l=>l.date>=r.date);
+  const out = rows.map(r=>{
+    const lines = laterLines(r);
+    const mk = (txt,kind) => splitItems(txt).map(it=>({...it, kind, m:matchItem(it.name, lines)}));
+    const proc = mk(r.procTxt, "PROC");
+    const reg  = mk(r.drugTxt, "REG");
+    return {...r, lines, proc, reg,
+      hasProc: proc.length>0, hasReg: reg.length>0,
+      procHit: proc.some(x=>x.m), regHit: reg.some(x=>x.m),
+      /* what the patient actually spent on pharmacy after this consultation */
+      billedRev: lines.reduce((a,l)=>a+l.net,0)};
+  });
+  const kindOf = k => k==="PROC" ? "proc" : "reg";
+  const stat = (arr,k) => {
+    const enc = arr.filter(r=>k==="PROC"?r.hasProc:r.hasReg);
+    const items = arr.flatMap(r=>k==="PROC"?r.proc:r.reg);
+    const hit = items.filter(x=>x.m);
+    return {encounters:enc.length,
+      converted:enc.filter(r=>k==="PROC"?r.procHit:r.regHit).length,
+      patients:new Set(enc.map(r=>r.hid||r.mob||r.patient)).size,
+      items:items.length, itemsBilled:hit.length,
+      advised:enc.reduce((a,r)=>a+(k==="PROC"?r.expProc:r.expDrug)||0,0),
+      billed:hit.reduce((a,x)=>a+(x.m.item.net||0),0)};
+  };
+  const centers=[...new Set(out.map(r=>r.center))].sort();
+  const drugTally = k => {
+    const m={};
+    out.flatMap(r=>k==="PROC"?r.proc:r.reg).forEach(x=>{
+      const key=x.name.toLowerCase();
+      const c=m[key]=m[key]||{name:x.name, n:0, billed:0, rev:0};
+      c.n++; if(x.m){ c.billed++; c.rev+=x.m.item.net||0; }
+    });
+    return Object.values(m).sort((a,b)=>b.n-a.n);
+  };
+  return {rows:out,
+    proc:stat(out,"PROC"), reg:stat(out,"REG"),
+    perCenter:centers.map(c=>{const s=out.filter(r=>r.center===c);
+      return {center:c, proc:stat(s,"PROC"), reg:stat(s,"REG")};}),
+    procDrugs:drugTally("PROC"), regDrugs:drugTally("REG")};
+}
+
+function renderPharma(){
+  const host=$("#phTop");
+  if(!OP.length || !BILL.length){
+    ["#phKpis","#phSumTbl","#phCenterTbl","#phDrugTbl","#phEncTbl"].forEach(s=>{const e=$(s); if(e) e.innerHTML="";});
+    if(host) host.innerHTML='<div class="warnbox">This needs the <b>OP/IP analysis</b> exports (what was advised) and the <b>detailed billing report</b> (the line items). Load them above.</div>';
+    return;
+  }
+  if(host) host.innerHTML="";
+  const A = PHARMA = pharmaAnalyse();
+  const pct=(a,b)=> b?Math.round(a/b*100)+"%":"—";
+  const P=A.proc, R=A.reg;
+  $("#phKpis").innerHTML =
+    kpi("diag","Procedure drugs converted", pct(P.converted,P.encounters),
+        P.converted+" of "+P.encounters+" consultations") +
+    kpi("pharm","Regular drugs converted", pct(R.converted,R.encounters),
+        R.converted+" of "+R.encounters+" consultations") +
+    kpi("","Advised value", money(P.advised+R.advised), "both kinds together") +
+    kpi("","Billed against advice", money(P.billed+R.billed), pct(P.billed+R.billed,P.advised+R.advised)+" of advised") +
+    kpi("pharm","Advised but never bought", (P.items-P.itemsBilled+R.items-R.itemsBilled).toLocaleString(), "individual drugs with no matching line");
+
+  const srow=(label,s,cls)=>"<tr class='"+(cls||"")+"'><td>"+label+"</td><td>"+s.encounters+"</td><td>"+s.patients+"</td>"+
+    "<td>"+s.converted+'</td><td class="pct" style="color:'+(cls?"var(--series-pharm)":"var(--series-diag)")+'">'+
+      pct(s.converted,s.encounters)+" "+bar(s.encounters?s.converted/s.encounters:0,1,cls?"var(--series-pharm)":"var(--series-diag)")+"</td>"+
+    "<td>"+s.items+"</td><td>"+s.itemsBilled+'</td><td class="pct">'+pct(s.itemsBilled,s.items)+"</td>"+
+    "<td>"+money(s.advised)+"</td><td>"+money(s.billed)+'</td><td class="pct">'+pct(s.billed,s.advised)+"</td></tr>";
+  $("#phSumTbl").innerHTML="<thead><tr><th>Drug type</th><th>Consultations</th><th>Patients</th><th>Converted</th><th>Conversion %</th>"+
+    "<th>Drugs advised</th><th>Drugs billed</th><th>Item %</th><th>Advised ₹</th><th>Billed ₹</th><th>Billed %</th></tr></thead><tbody>"+
+    srow("Procedure drugs — chemo / immuno session", P) +
+    srow("Regular drugs — take-home prescription", R, "x") + "</tbody>";
+
+  $("#phCenterTbl").innerHTML="<thead><tr><th>Center</th><th>Proc. advised</th><th>Proc. converted</th><th>Proc %</th>"+
+    "<th>Reg. advised</th><th>Reg. converted</th><th>Reg %</th><th>Billed ₹</th></tr></thead><tbody>"+
+    A.perCenter.map(c=>"<tr><td>"+esc(c.center)+"</td><td>"+c.proc.encounters+"</td><td>"+c.proc.converted+
+      '</td><td class="pct" style="color:var(--series-diag)">'+pct(c.proc.converted,c.proc.encounters)+"</td>"+
+      "<td>"+c.reg.encounters+"</td><td>"+c.reg.converted+
+      '</td><td class="pct" style="color:var(--series-pharm)">'+pct(c.reg.converted,c.reg.encounters)+"</td>"+
+      "<td>"+money(c.proc.billed+c.reg.billed)+"</td></tr>").join("")+
+    '<tr class="total"><td>All centers</td><td>'+P.encounters+"</td><td>"+P.converted+'</td><td class="pct">'+pct(P.converted,P.encounters)+
+      "</td><td>"+R.encounters+"</td><td>"+R.converted+'</td><td class="pct">'+pct(R.converted,R.encounters)+
+      "</td><td>"+money(P.billed+R.billed)+"</td></tr></tbody>";
+
+  /* The dictionary-building view: most-advised drugs with no matching line are
+     either genuinely not bought, or billed under a name we do not recognise. */
+  const kind=$("#phKind").value||"REG";
+  const list=(kind==="PROC"?A.procDrugs:A.regDrugs);
+  const onlyMiss=$("#phMiss").value==="miss";
+  const q=$("#phSrch").value.trim().toLowerCase();
+  let dl=list.filter(d=>!onlyMiss || d.billed===0);
+  if(q) dl=dl.filter(d=>d.name.toLowerCase().includes(q));
+  $("#phDrugTbl").innerHTML="<thead><tr><th>Drug</th><th>Times advised</th><th>Times billed</th><th>Billed %</th><th>Revenue matched</th></tr></thead><tbody>"+
+    (dl.length?dl.slice(0,80).map(d=>"<tr><td>"+esc(d.name)+"</td><td>"+d.n+"</td><td>"+d.billed+
+      '</td><td class="pct" style="color:'+(d.billed?"var(--series-diag)":"var(--bad)")+'">'+pct(d.billed,d.n)+
+      "</td><td>"+money(d.rev)+"</td></tr>").join("")
+      :'<tr><td colspan="5" class="muted">Nothing matches.</td></tr>')+"</tbody>"+
+    (dl.length>80?'<tfoot><tr><td colspan="5" class="muted">Showing 80 of '+dl.length+" distinct drugs.</td></tr></tfoot>":"");
+
+  const ef=$("#phEnc").value;
+  let enc=A.rows.filter(r=>r.hasProc||r.hasReg);
+  if(ef==="proc") enc=enc.filter(r=>r.hasProc);
+  else if(ef==="reg") enc=enc.filter(r=>r.hasReg);
+  else if(ef==="lost") enc=enc.filter(r=>(r.hasProc&&!r.procHit)||(r.hasReg&&!r.regHit));
+  if(q) enc=enc.filter(r=>r.patient.toLowerCase().includes(q));
+  const cell=(has,hit)=> has ? (hit?'<span class="pill hi">bought</span>':'<span class="pill no">not bought</span>') : '<span class="muted">—</span>';
+  $("#phEncTbl").innerHTML="<thead><tr><th>Patient</th><th>Center</th><th>Date</th><th>OP/IP</th>"+
+    "<th>Procedure drugs advised</th><th>Status</th><th>Regular drugs advised</th><th>Status</th><th>Pharmacy billed after</th></tr></thead><tbody>"+
+    (enc.length?enc.slice(0,400).map(r=>"<tr><td>"+esc(r.patient)+"</td><td>"+esc(r.center)+"</td><td>"+dmy(r.date)+
+      '</td><td class="muted">'+esc(r.type)+"</td>"+
+      '<td style="text-align:left;white-space:normal;max-width:260px">'+(r.proc.length?esc(r.proc.map(x=>x.name).join(", ")):'<span class="muted">—</span>')+"</td>"+
+      "<td>"+cell(r.hasProc,r.procHit)+"</td>"+
+      '<td style="text-align:left;white-space:normal;max-width:260px">'+(r.reg.length?esc(r.reg.map(x=>x.name).join(", ")):'<span class="muted">—</span>')+"</td>"+
+      "<td>"+cell(r.hasReg,r.regHit)+"</td><td>"+(r.billedRev?money(r.billedRev):"—")+"</td></tr>").join("")
+      :'<tr><td colspan="9" class="muted">No consultations match.</td></tr>')+"</tbody>";
+
+  const miss=(kind==="PROC"?A.procDrugs:A.regDrugs).filter(d=>d.billed===0);
+  $("#phNote").innerHTML='<div class="warnbox" style="margin-top:14px"><b>Building the dictionary.</b> '+
+    miss.length+" distinct "+(kind==="PROC"?"procedure":"regular")+" drugs were advised but never matched a billing line. "+
+    "Some genuinely were not bought; others are billed under their molecule rather than the brand — Dolo billed as PARACETAMOL, for instance. "+
+    "Add those pairs on one line in <b>Rules &amp; mapping → Item synonyms</b> and they will start matching.</div>";
+}
+let PHARMA=null;
+
 /* --------------------------------------------------------------- snapshot -- */
 /* A snapshot carries ONLY computed aggregates — no patient name, mobile, invoice
    number or per-bill row ever enters it, so the file is safe to commit to a
@@ -1841,7 +2037,8 @@ function snapshotOf(A){
                  y:d.back.days, c:d.back.n} : null}));
   const packM = arr => arr.map(x=>[x.name, x.m?x.m.conf:null, x.m?x.m.item.item:null]);
   const enc = A.allRows.map(r=>({p:r.patient, m:r.mob, c:r.center, d:iso(r.date),
-    r:r.doctor, t:r.type, dT:r.dTxt, pT:r.pTxt, gT:r.drugTxt,
+    r:r.doctor, t:r.type, dT:r.dTxt, pT:r.pTxt, gT:r.drugTxt, cT:r.procTxt,
+    eP:Math.round(r.expProc||0),
     eD:Math.round(r.expD), eG:Math.round(r.expDrug),
     k:r.opdKind||null,
     hD:r.hasD?1:0, hP:r.hasP?1:0, cD:r.convD?1:0, cP:r.convP?1:0,
@@ -1879,7 +2076,8 @@ function aggregateSnap(){
     m: a[1] ? {conf:a[1], item:{item:a[2]}} : null}));
   const unpackEnc = x => ({
     patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
-    opdKind:x.k||null, dTxt:x.dT||"", pTxt:x.pT||"", drugTxt:x.gT||"",
+    opdKind:x.k||null, dTxt:x.dT||"", pTxt:x.pT||"", drugTxt:x.gT||"", procTxt:x.cT||"",
+    expProc:x.eP||0,
     expD:x.eD, expDrug:x.eG,
     hasD:!!x.hD, hasP:!!x.hP, convD:!!x.cD, convP:!!x.cP, bought:!!x.bt, buyRev:x.bv,
     dItems:splitItems(x.dT), pItems:splitItems(x.pT),
@@ -1972,8 +2170,7 @@ function publishSnapshot(){
 }
 function renderSnap(){
   const A = LAST = aggregateSnap();
-  renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); renderPharm(A);
-  if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
+  renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
   try{ renderRadiation(); }
   catch(err){ const n=$("#radNote");
     if(n) n.innerHTML = '<div class="warnbox" style="margin-top:14px"><b>Radiation section failed to build:</b> '+
@@ -2134,6 +2331,8 @@ function wireDetailControls(){
   ["pStat","pCenter","pType","pAdv"].forEach(id=>on(id,"change",()=>{ if(LAST) renderPatients(LAST); }));
   ["dBucket","dBack"].forEach(id=>on(id,"change",()=>{ if(LAST) renderDiag(LAST); }));
   on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
+  ["phKind","phMiss","phEnc"].forEach(id=>on(id,"change",()=>{ if(OP.length&&BILL.length) renderPharma(); }));
+  on("phSrch","input",()=>{ if(OP.length&&BILL.length) renderPharma(); });
   ["dpBasis","dpFrom","dpTo","dpCenter","dpGroup","dpProc"].forEach(id=>on(id,"change",()=>{ if(PATIENTS.length) renderDrops(); }));
   on("dpSrch","input",()=>{ if(PATIENTS.length) renderDrops(); });
   ["rFrom","rTo","rCenter","rHosp","rConv"].forEach(id=>on(id,"change",()=>{ if(INV.length) renderRadiation(); }));
