@@ -559,7 +559,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "08-Sep-2026 569882";
+const BUILD = "08-Sep-2026 6c64a6";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -816,12 +816,14 @@ function build(){
   });
   const reD = new RegExp(CFG.diag,"i"), reP = new RegExp(CFG.pharm,"i");
 
+  let _lid=0;
   BILL = (RAW.bill||[]).map(r=>{
     const dept = String(get(r,"Department Name","Department")||""), cat = String(get(r,"Item Report Category")||"");
     const both = dept+" "+cat;
     const item = String(get(r,"Item Name")||"");
     return {
       center: centerOf(get(r,"Location")), date: parseDate(get(r,"Invoice Date","Item Billed Date")),
+      lid: ++_lid,
       hid: hid(get(r,"Hospital ID")),
       mob: normMobile(get(r,"Patient Mobile","Patient Mobile Number")),
       patient: String(get(r,"Patient Name")||""), invNo: String(get(r,"Invoice Number")||""),
@@ -943,6 +945,7 @@ function encStats(rr){
 }
 function analyse(){
   const V = view();
+  PHIDX = pharmaIndex();
   /* Diagnostics is defined on the INVOICE: Procedure Type "Diagnostics".
      The matching billing lines are pulled through by invoice number so the
      item-level tab can still name the individual tests. Pharmacy is unchanged
@@ -1029,6 +1032,15 @@ function analyse(){
                convD: bD.length>0, convP: bP.length>0};
     r.dMatch = o.dItems.map(it=>({...it, kind:"D", m:matchItem(it.name, linkedTo(o, dgLines))}));
     r.pMatch = o.pItems.map(it=>({...it, kind:"P", m:matchItem(it.name, bP)}));
+    /* Drugs advised at this consultation, matched against every later pharmacy
+       line for the patient. Done here so the snapshot can carry the result. */
+    const plines = (PHIDX.get(r.hid||r.mob||r.patient)||[]).filter(l=>l.date>=r.date);
+    const mkd = (txt,kind) => splitItems(txt).map(it=>({...it, kind, m:matchItem(it.name, plines)}));
+    r.proc = mkd(o.procTxt, "PROC");
+    r.reg  = mkd(o.drugTxt, "REG");
+    r.hasProc = r.proc.length>0; r.hasReg = r.reg.length>0;
+    r.procHit = r.proc.some(x=>x.m); r.regHit = r.reg.some(x=>x.m);
+    r.billedRev = plines.reduce((a,l)=>a+l.net,0);
     /* Was this OP consultation a fresh OPD or a follow-up? Read it from the OPD
        invoice raised for that patient on that day. IP rows have no such split. */
     if(r.type==="OP"){
@@ -1842,66 +1854,50 @@ function pharmaIndex(){
   return idx;
 }
 
-function pharmaAnalyse(){
-  const V = view();
-  const ty = $("#fType").value;
-  const rows = (ty ? V.op.filter(r=>r.type===ty) : V.op);
-  const idx = pharmaIndex();
-  /* No upper bound on the gap: a drug advised in August and bought in October
-     still counts. Only "billed before it was advised" is excluded. */
-  const laterLines = r => (idx.get(r.hid||r.mob||r.patient)||[]).filter(l=>l.date>=r.date);
-  const out = rows.map(r=>{
-    const lines = laterLines(r);
-    const mk = (txt,kind) => splitItems(txt).map(it=>({...it, kind, m:matchItem(it.name, lines)}));
-    const proc = mk(r.procTxt, "PROC");
-    const reg  = mk(r.drugTxt, "REG");
-    return {...r, lines, proc, reg,
-      hasProc: proc.length>0, hasReg: reg.length>0,
-      procHit: proc.some(x=>x.m), regHit: reg.some(x=>x.m),
-      /* what the patient actually spent on pharmacy after this consultation */
-      billedRev: lines.reduce((a,l)=>a+l.net,0)};
-  });
-  const kindOf = k => k==="PROC" ? "proc" : "reg";
+function pharmaAnalyse(rows){
   const stat = (arr,k) => {
     const enc = arr.filter(r=>k==="PROC"?r.hasProc:r.hasReg);
-    const items = arr.flatMap(r=>k==="PROC"?r.proc:r.reg);
+    const items = arr.flatMap(r=>(k==="PROC"?r.proc:r.reg)||[]);
     const hit = items.filter(x=>x.m);
-    const seen = new Set(); let billed = 0;
-    hit.forEach(x=>{ if(seen.has(x.m.item)) return; seen.add(x.m.item); billed += x.m.item.net||0; });
+    /* One billing line, one credit — several suggestions can point at the same
+       line and would otherwise each add its full value. */
+    const seen=new Set(); let billed=0;
+    hit.forEach(x=>{ if(seen.has(x.m.item)) return; seen.add(x.m.item); billed+=x.m.item.net||0; });
     return {encounters:enc.length,
       converted:enc.filter(r=>k==="PROC"?r.procHit:r.regHit).length,
       patients:new Set(enc.map(r=>r.hid||r.mob||r.patient)).size,
       items:items.length, itemsBilled:hit.length,
-      advised:enc.reduce((a,r)=>a+(k==="PROC"?r.expProc:r.expDrug)||0,0),
+      advised:enc.reduce((a,r)=>a+((k==="PROC"?r.expProc:r.expDrug)||0),0),
       billed, linesCredited:seen.size};
   };
-  const centers=[...new Set(out.map(r=>r.center))].sort();
-  const drugTally = k => {
-    const m={};
-    out.flatMap(r=>k==="PROC"?r.proc:r.reg).forEach(x=>{
+  const centers=[...new Set(rows.map(r=>r.center))].sort();
+  const tally = k => { const m={};
+    rows.flatMap(r=>(k==="PROC"?r.proc:r.reg)||[]).forEach(x=>{
       const key=x.name.toLowerCase();
-      const c=m[key]=m[key]||{name:x.name, n:0, billed:0, rev:0, _seen:new Set()};
-      c.n++;
-      if(x.m){ c.billed++; if(!c._seen.has(x.m.item)){ c._seen.add(x.m.item); c.rev+=x.m.item.net||0; } }
+      const c=m[key]=m[key]||{name:x.name,n:0,billed:0,rev:0,_seen:new Set()};
+      c.n++; if(x.m){ c.billed++; if(!c._seen.has(x.m.item)){ c._seen.add(x.m.item); c.rev+=x.m.item.net||0; } }
     });
-    return Object.values(m).sort((a,b)=>b.n-a.n);
-  };
-  return {rows:out,
-    proc:stat(out,"PROC"), reg:stat(out,"REG"),
-    perCenter:centers.map(c=>{const s=out.filter(r=>r.center===c);
-      return {center:c, proc:stat(s,"PROC"), reg:stat(s,"REG")};}),
-    procDrugs:drugTally("PROC"), regDrugs:drugTally("REG")};
+    return Object.values(m).sort((a,b)=>b.n-a.n); };
+  return {rows, proc:stat(rows,"PROC"), reg:stat(rows,"REG"),
+    perCenter:centers.map(c=>{const s2=rows.filter(r=>r.center===c);
+      return {center:c, proc:stat(s2,"PROC"), reg:stat(s2,"REG")};}),
+    procDrugs:tally("PROC"), regDrugs:tally("REG")};
 }
-
 function renderPharma(){
   const host=$("#phTop");
-  if(!OP.length || !BILL.length){
-    ["#phKpis","#phSumTbl","#phCenterTbl","#phDrugTbl","#phEncTbl"].forEach(s=>{const e=$(s); if(e) e.innerHTML="";});
-    if(host) host.innerHTML='<div class="warnbox">This needs the <b>OP/IP analysis</b> exports (what was advised) and the <b>detailed billing report</b> (the line items). Load them above.</div>';
+  /* An empty array is truthy, so test length — otherwise a snapshot with no
+     drug data renders zero-value tables instead of saying why. */
+  const src = (LAST && LAST.rows)
+    ? LAST.rows.filter(r=>(r.proc&&r.proc.length)||(r.reg&&r.reg.length)) : [];
+  if(!src.length){
+    ["#phKpis","#phSumTbl","#phCenterTbl","#phDrugTbl","#phEncTbl"].forEach(x=>{const e=$(x); if(e) e.innerHTML="";});
+    if(host) host.innerHTML='<div class="warnbox">'+(SNAPMODE
+      ? "This shared snapshot was published before the pharmacy section existed. Publish a new snapshot, or load the exports here."
+      : "This needs the <b>OP/IP analysis</b> exports and the <b>detailed billing report</b>. Load them above.")+"</div>";
     return;
   }
   if(host) host.innerHTML="";
-  const A = PHARMA = pharmaAnalyse();
+  const A = PHARMA = pharmaAnalyse(src);
   const pct=(a,b)=> b?Math.round(a/b*100)+"%":"—";
   const P=A.proc, R=A.reg;
   $("#phKpis").innerHTML =
@@ -1972,7 +1968,7 @@ function renderPharma(){
     "Some genuinely were not bought; others are billed under their molecule rather than the brand — Dolo billed as PARACETAMOL, for instance. "+
     "Add those pairs on one line in <b>Rules &amp; mapping → Item synonyms</b> and they will start matching.</div>";
 }
-let PHARMA=null;
+let PHARMA=null, PHIDX=new Map();
 
 /* --------------------------------------------------------------- snapshot -- */
 /* A snapshot carries ONLY computed aggregates — no patient name, mobile, invoice
@@ -2040,14 +2036,18 @@ function snapshotOf(A){
     k: d.back ? {d:iso(d.back.date), t:d.back.type, v:Math.round(d.back.total),
                  y:d.back.days, c:d.back.n} : null}));
   const packM = arr => arr.map(x=>[x.name, x.m?x.m.conf:null, x.m?x.m.item.item:null]);
-  const enc = A.allRows.map(r=>({p:r.patient, m:r.mob, c:r.center, d:iso(r.date),
+  const packD = arr => arr.map(x=>[x.name, x.m?x.m.conf:null, x.m?x.m.item.item:null,
+                                   x.m?Math.round(x.m.item.net||0):0, x.m?x.m.item.lid:0]);
+  const enc = A.allRows.map(r=>({p:r.patient, m:r.mob, h:r.hid, c:r.center, d:iso(r.date),
     r:r.doctor, t:r.type, dT:r.dTxt, pT:r.pTxt, gT:r.drugTxt, cT:r.procTxt,
     eP:Math.round(r.expProc||0),
     eD:Math.round(r.expD), eG:Math.round(r.expDrug),
     k:r.opdKind||null,
     hD:r.hasD?1:0, hP:r.hasP?1:0, cD:r.convD?1:0, cP:r.convP?1:0,
     bt:r.bought?1:0, bv:Math.round(r.buyRev||0),
-    dM:packM(r.dMatch||[]), pM:packM(r.pMatch||[])}));
+    dM:packM(r.dMatch||[]), pM:packM(r.pMatch||[]),
+    /* drug matches, so the pharmacy section survives into the snapshot */
+    cM:packD(r.proc||[]), rM:packD(r.reg||[])}));
 
   const all = days.map(d=>d.d);
   return {
@@ -2078,14 +2078,26 @@ function aggregateSnap(){
   const inRange = x => (!f || x.d>=f) && (!t || x.d<=t) && (!c || x.c===c);
   const unpackM = (arr,kind) => (arr||[]).map(a=>({name:a[0], kind,
     m: a[1] ? {conf:a[1], item:{item:a[2]}} : null}));
+  /* Distinct billed lines must be the SAME object across encounters, otherwise
+     the one-line-one-credit rule cannot recognise a repeat. */
+  const lineCache = new Map();
+  const lineFor = (nm,net,lid) => { const k = lid || (nm+"|"+net);
+    if(!lineCache.has(k)) lineCache.set(k,{item:nm, net:net, lid:lid});
+    return lineCache.get(k); };
+  const unpackD = (arr,kind) => (arr||[]).map(a=>({name:a[0], kind,
+    m: a[1] ? {conf:a[1], item:lineFor(a[2],a[3]||0,a[4])} : null}));
   const unpackEnc = x => ({
-    patient:x.p, mob:x.m, center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
+    patient:x.p, mob:x.m, hid:x.h||"", center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
     opdKind:x.k||null, dTxt:x.dT||"", pTxt:x.pT||"", drugTxt:x.gT||"", procTxt:x.cT||"",
     expProc:x.eP||0,
     expD:x.eD, expDrug:x.eG,
     hasD:!!x.hD, hasP:!!x.hP, convD:!!x.cD, convP:!!x.cP, bought:!!x.bt, buyRev:x.bv,
     dItems:splitItems(x.dT), pItems:splitItems(x.pT),
-    dMatch:unpackM(x.dM,"D"), pMatch:unpackM(x.pM,"P"), bD:[], bP:[]});
+    dMatch:unpackM(x.dM,"D"), pMatch:unpackM(x.pM,"P"), bD:[], bP:[],
+    proc:unpackD(x.cM,"PROC"), reg:unpackD(x.rM,"REG"),
+    hasProc:(x.cM||[]).length>0, hasReg:(x.rM||[]).length>0,
+    procHit:(x.cM||[]).some(a=>a[1]), regHit:(x.rM||[]).some(a=>a[1]),
+    billedRev:0});
   const mk = (center,rows) => {
     const o = {center, opd:0,fresh:0,sugD:0,bilD:0,bFresh:0,bFollow:0,bPrior:0,bNoOpd:0,
                bReturn:0,bSameDay:0,expRev:0,bilRev:0,noOpdRev:0,returnRev:0,sugP:0,bilP:0};
@@ -2175,6 +2187,9 @@ function publishSnapshot(){
 function renderSnap(){
   const A = LAST = aggregateSnap();
   renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
+  try{ renderPharma(); }
+  catch(err){ const n=$("#phTop");
+    if(n) n.innerHTML = '<div class="warnbox"><b>Pharmacy section failed to build:</b> '+esc(err.message)+"</div>"; }
   try{ renderRadiation(); }
   catch(err){ const n=$("#radNote");
     if(n) n.innerHTML = '<div class="warnbox" style="margin-top:14px"><b>Radiation section failed to build:</b> '+
