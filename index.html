@@ -107,6 +107,11 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 .muted{color:var(--text-muted)}
 .chartwrap{overflow-x:auto}
 .sect{margin:22px 0 10px;font-size:14px;font-weight:650}
+.jtab{display:none} .jtab.on{display:block}
+th.l,td.l{text-align:left}
+td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-size:12px;line-height:1.4}
+.jin{padding:4px 6px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface-0);color:inherit;font:inherit;font-size:12px;max-width:190px}
+.pill.n{background:var(--surface-2);color:var(--text-secondary)}
 </style>
 </head>
 <body>
@@ -378,34 +383,138 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 
 <section id="area-drops" class="area" style="display:none">
   <div class="card">
-    <h2>Dropped patients</h2>
-    <p class="hint">Who stopped coming, when, why, and from which treatment. Read from the <b>patient master</b> — the Dropped, Drop Reason and Treatment Category columns your team maintains.</p>
+    <h2>Patient journey &amp; drop-offs</h2>
+    <p class="hint">One row per patient from the <b>patient master</b> export: status, cycle position, recall bucket and next follow-up date, so the team knows who to call and when. Last cycle dates come from the invoice export. The rules are on the <b>Recall rules</b> tab.</p>
     <div class="ctrls">
-      <div class="fld"><label for="dpBasis">Count by</label><select id="dpBasis">
-        <option value="drop">Month they stopped</option>
-        <option value="cohort">Month they were onboarded</option></select></div>
-      <div class="fld"><label for="dpFrom">From</label><input type="date" id="dpFrom"></div>
-      <div class="fld"><label for="dpTo">To</label><input type="date" id="dpTo"></div>
-      <div class="fld"><label for="dpCenter">Center</label><select id="dpCenter"><option value="">All centers</option></select></div>
-      <div class="fld"><label for="dpGroup">Reason</label><select id="dpGroup"><option value="">All reasons</option></select></div>
-      <div class="fld"><label for="dpProc">Procedure</label><select id="dpProc"><option value="">All procedures</option></select></div>
-      <div class="fld"><label for="dpSrch">Search</label><input class="srch" id="dpSrch" placeholder="Patient or reason"></div>
+      <div class="fld"><label for="jType">Patients</label><select id="jType">
+        <option value="IP">IP patients</option><option value="">All patients (IP + OP)</option><option value="OP">OP patients</option></select></div>
+      <div class="fld"><label for="jCenter">Primary centre</label><select id="jCenter"><option value="">All centres</option></select></div>
+      <div class="fld"><label for="jAsOf">As of</label><input type="date" id="jAsOf"></div>
+      <button class="btn" id="jXlsx" type="button">Download tracker (Excel)</button>
     </div>
   </div>
   <div id="dpTop"></div>
-  <div class="kpis" id="dpKpis"></div>
-  <div class="card"><h2>Month on month</h2>
-    <p class="hint">Drop % is drops divided by the patients counted in that month on the basis chosen above.</p>
-    <div class="tblwrap"><table id="dpMonthTbl"></table></div></div>
-  <div class="card"><h2>Why they dropped</h2>
-    <div class="tblwrap"><table id="dpGroupTbl"></table></div></div>
-  <div class="card"><h2>Reason as recorded</h2>
-    <div class="tblwrap"><table id="dpReasonTbl"></table></div></div>
-  <div class="card"><h2>Which procedure they dropped from</h2>
-    <div class="tblwrap"><table id="dpProcTbl"></table></div></div>
-  <div class="card"><h2>Patient by patient</h2>
-    <div class="tblwrap"><table id="dpPatTbl"></table></div>
-    <div id="dpNote"></div></div>
+  <nav class="tabs" id="jTabs">
+    <button aria-selected="true" data-j="dash">Dashboard</button>
+    <button aria-selected="false" data-j="master">Patient master</button>
+    <button aria-selected="false" data-j="queue">Follow-up queue</button>
+    <button aria-selected="false" data-j="centre">Centre-wise analysis</button>
+    <button aria-selected="false" data-j="drops">Drop analysis</button>
+    <button aria-selected="false" data-j="rules">Recall rules</button>
+  </nav>
+
+  <div class="jtab on" id="jt-dash"><div class="jerr"></div>
+    <div class="sect">Enrolment &amp; status</div>
+    <div class="kpis" id="jdKpis"></div>
+    <div class="card"><h2>Modality mix</h2>
+      <p class="hint">A patient on two treatments is counted in both lines. Sessions are the counts in the patient master.</p>
+      <div class="tblwrap"><table id="jdModTbl"></table></div></div>
+    <div class="sect">Cycle progress</div>
+    <div class="kpis" id="jdCycle"></div>
+    <div class="sect">Follow-up queue</div>
+    <div class="kpis" id="jdQueue"></div>
+    <div class="card"><h2>Centre snapshot</h2>
+      <p class="hint">Each patient counts once, at the first centre in their Location. The full breakdown is on the Centre-wise analysis tab.</p>
+      <div class="tblwrap"><table id="jdCenTbl"></table></div></div>
+    <p class="hint" id="jdSrc"></p>
+  </div>
+
+  <div class="jtab" id="jt-master"><div class="jerr"></div>
+    <div class="card"><h2>Patient master</h2>
+      <p class="hint">Every patient with the tracker's columns: centre, sessions per treatment, cycles, frequency, last cycle date, status, drop reason, recall bucket, next appointment and the follow-up date that drives the call list. Click a mobile number to dial.</p>
+      <div class="ctrls" style="margin-bottom:12px">
+        <div class="fld"><label for="jmStatus">Status</label><select id="jmStatus"><option value="">Active and dropped</option><option>Active</option><option>Dropped</option></select></div>
+        <div class="fld"><label for="jmBucket">Recall bucket</label><select id="jmBucket"><option value="">All buckets</option></select></div>
+        <div class="fld"><label for="jmFu">Follow-up status</label><select id="jmFu"><option value="">Any</option>
+          <option>OVERDUE</option><option>Due this week</option><option>Due in 30 days</option><option>Scheduled later</option>
+          <option>No follow-up set</option><option>Closed</option></select></div>
+        <div class="fld"><label for="jmSrch">Search</label><input class="srch" id="jmSrch" placeholder="Name, ID, mobile, remark"></div>
+      </div>
+      <div class="tblwrap" style="max-height:72vh;overflow:auto"><table id="jmTbl"></table></div>
+      <div id="jmNote"></div></div>
+  </div>
+
+  <div class="jtab" id="jt-queue"><div class="jerr"></div>
+    <div class="kpis" id="jqKpis"></div>
+    <div class="card"><h2>Follow-up queue — the call list</h2>
+      <p class="hint">Everyone with a follow-up date. An active patient is due at their next appointment, a date written in Remarks, or last cycle + cycle interval. A dropped patient is due the recall months after they stopped (Recall rules tab). After each call fill <b>Called on</b>, <b>Outcome</b> and <b>Owner</b>; set <b>Next follow-up</b> to move the patient to a new date. "Not interested", "Wrong number", "Treatment elsewhere" and "Patient deceased" close the follow-up.</p>
+      <div class="ctrls" style="margin-bottom:12px">
+        <div class="fld"><label for="jqShow">Show</label><select id="jqShow">
+          <option value="now">Due now (overdue + this week)</option><option value="OVERDUE">Overdue</option>
+          <option value="Due this week">Due this week</option><option value="Due in 30 days">Due in 30 days</option>
+          <option value="Scheduled later">Scheduled later</option><option value="">Everyone with a date</option></select></div>
+        <div class="fld"><label for="jqStatus">Patient status</label><select id="jqStatus"><option value="">Active and dropped</option><option>Active</option><option>Dropped</option></select></div>
+        <div class="fld"><label for="jqBucket">Recall bucket</label><select id="jqBucket"><option value="">All buckets</option></select></div>
+        <div class="fld"><label for="jqCalled">Called</label><select id="jqCalled"><option value="">Everyone</option><option value="no">Not called yet</option><option value="yes">Already called</option></select></div>
+        <div class="fld"><label for="jqSort">Order</label><select id="jqSort"><option value="near">Most recently due first</option><option value="oldest">Longest overdue first</option><option value="rev">Highest revenue first</option></select></div>
+        <div class="fld"><label for="jqSrch">Search</label><input class="srch" id="jqSrch" placeholder="Name, ID, mobile, remark"></div>
+      </div>
+      <div class="tblwrap" style="max-height:72vh;overflow:auto"><table id="jqTbl"></table></div>
+      <div id="jqNote"></div></div>
+  </div>
+
+  <div class="jtab" id="jt-centre"><div class="jerr"></div>
+    <div class="card"><h2>Centre-wise analysis</h2>
+      <p class="hint">Enrolment, retention, treatment load, cycle throughput, revenue and each centre's follow-up workload. A patient treated at more than one centre counts once, at their primary centre; Multi-centre patients shows how many such patients each centre has.</p>
+      <div class="tblwrap"><table id="jcTbl"></table></div></div>
+  </div>
+
+  <div class="jtab" id="jt-drops"><div class="jerr"></div>
+    <div class="card">
+      <h2>Drop analysis</h2>
+      <p class="hint">Who stopped coming, when, why, and what that cost. Uses the Dropped, Drop Reason and Treatment Category columns your team maintains; the drop month is the month of the last invoice. The filters here apply to every table on this tab.</p>
+      <div class="ctrls">
+        <div class="fld"><label for="dpBasis">Count by</label><select id="dpBasis">
+          <option value="drop">Month they stopped</option>
+          <option value="cohort">Month they were onboarded</option></select></div>
+        <div class="fld"><label for="dpFrom">From</label><input type="date" id="dpFrom"></div>
+        <div class="fld"><label for="dpTo">To</label><input type="date" id="dpTo"></div>
+        <div class="fld"><label for="dpGroup">Reason</label><select id="dpGroup"><option value="">All reasons</option></select></div>
+        <div class="fld"><label for="dpProc">Procedure</label><select id="dpProc"><option value="">All procedures</option></select></div>
+        <div class="fld"><label for="dpSrch">Search</label><input class="srch" id="dpSrch" placeholder="Patient or reason"></div>
+      </div>
+    </div>
+    <div class="kpis" id="dpKpis"></div>
+    <div class="card"><h2>Drop reason × centre</h2>
+      <p class="hint">Every drop reason with its recall bucket, patients, share of drops and the revenue already booked, split by primary centre.</p>
+      <div class="tblwrap"><table id="jxMatrix"></table></div></div>
+    <div class="card"><h2>Recall buckets — how big each callback list is</h2>
+      <p class="hint">Recoverable and Find out why are the lists worth calling; Survivorship is the routine post-treatment check.</p>
+      <div class="tblwrap"><table id="jxBuckets"></table></div></div>
+    <div class="card"><h2>Month on month</h2>
+      <p class="hint">Drop % is drops divided by the patients counted in that month on the basis chosen above.</p>
+      <div class="tblwrap"><table id="dpMonthTbl"></table></div></div>
+    <div class="card"><h2>Why they dropped — grouped</h2>
+      <div class="tblwrap"><table id="dpGroupTbl"></table></div></div>
+    <div class="card"><h2>Which procedure they dropped from</h2>
+      <div class="tblwrap"><table id="dpProcTbl"></table></div></div>
+    <div class="card"><h2>Patient by patient</h2>
+      <div class="tblwrap"><table id="dpPatTbl"></table></div>
+      <div id="dpNote"></div></div>
+  </div>
+
+  <div class="jtab" id="jt-rules"><div class="jerr"></div>
+    <div class="card"><h2>Recall rules</h2>
+      <p class="hint">How long after a patient drops they are called back, by drop reason. Blank months = no automatic recall. Treatment Complete is 2 months, as in the tracker. Saved in this browser.</p>
+      <div class="tblwrap"><table id="jrTbl"></table></div>
+      <div class="ctrls" style="margin-top:14px">
+        <div class="fld"><label for="jrInt">Default cycle interval (days)</label><input type="number" id="jrInt" min="1" max="120" style="width:110px"></div>
+        <div class="fld"><label for="jrSoon">"Due this week" window (days)</label><input type="number" id="jrSoon" min="0" max="30" style="width:110px"></div>
+        <button class="btn" id="jrSave" type="button">Save and recalculate</button>
+        <button class="btn" id="jrReset" type="button">Reset to tracker defaults</button>
+        <span class="muted" id="jrMsg"></span>
+      </div></div>
+    <div class="card"><h2>Cycle frequency</h2>
+      <p class="hint">Read from each patient's Remarks. The shortest one written wins — a patient on weekly paclitaxel and 3-weekly immunotherapy is due every week. With no frequency written, the default interval above is used.</p>
+      <div class="tblwrap"><table>
+        <thead><tr><th class="l">Written in Remarks as</th><th class="l">Frequency</th><th>Days</th></tr></thead>
+        <tbody><tr><td class="l">weekly · d1 d8</td><td class="l">Weekly</td><td>7</td></tr>
+        <tr><td class="l">2 weekly · fortnightly · 14 days</td><td class="l">Every 2 weeks</td><td>14</td></tr>
+        <tr><td class="l">3 weekly · 3 weeks · 21 days</td><td class="l">Every 3 weeks</td><td>21</td></tr>
+        <tr><td class="l">4 weekly · 28 days · monthly</td><td class="l">Every 4 weeks</td><td>28</td></tr>
+        <tr><td class="l">6 weekly · 42 days</td><td class="l">Every 6 weeks</td><td>42</td></tr>
+        <tr><td class="l">3 monthly · 6 monthly</td><td class="l">Every N months</td><td>N × 30</td></tr></tbody></table></div></div>
+  </div>
 </section>
 
 <div id="area-diagnostics" class="area">
@@ -559,7 +668,7 @@ textarea{width:100%;min-height:104px;padding:10px;border:1px solid var(--border-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "08-Sep-2026 bdb9b3";
+const BUILD = "14-Sep-2026 70dc25";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -801,14 +910,21 @@ function build(){
   SYN = synGroups();
   ONBOARD = new Map(); PATIENTS = [];
   (RAW.pat||[]).forEach(r=>{
-    PATIENTS.push({
+    PATIENTS.push(mkPat({
       id: hid(get(r,"Hospital ID")), patient: String(get(r,"Patient Name")||""),
-      center: centerOf(get(r,"Location")), onboard: parseDate(get(r,"Onboarding Date")),
+      mobile: normMobile(get(r,"Mobile","Patient Mobile")), loc: String(get(r,"Location")||""),
+      onboard: parseDate(get(r,"Onboarding Date")),
       lastInvoice: parseDate(get(r,"Last Invoice Date")),
       dropped: /^yes$/i.test(String(get(r,"Dropped")||"").trim()),
       reason: get(r,"Drop Reason"), category: get(r,"Treatment Category"),
-      type: String(get(r,"Type")||"").trim(), revenue: num(get(r,"Total Revenue"))
-    });
+      type: String(get(r,"Type")||"").trim().toUpperCase(), revenue: num(get(r,"Total Revenue")),
+      revMonth: num(get(r,"Revenue This Month")), expRev: num(get(r,"Expected Revenue")),
+      s: {chemo:num(get(r,"Chemo")), immuno:num(get(r,"Immuno")), targeted:num(get(r,"Targeted")),
+          radiation:num(get(r,"Radiation")), surgery:num(get(r,"Surgery")), medmgt:num(get(r,"Med Mgt","Med Mgmt")),
+          daycare:num(get(r,"Day Care")), diag:num(get(r,"Diagnostics"))},
+      remarks: String(get(r,"Remarks")||""), notes: String(get(r,"Drop Notes")||""),
+      future: String(get(r,"Future Appointments")||""), lastCycle: null
+    }));
     const k = hid(get(r,"Hospital ID")), d = parseDate(get(r,"Onboarding Date"));
     if(!k || !d) return;
     const prev = ONBOARD.get(k);        // keep the earliest if a patient repeats
@@ -855,6 +971,11 @@ function build(){
              : /^new$/i.test(String(get(r,"Old/New Patient")||"").trim()),
     net: num(get(r,"Net Billed"))
   })).filter(r=>r.date);
+  /* Last cycle = the patient's latest chemotherapy, immunotherapy or targeted invoice. */
+  const lastCyc = new Map();
+  INV.forEach(i=>{ if(!i.hid || !/CHEMO|IMMUNO|TARGET/.test(i.procType)) return;
+    const d = lastCyc.get(i.hid); if(!d || i.date>d) lastCyc.set(i.hid, i.date); });
+  PATIENTS.forEach(p=>{ p.lastCycle = lastCyc.get(p.id) || null; });
 
   const mapEnc = (r, src) => {
     const dS = get(r,"Diagnostics Suggested");
@@ -1162,7 +1283,12 @@ function analyse(){
 /* ----------------------------------------------------------------- render -- */
 let LAST = null;
 function render(){
-  if(!RAW.bill && !RAW.inv && !RAW.op) return;
+  if(!RAW.bill && !RAW.inv && !RAW.op){
+    /* The patient master alone is enough for the journey tracker. */
+    if(RAW.pat){ build(); $("#app").style.display=""; $("#emptyState").style.display="none";
+      try{ renderJourney(); }catch(e){} }
+    return;
+  }
   build();
   const A = LAST = analyse();
   renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A);
@@ -1170,7 +1296,7 @@ function render(){
   /* Radiation is independent of the rest; if it fails it must say so in its own
      panel rather than aborting the render and leaving the page half-drawn. */
   try{ renderPharma(); }catch(e){ const n=$('#phTop'); if(n) n.innerHTML='<div class="warnbox">Pharmacy section failed: '+esc(e.message)+'</div>'; }
-  try{ renderDrops(); }catch(e){}
+  try{ renderJourney(); }catch(e){}
   try{ renderRadiation(); }
   catch(err){
     const n=$("#radTop")||$("#radNote");
@@ -1729,16 +1855,16 @@ const ADDRESSABLE = new Set(["Cost or scheme","Moved away","Bad experience","Oth
 function analyseDrops(){
   const f=$("#dpFrom").value, t=$("#dpTo").value;
   const basis=$("#dpBasis").value || "drop";     // drop month vs onboarding cohort
-  const cen=$("#dpCenter").value, grp=$("#dpGroup").value, proc=$("#dpProc").value;
+  const cen=$("#jCenter").value, typ=$("#jType").value, grp=$("#dpGroup").value, proc=$("#dpProc").value;
   const M = d => d ? iso(d).slice(0,7) : null;
-  const rows = PATIENTS.map(p=>({...p,
+  const rows = PATIENTS.map(p=>({...p, _src:p,
     group: dropGroup(p.reason),
     dropMonth: M(p.lastInvoice) || null,
     cohort: M(p.onboard)}));
   const inWin = m => m && (!f || m>=f.slice(0,7)) && (!t || m<=t.slice(0,7));
   const scope = rows.filter(p=>{
     const m = basis==="cohort" ? p.cohort : (p.dropMonth || p.cohort);
-    return inWin(m) && (!cen || p.center===cen);
+    return inWin(m) && (!cen || p.center===cen) && (!typ || p.type===typ);
   });
   let dropped = scope.filter(p=>p.dropped);
   if(grp)  dropped = dropped.filter(p=>p.group===grp);
@@ -1775,7 +1901,6 @@ function renderDrops(){
     const j=vals.join("|"); if(e.dataset.built===j) return; const keep=e.value;
     e.innerHTML='<option value="">'+label+"</option>"+vals.map(v=>'<option>'+esc(v)+"</option>").join("");
     e.dataset.built=j; e.value=vals.includes(keep)?keep:""; };
-  fill("#dpCenter",[...new Set(PATIENTS.map(p=>p.center))].filter(Boolean).sort(),"All centers");
   fill("#dpGroup",[...new Set(PATIENTS.filter(p=>p.dropped).map(p=>dropGroup(p.reason)))].sort(),"All reasons");
   fill("#dpProc",[...new Set(PATIENTS.filter(p=>p.dropped&&p.category).map(p=>String(p.category).trim()))]
         .filter(x=>x&&x!=="nan").sort(),"All procedures");
@@ -1809,7 +1934,6 @@ function renderDrops(){
       "</td><td>"+money(r.rev)+"</td></tr>").join("")
       :'<tr><td colspan="4" class="muted">Nothing to show.</td></tr>')+"</tbody>"; };
   tbl("#dpGroupTbl",A.byGroup,"Reason group");
-  tbl("#dpReasonTbl",A.byReason,"Reason as recorded");
   tbl("#dpProcTbl",A.byProc,"Procedure (Treatment Category)");
 
   const q=$("#dpSrch").value.trim().toLowerCase();
@@ -1832,6 +1956,545 @@ function renderDrops(){
     (noRec? " Last Invoice Date is blank for "+noRec+" of them, so those fall back to their onboarding month." : "")+
     " A drop rate by procedure is not shown because Treatment Category is only filled for patients who reached treatment, "+
     "which would make every procedure look catastrophic.</div>";
+  renderDropMatrix(A);
+}
+
+/* ---------------------------------------------------------------- journey -- */
+/* The IP patient journey tracker, rebuilt over the patient master: each
+   patient's status, cycle position, recall bucket and follow-up date, plus a
+   call log the agents fill in. The rules mirror the tracker's Settings sheet
+   and can be changed on the Recall rules tab. */
+const JLSK = "oncare_journey_v1", CLSK = "oncare_calls_v1";
+const NOREASON = "Reason not recorded";
+const JDEF = {interval:21, soon:7, rules:[
+  ["Treatment Complete",2,"Survivorship follow-up"],
+  ["Not fit for further treatment","","No follow-up"],
+  ["Money got over",1,"Recoverable"],
+  ["Got cheaper option",1,"Recoverable"],
+  ["Govt Hospital or scheme",3,"Recoverable"],
+  ["Went back to Hometown",3,"Recoverable"],
+  ["Went back to Country","","No follow-up"],
+  ["Bad experience",1,"Service recovery"],
+  ["Other",1,"Recoverable"],
+  ["RIP","","Deceased"],
+  ["Patient Passed Away","","Deceased"],
+  /* Not in the tracker: a drop with no reason is called straight away to find
+     out why. Blank the months to switch that off. */
+  [NOREASON,0,"Find out why"]]};
+function loadJ(){
+  const b = JSON.parse(JSON.stringify(JDEF));
+  try{
+    const r = JSON.parse(localStorage.getItem(JLSK));
+    if(r && typeof r==="object"){
+      if(+r.interval>0) b.interval = +r.interval;
+      if(r.soon!=null && r.soon!=="" && +r.soon>=0) b.soon = +r.soon;
+      if(Array.isArray(r.rules)) r.rules.forEach(x=>{
+        const i = b.rules.findIndex(y=>y[0].toLowerCase()===String(x[0]).toLowerCase());
+        if(i>=0) b.rules[i] = [b.rules[i][0], x[1], x[2]||b.rules[i][2]];
+      });
+    }
+  }catch(e){}
+  return b;
+}
+let JCFG = loadJ();
+const saveJ = () => { try{ localStorage.setItem(JLSK, JSON.stringify(JCFG)); }catch(e){} };
+/* The call log lives in this browser only — there is no server behind the page.
+   The Excel download carries it, so it can be handed over or archived. */
+let CALLS = (()=>{ try{ return JSON.parse(localStorage.getItem(CLSK))||{}; }catch(e){ return {}; } })();
+const saveCalls = () => { try{ localStorage.setItem(CLSK, JSON.stringify(CALLS)); }catch(e){} };
+const OUTCOMES = ["Reached — coming back","Reached — call back later","Reached — not interested",
+  "Not reachable","Wrong / switched-off number","Treatment elsewhere","Patient deceased"];
+/* Outcomes that end the follow-up: the patient leaves the queue. */
+const CLOSING = new Set(["Reached — not interested","Wrong / switched-off number","Treatment elsewhere","Patient deceased"]);
+
+const clean = v => { const t=String(v==null?"":v).trim(); return /^nan$/i.test(t)?"":t; };
+function ruleOf(reason){
+  const t = clean(reason), key = t || NOREASON;
+  const exact = JCFG.rules.find(r=>r[0].toLowerCase()===key.toLowerCase());
+  const hit = exact || JCFG.rules.find(r=>r[0]==="Other");
+  const m = hit && hit[1]!=="" && hit[1]!=null && isFinite(+hit[1]) ? +hit[1] : null;
+  return {key: exact ? exact[0] : key, months: m, bucket: hit ? hit[2] : "Recoverable"};
+}
+
+/* "Oncare Cancer Center,Greater Kailash(New Delhi), Oncare Cancer Centre,Sector 41(Gurugram)":
+   a centre's own name carries a comma, so centres are split only where the next
+   one starts. The first listed is the primary centre, as in the tracker. */
+const locParts = loc => String(loc==null?"":loc).split(/,\s+(?=oncare)/i).map(s=>s.trim()).filter(Boolean);
+function mkPat(o){
+  const parts = locParts(o.loc);
+  const centres = parts.length ? [...new Set(parts.map(centerOf))] : [centerOf(o.loc)];
+  return Object.assign(o, {center: centres[0], centres, multi: centres.length>1});
+}
+const PATF = ["id","patient","mobile","loc","onboard","lastInvoice","dropped","reason","category","type",
+  "revenue","revMonth","expRev","chemo","immuno","targeted","radiation","surgery","medmgt","daycare","diag",
+  "remarks","notes","future","lastCycle"];
+function packPat(p){ const s=p.s||{};
+  return [p.id, p.patient, p.mobile||"", p.loc||"", iso(p.onboard), iso(p.lastInvoice), p.dropped?1:0,
+    clean(p.reason), clean(p.category), p.type||"",
+    Math.round(p.revenue||0), Math.round(p.revMonth||0), Math.round(p.expRev||0),
+    s.chemo||0, s.immuno||0, s.targeted||0, s.radiation||0, s.surgery||0, s.medmgt||0, s.daycare||0, s.diag||0,
+    p.remarks||"", p.notes||"", p.future||"", iso(p.lastCycle)]; }
+function unpackPat(a){ const d = v => v ? parseDate(v) : null;
+  return mkPat({id:a[0], patient:a[1], mobile:a[2], loc:a[3], onboard:d(a[4]), lastInvoice:d(a[5]),
+    dropped:!!a[6], reason:a[7]||null, category:a[8]||null, type:a[9],
+    revenue:a[10], revMonth:a[11], expRev:a[12],
+    s:{chemo:a[13], immuno:a[14], targeted:a[15], radiation:a[16], surgery:a[17], medmgt:a[18], daycare:a[19], diag:a[20]},
+    remarks:a[21], notes:a[22], future:a[23], lastCycle:d(a[24])}); }
+
+/* ------------------------------------------------ reading the free text -- */
+const MON = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+/* Future Appointments: "10 Sept 2026, 03:30 am - Rakesh Sharma (IP Chemotherapy) | 29 Sept 2026, ..." */
+function apptList(s){
+  return String(s||"").split("|").map(x=>{
+    const m = x.match(/(\d{1,2})\s+([A-Za-z]{3,9})\.?,?\s+(\d{4})/); if(!m) return null;
+    const mo = MON[m[2].slice(0,3).toLowerCase()]; if(mo==null) return null;
+    return {d:new Date(+m[3], mo, +m[1]), what:(x.split(" - ").slice(1).join(" - ")||"").trim()};
+  }).filter(Boolean).sort((a,b)=>a.d-b.d);
+}
+/* Remarks: "Next chemo visit date- 11th Sep 2026", "Next session will be on 12th Sept" */
+function nextFromRemarks(s, ref){
+  const m = String(s||"").match(/next[^|]{0,60}?\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:of\s+)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?,?\s*(\d{4})?/i);
+  if(!m) return null;
+  const d = new Date(m[3] ? +m[3] : (ref||new Date()).getFullYear(), MON[m[2].toLowerCase()], +m[1]);
+  return isNaN(d) ? null : d;
+}
+/* Frequency written in Remarks. The shortest wins: weekly paclitaxel with
+   3-weekly immuno means the patient is due every week. */
+const FREQS = [
+  [/\b(?:6|six)\s*-?\s*week(?:ly|s)\b|\b42\s*days/i, 42, "Every 6 weeks"],
+  [/\b(?:4|four)\s*-?\s*week(?:ly|s)\b|\b28\s*days|\bmonthly\b/i, 28, "Every 4 weeks"],
+  [/\b(?:3|three)\s*-?\s*week(?:ly|s)\b|\b21\s*days/i, 21, "Every 3 weeks"],
+  [/\b(?:2|two)\s*-?\s*week(?:ly|s)\b|fortnight|bi-?weekly|\b14\s*days/i, 14, "Every 2 weeks"]];
+function freqOf(s){
+  let t = String(s||""), best = null;
+  const keep = (days,label) => { if(!best || days<best.days) best = {days,label}; };
+  const mm = t.match(/\b(\d{1,2})\s*-?\s*monthly\b/i);
+  if(mm){ keep(+mm[1]*30, "Every "+mm[1]+" months"); t = t.replace(/\b\d{1,2}\s*-?\s*monthly\b/gi," "); }
+  FREQS.forEach(([re,d,l])=>{ if(re.test(t)){ keep(d,l); t = t.replace(new RegExp(re.source,"gi")," "); } });
+  if(/\bweekly\b|\bd1\s*,?\s*d8\b/i.test(t)) keep(7,"Weekly");
+  return best;
+}
+/* "... EVERY 3 WEEKLY X 17 CYCLES", "d1 d8 d15 * 3 cycle" */
+function plannedOf(s){
+  const m = String(s||"").match(/(?:\bx|\*)\s*(\d{1,2})\s*cycles?\b|\b(\d{1,2})\s*cycles?\b/i);
+  return m ? +(m[1]||m[2]) : null;
+}
+
+/* ------------------------------------------------------ one patient row -- */
+const DAY = 864e5;
+const addDays = (d,n) => d ? new Date(d.getFullYear(), d.getMonth(), d.getDate()+n) : null;
+const addMonths = (d,n) => d ? new Date(d.getFullYear(), d.getMonth()+n, d.getDate()) : null;
+const monthLbl = d => d ? d.toLocaleString("en-GB",{month:"short"})+"-"+String(d.getFullYear()).slice(2) : "";
+function jAsOf(){
+  const d = parseDate($("#jAsOf") ? $("#jAsOf").value : ""), t = new Date();
+  return d || new Date(t.getFullYear(), t.getMonth(), t.getDate());
+}
+function jRow(p, asOf){
+  const s = p.s || {};
+  const f = freqOf(p.remarks), interval = f ? f.days : JCFG.interval;
+  const planned = plannedOf(p.remarks);
+  /* Chemo and immuno given at one sitting are one cycle, so the cycle count is
+     the largest of the three session counts, not their sum. */
+  const taken = Math.max(s.chemo||0, s.immuno||0, s.targeted||0);
+  const rule = ruleOf(p.reason);
+  const dropDate = p.dropped ? (p.lastInvoice || p.onboard) : null;
+  const appt = apptList(p.future)[0] || null;
+  const remNext = nextFromRemarks(p.remarks, p.lastInvoice || asOf);
+  const remOk = remNext && (!p.lastInvoice || remNext >= p.lastInvoice) ? remNext : null;
+  let auto = null, src = "";
+  if(!p.dropped){
+    if(appt){ auto = appt.d; src = "Appointment" + (appt.what ? " — "+appt.what : ""); }
+    else if(remOk){ auto = remOk; src = "Date written in remarks"; }
+    else if(p.lastCycle){ auto = addDays(p.lastCycle, interval); src = "Last cycle + "+interval+" days"; }
+    else if(p.lastInvoice){ auto = addDays(p.lastInvoice, interval); src = "Last visit + "+interval+" days"; }
+  } else if(rule.months!=null && dropDate){
+    auto = addMonths(dropDate, rule.months);
+    src = rule.months ? "Drop + "+rule.months+" mo ("+rule.bucket.toLowerCase()+")" : "At drop — "+rule.bucket.toLowerCase();
+  }
+  const key = p.id || p.mobile || p.patient;
+  const call = CALLS[key] || {};
+  const manual = parseDate(call.next || "");
+  const eff = manual || auto;
+  const days = eff ? Math.round((eff - asOf)/DAY) : null;
+  const fu = CLOSING.has(call.outcome) ? "Closed" : !eff ? "No follow-up set" : days<0 ? "OVERDUE" :
+             days<=JCFG.soon ? "Due this week" : days<=30 ? "Due in 30 days" : "Scheduled later";
+  return {p, key, id:p.id, name:p.patient, mobile:p.mobile||"", center:p.center, centres:p.centres||[p.center],
+    multi:!!p.multi, type:p.type, onboard:p.onboard, category:clean(p.category), s, taken, planned,
+    remaining: planned!=null ? Math.max(planned-taken,0) : null,
+    freq: f ? f.label : "", interval, lastCycle:p.lastCycle||null, lastInvoice:p.lastInvoice||null,
+    active:!p.dropped, status: p.dropped ? "Dropped" : "Active", dropDate,
+    reason: p.dropped ? rule.key : "", bucket: p.dropped ? rule.bucket : "Active patient",
+    remarks: clean(p.remarks), notes: clean(p.notes), appt: appt ? appt.d : null,
+    auto, src, manual, eff, days, fu, call,
+    revenue:p.revenue||0, revMonth:p.revMonth||0, expRev:p.expRev||0};
+}
+function journeyRows(){
+  const asOf = jAsOf(), type = $("#jType").value, cen = $("#jCenter").value;
+  return PATIENTS.filter(p=>(!type || p.type===type) && (!cen || p.center===cen)).map(p=>jRow(p, asOf));
+}
+
+/* ------------------------------------------------------------- tables -- */
+function fillSel(sel, vals, label){
+  const e=$(sel); if(!e) return;
+  const j=vals.join("|"); if(e.dataset.built===j) return; const keep=e.value;
+  e.innerHTML='<option value="">'+esc(label)+"</option>"+vals.map(v=>"<option>"+esc(v)+"</option>").join("");
+  e.dataset.built=j; e.value=vals.includes(keep)?keep:"";
+}
+const DASH = '<span class="muted">—</span>';
+function fmtJ(t,v){
+  if(t==="money") return money(v);
+  if(t==="pct") return v==null || !isFinite(v) ? DASH : Math.round(v*100)+"%";
+  if(t==="date") return v ? dmy(v) : DASH;
+  if(t==="int") return v==null || v==="" ? DASH : Number(v).toLocaleString("en-IN");
+  return v==null || v==="" ? DASH : esc(v);
+}
+const isTxt = t => t==="text" || t==="wrap";
+/* One column list drives both the on-screen table and the Excel sheet. */
+function jtable(sel, cols, rows, total, emptyMsg, limit){
+  const el=$(sel); if(!el) return;
+  const td=(c,r)=>{ const v=c.v(r);
+    return "<td"+(isTxt(c.t)?' class="'+(c.t==="wrap"?"wrap":"l")+'"':"")+">"+(c.html?c.html(r,v):fmtJ(c.t,v))+"</td>"; };
+  const list = limit ? rows.slice(0,limit) : rows;
+  el.innerHTML = "<thead><tr>"+cols.map(c=>"<th"+(isTxt(c.t)?' class="l"':"")+">"+esc(c.h)+"</th>").join("")+"</tr></thead><tbody>"+
+    (list.length ? list.map(r=>"<tr>"+cols.map(c=>td(c,r)).join("")+"</tr>").join("")
+                 : '<tr><td colspan="'+cols.length+'" class="muted">'+(emptyMsg||"Nothing to show.")+"</td></tr>")+
+    (total ? '<tr class="total">'+cols.map(c=>td(c,total)).join("")+"</tr>" : "")+"</tbody>";
+}
+function aoaOf(cols, rows, total){
+  return [cols.map(c=>c.h)].concat(rows.concat(total?[total]:[]).map(r=>cols.map(c=>{
+    const v = c.x ? c.x(r) : c.v(r);
+    if(c.t==="pct") return v==null || !isFinite(v) ? "" : Math.round(v*1000)/10;
+    if(c.t==="money") return Math.round(v||0);
+    return v==null ? "" : v; })));
+}
+const FUCLS = {"OVERDUE":"no","Due this week":"md","Due in 30 days":"lo","Scheduled later":"hi"};
+const pillFu = v => '<span class="pill '+(FUCLS[v]||"n")+'">'+esc(v)+"</span>";
+const pillSt = v => '<span class="pill '+(v==="Active"?"hi":"no")+'">'+esc(v)+"</span>";
+const telLink = v => v ? '<a href="tel:+91'+esc(v)+'">'+esc(v)+"</a>" : DASH;
+const yn = v => v>0 ? "Yes" : "No";
+
+const MCOLS = [
+  {h:"Patient name", t:"text", v:r=>r.name},
+  {h:"Hospital ID", t:"text", v:r=>r.id},
+  {h:"Mobile", t:"text", v:r=>r.mobile, html:(r,v)=>telLink(v)},
+  {h:"Primary centre", t:"text", v:r=>r.center},
+  {h:"Multi-centre", t:"text", v:r=>r.multi?"Yes":"No"},
+  {h:"All centres", t:"text", v:r=>r.centres.join(" + ")},
+  {h:"Type", t:"text", v:r=>r.type},
+  {h:"Onboarding date", t:"date", v:r=>r.onboard},
+  {h:"Onboarding month", t:"text", v:r=>monthLbl(r.onboard)},
+  {h:"Treatment category", t:"text", v:r=>r.category},
+  {h:"Chemo sessions", t:"int", v:r=>r.s.chemo||0},
+  {h:"Targeted sessions", t:"int", v:r=>r.s.targeted||0},
+  {h:"Immuno sessions", t:"int", v:r=>r.s.immuno||0},
+  {h:"Radiation sessions", t:"int", v:r=>r.s.radiation||0},
+  {h:"Surgery", t:"int", v:r=>r.s.surgery||0},
+  {h:"Med mgmt", t:"int", v:r=>r.s.medmgt||0},
+  {h:"Day care", t:"int", v:r=>r.s.daycare||0},
+  {h:"Diagnostics", t:"int", v:r=>r.s.diag||0},
+  {h:"On chemo", t:"text", v:r=>yn(r.s.chemo)},
+  {h:"On targeted", t:"text", v:r=>yn(r.s.targeted)},
+  {h:"On immuno", t:"text", v:r=>yn(r.s.immuno)},
+  {h:"On radiation", t:"text", v:r=>yn(r.s.radiation)},
+  {h:"Cycles planned", t:"int", v:r=>r.planned},
+  {h:"Cycles taken", t:"int", v:r=>r.taken},
+  {h:"Cycles remaining", t:"int", v:r=>r.remaining},
+  {h:"Cycle completion %", t:"pct", v:r=>r.planned ? r.taken/r.planned : null},
+  {h:"Frequency", t:"text", v:r=>r.freq},
+  {h:"Cycle interval (days)", t:"int", v:r=>r.interval},
+  {h:"Last cycle date", t:"date", v:r=>r.lastCycle},
+  {h:"Last visit (last invoice)", t:"date", v:r=>r.lastInvoice},
+  {h:"Status", t:"text", v:r=>r.status, html:(r,v)=>pillSt(v)},
+  {h:"Drop month", t:"text", v:r=>monthLbl(r.dropDate)},
+  {h:"Drop reason", t:"text", v:r=>r.reason},
+  {h:"Recall bucket", t:"text", v:r=>r.bucket},
+  {h:"Remarks / details", t:"wrap", v:r=>r.remarks},
+  {h:"Drop notes", t:"wrap", v:r=>r.notes},
+  {h:"Next appointment", t:"date", v:r=>r.appt},
+  {h:"Auto follow-up date", t:"date", v:r=>r.auto},
+  {h:"Follow-up basis", t:"text", v:r=>r.src},
+  {h:"Manual follow-up (call log)", t:"date", v:r=>r.manual},
+  {h:"Effective follow-up date", t:"date", v:r=>r.eff},
+  {h:"Days to follow-up", t:"int", v:r=>r.days},
+  {h:"Follow-up status", t:"text", v:r=>r.fu, html:(r,v)=>pillFu(v)},
+  {h:"Last called on", t:"date", v:r=>parseDate(r.call.on||"")},
+  {h:"Call outcome", t:"text", v:r=>r.call.outcome||""},
+  {h:"Owner", t:"text", v:r=>r.call.owner||""},
+  {h:"Total revenue", t:"money", v:r=>r.revenue},
+  {h:"Revenue this month", t:"money", v:r=>r.revMonth},
+  {h:"Expected revenue", t:"money", v:r=>r.expRev}];
+
+const inp = (r,k,type,ph) => '<input class="jin" type="'+type+'" data-id="'+esc(r.key)+'" data-k="'+k+'" value="'+
+  esc(r.call[k]||"")+'"'+(ph?' placeholder="'+esc(ph)+'"':"")+">";
+const QCOLS = [
+  {h:"Patient name", t:"text", v:r=>r.name},
+  {h:"Mobile", t:"text", v:r=>r.mobile, html:(r,v)=>telLink(v)},
+  {h:"Follow-up date", t:"date", v:r=>r.eff},
+  {h:"Days", t:"int", v:r=>r.days},
+  {h:"Follow-up status", t:"text", v:r=>r.fu, html:(r,v)=>pillFu(v)},
+  {h:"Hospital ID", t:"text", v:r=>r.id},
+  {h:"Primary centre", t:"text", v:r=>r.center},
+  {h:"Patient status", t:"text", v:r=>r.status, html:(r,v)=>pillSt(v)},
+  {h:"Treatment category", t:"text", v:r=>r.category},
+  {h:"Cycles taken", t:"int", v:r=>r.taken},
+  {h:"Cycles remaining", t:"int", v:r=>r.remaining},
+  {h:"Last cycle / visit", t:"date", v:r=>r.lastCycle||r.lastInvoice},
+  {h:"Drop reason", t:"text", v:r=>r.reason},
+  {h:"Recall bucket", t:"text", v:r=>r.bucket},
+  {h:"Why this date", t:"text", v:r=>r.src},
+  {h:"Remarks / details", t:"wrap", v:r=>[...new Set([r.remarks,r.notes].filter(Boolean))].join(" · ")},
+  {h:"Called on", t:"text", v:r=>r.call.on||"", x:r=>parseDate(r.call.on||""), html:r=>inp(r,"on","date")},
+  {h:"Outcome", t:"text", v:r=>r.call.outcome||"", html:r=>'<select class="jin" data-id="'+esc(r.key)+'" data-k="outcome"><option value="">—</option>'+
+      OUTCOMES.map(o=>"<option"+(o===r.call.outcome?" selected":"")+">"+esc(o)+"</option>").join("")+"</select>"},
+  {h:"Owner", t:"text", v:r=>r.call.owner||"", html:r=>inp(r,"owner","text","Agent")},
+  {h:"Next follow-up", t:"text", v:r=>r.call.next||"", x:r=>parseDate(r.call.next||""), html:r=>inp(r,"next","date")},
+  {h:"Call note", t:"text", v:r=>r.call.note||"", html:r=>inp(r,"note","text","What was said")}];
+
+/* -------------------------------------------------------- aggregations -- */
+let JROWS = [], JX = {};   // JX: last tables drawn, reused by the Excel download
+function jCounts(R){
+  const drp = R.filter(r=>!r.active);
+  const done = drp.filter(r=>r.reason==="Treatment Complete").length;
+  const died = drp.filter(r=>r.bucket==="Deceased").length;
+  return {n:R.length, act:R.length-drp.length, drp:drp.length, done, died, attr:drp.length-done-died,
+          rev:sum2(R,r=>r.revenue)};
+}
+function cAgg(name, R){
+  const cnt = f => R.filter(f).length;
+  return Object.assign(jCounts(R), {name, multi:cnt(r=>r.multi),
+    chemo:cnt(r=>r.s.chemo>0), targeted:cnt(r=>r.s.targeted>0), immuno:cnt(r=>r.s.immuno>0),
+    radiation:cnt(r=>r.s.radiation>0), surgery:cnt(r=>r.s.surgery>0), medmgt:cnt(r=>r.s.medmgt>0),
+    cycles:sum2(R,r=>r.taken), plan:cnt(r=>r.planned!=null),
+    revM:sum2(R,r=>r.revMonth), exp:sum2(R,r=>r.expRev),
+    overdue:cnt(r=>r.fu==="OVERDUE"), week:cnt(r=>r.fu==="Due this week"),
+    recov:cnt(r=>r.bucket==="Recoverable"), called:cnt(r=>!!r.call.on)});
+}
+function byCentre(R){
+  const m = new Map();
+  R.forEach(r=>{ if(!m.has(r.center)) m.set(r.center,[]); m.get(r.center).push(r); });
+  return [...m.entries()].map(([c,a])=>cAgg(c,a)).sort((a,b)=>b.n-a.n);
+}
+const CSNAP = [
+  {h:"Centre", t:"text", v:r=>r.name}, {h:"Enrolled", t:"int", v:r=>r.n},
+  {h:"Active", t:"int", v:r=>r.act}, {h:"Dropped", t:"int", v:r=>r.drp},
+  {h:"Active %", t:"pct", v:r=>r.n?r.act/r.n:null},
+  {h:"Chemo", t:"int", v:r=>r.chemo}, {h:"Immuno", t:"int", v:r=>r.immuno},
+  {h:"Targeted", t:"int", v:r=>r.targeted}, {h:"Radiation", t:"int", v:r=>r.radiation},
+  {h:"Revenue", t:"money", v:r=>r.rev}, {h:"Overdue", t:"int", v:r=>r.overdue},
+  {h:"Due this week", t:"int", v:r=>r.week}];
+const CFULL = [
+  {h:"Centre", t:"text", v:r=>r.name}, {h:"Enrolled", t:"int", v:r=>r.n},
+  {h:"Multi-centre patients", t:"int", v:r=>r.multi},
+  {h:"Active", t:"int", v:r=>r.act}, {h:"Dropped", t:"int", v:r=>r.drp},
+  {h:"Active %", t:"pct", v:r=>r.n?r.act/r.n:null},
+  {h:"Treatment complete", t:"int", v:r=>r.done}, {h:"Deceased", t:"int", v:r=>r.died},
+  {h:"True attrition", t:"int", v:r=>r.attr}, {h:"Attrition %", t:"pct", v:r=>r.n?r.attr/r.n:null},
+  {h:"On chemo", t:"int", v:r=>r.chemo}, {h:"On targeted", t:"int", v:r=>r.targeted},
+  {h:"On immuno", t:"int", v:r=>r.immuno}, {h:"On radiation", t:"int", v:r=>r.radiation},
+  {h:"Surgery", t:"int", v:r=>r.surgery}, {h:"Med mgmt", t:"int", v:r=>r.medmgt},
+  {h:"Cycles delivered", t:"int", v:r=>r.cycles}, {h:"Cycle plan recorded", t:"int", v:r=>r.plan},
+  {h:"Total revenue", t:"money", v:r=>r.rev}, {h:"Avg rev / patient", t:"money", v:r=>r.n?r.rev/r.n:0},
+  {h:"Revenue this month", t:"money", v:r=>r.revM}, {h:"Expected revenue", t:"money", v:r=>r.exp},
+  {h:"Overdue follow-ups", t:"int", v:r=>r.overdue}, {h:"Due this week", t:"int", v:r=>r.week},
+  {h:"Recoverable drops", t:"int", v:r=>r.recov}, {h:"Called (log)", t:"int", v:r=>r.called}];
+
+/* ------------------------------------------------------------ renderers -- */
+function renderJDash(R){
+  const c = jCounts(R), pc = (a,b) => b ? Math.round(a/b*100)+"%" : "—", N = v => Number(v).toLocaleString("en-IN");
+  const ty = $("#jType").value, who = ty==="IP" ? "IP patients" : ty==="OP" ? "OP patients" : "patients";
+  $("#jdKpis").innerHTML =
+    kpi("", "Total "+who, N(c.n), "in the patient master") +
+    kpi("diag", "Active", N(c.act), pc(c.act,c.n)+" of enrolled") +
+    kpi("pharm", "Dropped", N(c.drp), pc(c.drp,c.n)+" of enrolled") +
+    kpi("", "Treatment completed", N(c.done), "dropped because treatment finished") +
+    kpi("", "Deceased", N(c.died), "RIP / patient passed away") +
+    kpi("pharm", "True attrition", N(c.attr), pc(c.attr,c.n)+" — drops less completed and deceased") +
+    kpi("", "Total revenue", money(c.rev), "booked across these patients") +
+    kpi("", "Avg revenue / patient", money(c.n ? c.rev/c.n : 0), "");
+
+  const MODS = [["Chemotherapy","chemo"],["Targeted chemotherapy","targeted"],["Immunotherapy","immuno"],
+    ["Radiation","radiation"],["Surgery","surgery"],["Medical management","medmgt"],["Day care","daycare"],["Diagnostics","diag"]];
+  const mod = MODS.map(([name,k])=>{ const on = R.filter(r=>(r.s[k]||0)>0);
+    return {name, n:on.length, act:on.filter(r=>r.active).length, drp:on.filter(r=>!r.active).length, sess:sum2(on,r=>r.s[k])}; });
+  const MODC = [{h:"Modality", t:"text", v:r=>r.name}, {h:"Total patients", t:"int", v:r=>r.n},
+    {h:"Active", t:"int", v:r=>r.act}, {h:"Dropped", t:"int", v:r=>r.drp},
+    {h:"Drop %", t:"pct", v:r=>r.n?r.drp/r.n:null}, {h:"Sessions delivered", t:"int", v:r=>r.sess}];
+  jtable("#jdModTbl", MODC, mod);
+  JX.mod = {cols:MODC, rows:mod};
+
+  const cyc = R.filter(r=>r.taken>0), cycAct = cyc.filter(r=>r.active), tk = sum2(cyc,r=>r.taken);
+  $("#jdCycle").innerHTML =
+    kpi("", "On cycle-based therapy", N(cyc.length), "chemo, immuno or targeted") +
+    kpi("", "Cycles delivered", N(tk), "avg "+(cyc.length ? (tk/cyc.length).toFixed(1) : "0")+" per patient") +
+    kpi("diag", "Active, on cycles", N(cycAct.length), "still under treatment") +
+    kpi("pharm", "Active, cycle overdue", N(cycAct.filter(r=>r.fu==="OVERDUE").length), "next cycle date has passed") +
+    kpi("", "Cycle plan recorded", N(R.filter(r=>r.planned!=null).length), "total cycles written in Remarks") +
+    kpi("", "Active, no date to go on", N(R.filter(r=>r.active && !r.eff).length), "no appointment, remark or visit");
+
+  const cnt = f => N(R.filter(f).length);
+  $("#jdQueue").innerHTML =
+    kpi("pharm", "Overdue", cnt(r=>r.fu==="OVERDUE"), "follow-up date has passed") +
+    kpi("", "Due this week", cnt(r=>r.fu==="Due this week"), "within "+JCFG.soon+" days") +
+    kpi("", "Due in 30 days", cnt(r=>r.fu==="Due in 30 days"), "") +
+    kpi("", "Scheduled later", cnt(r=>r.fu==="Scheduled later"), "") +
+    kpi("", "No follow-up set", cnt(r=>r.fu==="No follow-up set"), "deceased, not fit, abroad, or no date") +
+    kpi("pharm", "Active overdue", cnt(r=>r.active && r.fu==="OVERDUE"), "on treatment, missed their date") +
+    kpi("diag", "Tx-complete recalls due", cnt(r=>r.bucket==="Survivorship follow-up" && (r.fu==="OVERDUE"||r.fu==="Due this week")), "survivorship calls") +
+    kpi("", "Recoverable drops", cnt(r=>r.bucket==="Recoverable"), "cost, scheme, moved, other") +
+    kpi("", "Closed after a call", cnt(r=>r.fu==="Closed"), "from the call log");
+
+  const rows = byCentre(R), tot = cAgg("Total", R);
+  jtable("#jdCenTbl", CSNAP, rows, tot);
+  JX.snap = {cols:CSNAP, rows, tot};
+
+  $("#jdSrc").innerHTML = INV.length
+    ? "Last cycle dates come from the chemotherapy, immunotherapy and targeted invoices in the invoice export."
+    : SNAPMODE ? "Last cycle dates were read from the invoice export when this snapshot was published."
+    : "Load the invoice export to fill Last cycle date — until then an active patient's follow-up counts from their last visit.";
+}
+function renderJMaster(R){
+  fillSel("#jmBucket", [...new Set(R.map(r=>r.bucket))].sort(), "All buckets");
+  const st=$("#jmStatus").value, bk=$("#jmBucket").value, fu=$("#jmFu").value, q=$("#jmSrch").value.trim().toLowerCase();
+  let L = R.filter(r=>(!st || r.status===st) && (!bk || r.bucket===bk) && (!fu || r.fu===fu));
+  if(q) L = L.filter(r=>(r.name+" "+r.id+" "+r.mobile+" "+r.category+" "+r.reason+" "+r.remarks+" "+r.notes).toLowerCase().includes(q));
+  L.sort((a,b)=>(b.onboard||0)-(a.onboard||0));
+  const LIM = 1500;
+  jtable("#jmTbl", MCOLS, L, null, "No patients match.", LIM);
+  $("#jmNote").innerHTML = '<p class="hint" style="margin:10px 0 0">'+L.length.toLocaleString("en-IN")+" patients, newest onboarding first"+
+    (L.length>LIM ? " — the first "+LIM+" are shown; the Excel download has all of them" : "")+".</p>";
+}
+function renderJQueue(R){
+  fillSel("#jqBucket", [...new Set(R.map(r=>r.bucket))].sort(), "All buckets");
+  const show=$("#jqShow").value, st=$("#jqStatus").value, bk=$("#jqBucket").value, cl=$("#jqCalled").value,
+        sort=$("#jqSort").value, q=$("#jqSrch").value.trim().toLowerCase();
+  const all = R.filter(r=>r.eff && r.fu!=="Closed"), today = iso(new Date());
+  const cnt = f => all.filter(f).length.toLocaleString("en-IN");
+  $("#jqKpis").innerHTML =
+    kpi("pharm", "Overdue", cnt(r=>r.fu==="OVERDUE"), "follow-up date has passed") +
+    kpi("", "Due this week", cnt(r=>r.fu==="Due this week"), "within "+JCFG.soon+" days") +
+    kpi("", "Due in 30 days", cnt(r=>r.fu==="Due in 30 days"), "") +
+    kpi("", "Scheduled later", cnt(r=>r.fu==="Scheduled later"), "") +
+    kpi("diag", "Called today", R.filter(r=>r.call.on===today).length, "logged in this browser");
+  let L = all.filter(r=> show==="now" ? (r.fu==="OVERDUE" || r.fu==="Due this week") : (!show || r.fu===show));
+  if(st) L = L.filter(r=>r.status===st);
+  if(bk) L = L.filter(r=>r.bucket===bk);
+  if(cl==="no") L = L.filter(r=>!r.call.on); else if(cl==="yes") L = L.filter(r=>!!r.call.on);
+  if(q) L = L.filter(r=>(r.name+" "+r.id+" "+r.mobile+" "+r.reason+" "+r.remarks+" "+r.notes).toLowerCase().includes(q));
+  /* Default order puts the freshest misses first: a patient who slipped last
+     week is far easier to win back than one who stopped two years ago. */
+  const near = r => r.days<0 ? [0,-r.days] : [1,r.days];
+  if(sort==="oldest") L.sort((a,b)=>a.days-b.days);
+  else if(sort==="rev") L.sort((a,b)=>b.revenue-a.revenue);
+  else L.sort((a,b)=>{ const x=near(a), y=near(b); return x[0]-y[0] || x[1]-y[1]; });
+  const LIM = 1500;
+  jtable("#jqTbl", QCOLS, L, null, "Nobody in this list — change the filters above.", LIM);
+  $("#jqNote").innerHTML = '<p class="hint" style="margin:10px 0 0">'+L.length.toLocaleString("en-IN")+" to call"+
+    (L.length>LIM ? " (first "+LIM+" shown)" : "")+". Call entries are saved in <b>this browser</b> as you type — "+
+    "use <b>Download tracker (Excel)</b> to hand the list and its call log to someone else.</p>";
+}
+function renderJCentre(R){
+  const rows = byCentre(R), tot = cAgg("Total", R);
+  jtable("#jcTbl", CFULL, rows, tot);
+  JX.centre = {cols:CFULL, rows, tot};
+}
+/* Drop bifurcation: reason x centre with revenue, and the recall buckets. Uses
+   the drops selected by the Drop analysis filters. */
+function renderDropMatrix(A){
+  const JM = new Map(JROWS.map(r=>[r.p, r])), asOf = jAsOf();
+  const D = A.dropped.map(p=>JM.get(p._src) || jRow(p._src||p, asOf));
+  const cens = [...new Set(D.map(r=>r.center))]
+    .map(c=>[c, D.filter(r=>r.center===c).length]).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  const order = JCFG.rules.map(r=>r[0]), m = new Map();
+  D.forEach(r=>{ const k = r.reason || NOREASON; if(!m.has(k)) m.set(k,[]); m.get(k).push(r); });
+  const keys = [...m.keys()].sort((a,b)=>{ const ia=order.indexOf(a), ib=order.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib) || a.localeCompare(b); });
+  const mk = (name, arr, isTot) => { const ru = ruleOf(name===NOREASON ? "" : name);
+    const o = {name, isTot, bucket: isTot ? "" : ru.bucket, months: isTot ? null : ru.months,
+               n:arr.length, rev:sum2(arr,r=>r.revenue)};
+    cens.forEach(c=>{ o["c:"+c] = arr.filter(r=>r.center===c).length; });
+    return o; };
+  const rows = keys.map(k=>mk(k, m.get(k))), tot = mk("Total dropped", D, true);
+  const cols = [{h:"Drop reason", t:"text", v:r=>r.name}, {h:"Recall bucket", t:"text", v:r=>r.bucket},
+    {h:"Recall after", t:"text", v:r=>r.isTot ? "" : r.months==null ? "No recall" : r.months===0 ? "Immediately" : r.months+" month"+(r.months>1?"s":"")},
+    {h:"Patients", t:"int", v:r=>r.n}, {h:"% of drops", t:"pct", v:r=>D.length ? r.n/D.length : null},
+    {h:"Revenue booked", t:"money", v:r=>r.rev}, {h:"Avg rev / patient", t:"money", v:r=>r.n ? r.rev/r.n : 0}]
+    .concat(cens.map(c=>({h:c, t:"int", v:r=>r["c:"+c]})));
+  jtable("#jxMatrix", cols, rows, tot, "No dropped patients in this view.");
+  JX.matrix = {cols, rows, tot};
+
+  const bm = new Map();
+  D.forEach(r=>{ if(!bm.has(r.bucket)) bm.set(r.bucket,[]); bm.get(r.bucket).push(r); });
+  const bk = (name, arr) => { const cnt = f => arr.filter(f).length;
+    return {name, n:arr.length, od:cnt(r=>r.fu==="OVERDUE"), wk:cnt(r=>r.fu==="Due this week"),
+      m30:cnt(r=>r.fu==="Due in 30 days"), later:cnt(r=>r.fu==="Scheduled later"),
+      none:cnt(r=>r.fu==="No follow-up set"), closed:cnt(r=>r.fu==="Closed"),
+      called:cnt(r=>!!r.call.on), rev:sum2(arr,r=>r.revenue)}; };
+  const brows = [...bm.entries()].map(([k,a])=>bk(k,a)).sort((a,b)=>b.n-a.n), btot = bk("Total", D);
+  const bcols = [{h:"Recall bucket", t:"text", v:r=>r.name}, {h:"Dropped patients", t:"int", v:r=>r.n},
+    {h:"Overdue", t:"int", v:r=>r.od}, {h:"Due this week", t:"int", v:r=>r.wk},
+    {h:"Due in 30 days", t:"int", v:r=>r.m30}, {h:"Scheduled later", t:"int", v:r=>r.later},
+    {h:"No follow-up", t:"int", v:r=>r.none}, {h:"Closed after call", t:"int", v:r=>r.closed},
+    {h:"Called", t:"int", v:r=>r.called}, {h:"Revenue booked", t:"money", v:r=>r.rev}];
+  jtable("#jxBuckets", bcols, brows, btot);
+  JX.buckets = {cols:bcols, rows:brows, tot:btot};
+}
+const JBUCKETS = ["Recoverable","Survivorship follow-up","Service recovery","Find out why","No follow-up","Deceased"];
+function renderJRules(){
+  const el = $("#jrTbl"); if(!el) return;
+  el.innerHTML = '<thead><tr><th class="l">Drop reason</th><th>Recall after (months)</th><th class="l">Recall bucket</th>'+
+    "<th>Dropped patients now</th></tr></thead><tbody>"+
+    JCFG.rules.map((r,i)=>'<tr><td class="l">'+esc(r[0])+"</td>"+
+      '<td><input class="jin" type="number" min="0" max="36" step="1" style="width:84px" data-i="'+i+'" data-f="m" value="'+
+        esc(r[1]==null?"":r[1])+'" placeholder="none"></td>'+
+      '<td class="l"><select class="jin" data-i="'+i+'" data-f="b">'+[...new Set(JBUCKETS.concat([r[2]]))]
+        .map(b=>"<option"+(b===r[2]?" selected":"")+">"+esc(b)+"</option>").join("")+"</select></td>"+
+      "<td>"+JROWS.filter(x=>!x.active && x.reason===r[0]).length+"</td></tr>").join("")+"</tbody>";
+  $("#jrInt").value = JCFG.interval; $("#jrSoon").value = JCFG.soon;
+}
+function renderJourney(){
+  const top = $("#dpTop");
+  if(!PATIENTS.length){
+    if(top) top.innerHTML = '<div class="warnbox">This needs the <b>patient master</b> — the export with Onboarding Date, Type, '+
+      "Dropped, Drop Reason, Remarks and Future Appointments. Load it above.</div>";
+    ["#jdKpis","#jdCycle","#jdQueue","#jdModTbl","#jdCenTbl","#jmTbl","#jqKpis","#jqTbl","#jcTbl","#jxMatrix","#jxBuckets"]
+      .forEach(s=>{ const e=$(s); if(e) e.innerHTML=""; });
+    JROWS = [];
+    try{ renderJRules(); }catch(e){}
+    return;
+  }
+  if(top) top.innerHTML = "";
+  fillSel("#jCenter", [...new Set(PATIENTS.map(p=>p.center))].filter(Boolean).sort(), "All centres");
+  if(!$("#jAsOf").value) $("#jAsOf").value = iso(jAsOf());
+  JROWS = journeyRows();
+  [["dash",renderJDash],["master",renderJMaster],["queue",renderJQueue],["centre",renderJCentre],
+   ["drops",()=>renderDrops()],["rules",renderJRules]].forEach(([k,f])=>{
+    const box = $("#jt-"+k+" .jerr");
+    try{ f(JROWS); if(box) box.innerHTML = ""; }
+    catch(err){ if(box) box.innerHTML = '<div class="warnbox"><b>This section failed to build:</b> '+esc(err.message)+"</div>"; }
+  });
+}
+function exportJourney(){
+  if(!PATIENTS.length){ alert("Load the patient master first."); return; }
+  if(typeof XLSX==="undefined"){ alert("The Excel library did not load — reload the page."); return; }
+  const R = JROWS, wb = XLSX.utils.book_new(), asOf = jAsOf();
+  const add = (name, aoa) => XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa, {dateNF:"dd/mm/yyyy"}), name);
+  const c = jCounts(R), sel = $("#jType");
+  add("Dashboard", [["Oncare — patient journey dashboard"], ["As of", asOf],
+      ["Patients", sel.options[sel.selectedIndex].text], ["Centre", $("#jCenter").value || "All centres"], [],
+      ["ENROLMENT & STATUS"], ["Total patients", c.n], ["Active", c.act], ["Dropped", c.drp],
+      ["Treatment completed", c.done], ["Deceased", c.died], ["True attrition", c.attr],
+      ["Total revenue", Math.round(c.rev)], [], ["MODALITY MIX"]]
+    .concat(JX.mod ? aoaOf(JX.mod.cols, JX.mod.rows) : [], [[], ["CENTRE SNAPSHOT"]],
+            JX.snap ? aoaOf(JX.snap.cols, JX.snap.rows, JX.snap.tot) : []));
+  add("Patient Master", aoaOf(MCOLS, R));
+  add("Follow-up Queue", aoaOf(QCOLS, R.filter(r=>r.eff && r.fu!=="Closed").sort((a,b)=>a.days-b.days)));
+  if(JX.centre) add("Centre-wise Analysis", aoaOf(JX.centre.cols, JX.centre.rows, JX.centre.tot));
+  if(JX.matrix) add("Drop Analysis", [["DROP REASON x CENTRE"]].concat(aoaOf(JX.matrix.cols, JX.matrix.rows, JX.matrix.tot),
+      [[], ["RECALL BUCKETS"]], JX.buckets ? aoaOf(JX.buckets.cols, JX.buckets.rows, JX.buckets.tot) : []));
+  add("Recall Rules", [["Drop reason","Recall after (months)","Recall bucket"]]
+    .concat(JCFG.rules.map(r=>[r[0], r[1]===""||r[1]==null ? "" : r[1], r[2]]),
+            [[], ["Default cycle interval (days)", JCFG.interval], ["Due-this-week window (days)", JCFG.soon]]));
+  XLSX.writeFile(wb, "Oncare_Patient_Journey_"+iso(asOf)+".xlsx");
 }
 
 /* ------------------------------------------------------------------ pharma -- */
@@ -2060,6 +2723,8 @@ function snapshotOf(A){
     schema: 3, detail: true, dg, enc, build: BUILD,
     /* Radiation travels with the snapshot so the shared page shows it too. */
     rad: radBuild(),
+    /* Patient master for the journey tracker — the call list needs names and numbers. */
+    pat: PATIENTS.map(packPat),
     publishedAt: new Date().toISOString(),
     minDate: all.length?all[0]:"", maxDate: all.length?all[all.length-1]:"",
     /* Suggestions come only from the OP/IP exports. Diag % is only meaningful
@@ -2200,6 +2865,7 @@ function renderSnap(){
   catch(err){ const n=$("#radNote");
     if(n) n.innerHTML = '<div class="warnbox" style="margin-top:14px"><b>Radiation section failed to build:</b> '+
       esc(err.message)+'.</div>'; }
+  try{ renderJourney(); }catch(err){}
   const when = SNAP.publishedAt ? new Date(SNAP.publishedAt) : null;
   const gap = coverageGap($("#fFrom").value, $("#fTo").value, SNAP.encMin, SNAP.encMax);
   $("#coverage").innerHTML = (gap ? '<div class="warnbox">'+gap+"</div>" : "")+
@@ -2242,6 +2908,7 @@ function applySnapshot(s){
         'using the box above — everything is processed in your browser and nothing is uploaded anywhere.</p></div>';
     });
   }
+  PATIENTS = Array.isArray(s.pat) ? s.pat.map(unpackPat) : [];
   renderSnap();
   $("#ctrlCard").style.display=""; $("#app").style.display=""; $("#emptyState").style.display="none";
 }
@@ -2317,7 +2984,8 @@ async function ingest(files){
   }
   if(failed.length) loadMsg("<b>Could not read "+failed.length+" file"+(failed.length>1?"s":"")+":</b><br>"+failed.join("<br>"));
   else if(done.length) loadMsg("Loaded "+done.length+" file"+(done.length>1?"s":"")+".", "ok");
-  if(!RAW.bill && !RAW.inv && !RAW.op && !RAW.ip){
+  /* The patient master on its own is enough for the journey tracker. */
+  if(!RAW.bill && !RAW.inv && !RAW.op && !RAW.ip && !RAW.pat){
     if(!failed.length) loadMsg("Nothing was loaded — no recognised export in what you dropped.");
     return;
   }
@@ -2358,7 +3026,7 @@ function wireDetailControls(){
   on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
   ["phKind","phMiss","phEnc"].forEach(id=>on(id,"change",()=>{ if(OP.length&&BILL.length) renderPharma(); }));
   on("phSrch","input",()=>{ if(OP.length&&BILL.length) renderPharma(); });
-  ["dpBasis","dpFrom","dpTo","dpCenter","dpGroup","dpProc"].forEach(id=>on(id,"change",()=>{ if(PATIENTS.length) renderDrops(); }));
+  ["dpBasis","dpFrom","dpTo","dpGroup","dpProc"].forEach(id=>on(id,"change",()=>{ if(PATIENTS.length) renderDrops(); }));
   on("dpSrch","input",()=>{ if(PATIENTS.length) renderDrops(); });
   ["rFrom","rTo","rCenter","rHosp","rConv"].forEach(id=>on(id,"change",()=>{ if(INV.length) renderRadiation(); }));
   on("rSrch","input",()=>{ if(INV.length) renderRadiation(); });
@@ -2366,6 +3034,44 @@ function wireDetailControls(){
   on("pSrch","input",()=>{ if(LAST) renderPatients(LAST); });
 }
 wireDetailControls();
+/* Journey tracker — these elements are never replaced, so they are wired once. */
+["jType","jCenter","jAsOf"].forEach(id=>on(id,"change",()=>renderJourney()));
+["jmStatus","jmBucket","jmFu"].forEach(id=>on(id,"change",()=>{ if(PATIENTS.length) renderJMaster(JROWS); }));
+on("jmSrch","input",()=>{ if(PATIENTS.length) renderJMaster(JROWS); });
+["jqShow","jqStatus","jqBucket","jqCalled","jqSort"].forEach(id=>on(id,"change",()=>{ if(PATIENTS.length) renderJQueue(JROWS); }));
+on("jqSrch","input",()=>{ if(PATIENTS.length) renderJQueue(JROWS); });
+on("jXlsx","click",exportJourney);
+$("#jTabs").addEventListener("click",e=>{
+  const b = e.target.closest("button[data-j]"); if(!b) return;
+  [...$("#jTabs").children].forEach(x=>x.setAttribute("aria-selected", x===b));
+  document.querySelectorAll(".jtab").forEach(s=>s.classList.toggle("on", s.id==="jt-"+b.dataset.j));
+});
+on("jqTbl","change",e=>{
+  const t = e.target, id = t.dataset && t.dataset.id; if(!id) return;
+  const c = CALLS[id] = CALLS[id] || {};
+  c[t.dataset.k] = String(t.value||"").trim();
+  if(t.dataset.k==="outcome" && t.value && !c.on){
+    c.on = iso(new Date()); const x = t.closest("tr").querySelector('[data-k="on"]'); if(x) x.value = c.on; }
+  c.at = new Date().toISOString();
+  saveCalls();
+  /* Refresh the counts everywhere else; the queue itself stays put so the row
+     being worked on does not jump away mid-call. */
+  JROWS = journeyRows();
+  [renderJDash, renderJMaster, renderJCentre].forEach(f=>{ try{ f(JROWS); }catch(err){} });
+  try{ renderDrops(); }catch(err){}
+});
+on("jrSave","click",()=>{
+  document.querySelectorAll("#jrTbl [data-i]").forEach(e=>{ const r = JCFG.rules[+e.dataset.i]; if(!r) return;
+    if(e.dataset.f==="m") r[1] = e.value==="" ? "" : Math.max(0, Math.round(+e.value)); else r[2] = e.value; });
+  const iv = +$("#jrInt").value, sn = $("#jrSoon").value;
+  if(iv>0) JCFG.interval = Math.round(iv);
+  if(sn!=="" && +sn>=0) JCFG.soon = Math.round(+sn);
+  saveJ(); renderJourney(); $("#jrMsg").textContent = "Saved — every tab recalculated.";
+  setTimeout(()=>$("#jrMsg").textContent="", 2600);
+});
+on("jrReset","click",()=>{ JCFG = JSON.parse(JSON.stringify(JDEF)); saveJ(); renderJourney();
+  $("#jrMsg").textContent = "Reset to the tracker's rules."; setTimeout(()=>$("#jrMsg").textContent="", 2600); });
+renderJRules();
 $("#snapBtn").addEventListener("click",publishSnapshot);
 $("#csvBtn").addEventListener("click",exportCsv);
 $("#themeBtn").addEventListener("click",()=>{
