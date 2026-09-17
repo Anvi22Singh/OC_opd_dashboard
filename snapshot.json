@@ -11879,12 +11879,12 @@
    "d": "2026-09-15",
    "r": "Sireesh Kumar CH",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-), BC0515-Thyroid Stimulating Hormone-TSH(Rs 200/-), BC0159-Cortisol, Serum (Morning Sample)(Rs 600/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), Amoebic Serology(Rs 854/-), ME0053-DPD/DPYD mutation analysis(Rs 6600/-)",
+   "dT": "BC0515-Thyroid Stimulating Hormone-TSH(Rs 200/-), BC0159-Cortisol, Serum (Morning Sample)(Rs 600/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), Amoebic Serology(Rs 854/-), ME0053-DPD/DPYD mutation analysis(Rs 6600/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Eleftha Trastuzumab - 150mg(Rs 6924/-), NIVOLUMAB - 40mg(Rs 13950/-)",
    "gT": "",
    "cT": "Eleftha Trastuzumab - 150mg(Rs 6924/-), NIVOLUMAB - 40mg(Rs 13950/-)",
    "eP": 20874,
-   "eD": 12229,
+   "eD": 11916,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -11894,21 +11894,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "Thyroid Stimulating Hormone-TSH",
      null,
@@ -11941,6 +11926,11 @@
     ],
     [
      "DPD/DPYD mutation analysis",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -12180,12 +12170,12 @@
    "d": "2026-09-15",
    "r": "Abhijit Kotabagi",
    "t": "OP",
-   "dT": "biopsy., CE CT Scan Face + Neck(Rs 4749/-), CECT thronax, CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), PT/INR(Rs 375/-), HIV(Rs 284/-), Hepatitis B surface antigen (HbsAg)(Rs 425/-), HCV(Rs 367.2/-)",
+   "dT": "biopsy., CE CT Scan Face + Neck(Rs 4749/-), CECT thronax, PT/INR(Rs 375/-), HIV(Rs 284/-), Hepatitis B surface antigen (HbsAg)(Rs 425/-), HCV(Rs 367.2/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 7289,
+   "eD": 7000,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -12211,21 +12201,6 @@
      null
     ],
     [
-     "CBC",
-     "hi",
-     "LYF - CBC"
-    ],
-    [
-     "KFT",
-     "hi",
-     "LYF - KFT"
-    ],
-    [
-     "LFT",
-     "hi",
-     "LYF - LFT"
-    ],
-    [
      "PT/INR",
      "hi",
      "LYF - PT/INR"
@@ -12242,6 +12217,11 @@
     ],
     [
      "HCV",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -12285,12 +12265,12 @@
    "d": "2026-09-15",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-), BC0103-C-Reactive Protein (CRP)(Rs 335/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), BC0103-C-Reactive Protein (CRP)(Rs 335/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Polybion, Protein Powder(Rs 1349/-), Augmentin - 625mg(Rs 19/-)",
    "gT": "Polybion, Protein Powder(Rs 1349/-), Augmentin - 625mg(Rs 19/-)",
    "cT": "",
    "eP": 0,
-   "eD": 13904,
+   "eD": 13615,
    "eG": 1368,
    "k": "followup",
    "hD": 1,
@@ -12300,21 +12280,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "Thyroid Profile",
      null,
@@ -12332,6 +12297,11 @@
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -12386,12 +12356,12 @@
    "d": "2026-09-15",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "bilateral sono-mammography, MRI BILATERAL BREASTS WITH CONTRAST(Rs 16500/-), KFT(Rs 450/-), CBC(Rs 189/-), LFT(Rs 450/-), HbA1c(Rs 338/-), BC0514-Thyroid Profile, Total(Rs 480/-), Lipid Profile(Rs 474/-), VITAMIN D- TOTAL (25 HYDROXY CHOLECALCIFEROL)(Rs 1200/-)",
+   "dT": "bilateral sono-mammography, MRI BILATERAL BREASTS WITH CONTRAST(Rs 16500/-), HbA1c(Rs 338/-), BC0514-Thyroid Profile, Total(Rs 480/-), Lipid Profile(Rs 474/-), VITAMIN D- TOTAL (25 HYDROXY CHOLECALCIFEROL)(Rs 1200/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 20081,
+   "eD": 19792,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -12408,21 +12378,6 @@
     ],
     [
      "MRI BILATERAL BREASTS WITH CONTRAST",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
      null,
      null
     ],
@@ -12448,6 +12403,11 @@
     ],
     [
      "VITAMIN D- TOTAL (25 HYDROXY CHOLECALCIFEROL)",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -12491,12 +12451,12 @@
    "d": "2026-09-15",
    "r": "Vikram Singhal",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Dom-DT, Vizylac/Bifilac, hifood cream, ultracet, SYP LOOZ 20ML, a to z, Orofer-XT, shelcal 500, Ensure, CAPECITABINE(Rs 1203.6/-)",
    "gT": "Dom-DT, Vizylac/Bifilac, hifood cream, ultracet, SYP LOOZ 20ML, a to z, Orofer-XT, shelcal 500, Ensure",
    "cT": "CAPECITABINE(Rs 1203.6/-)",
    "eP": 1204,
-   "eD": 1113,
+   "eD": 800,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -12507,17 +12467,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -12657,12 +12607,12 @@
    "d": "2026-09-15",
    "r": "Ravinder Khatri",
    "t": "OP",
-   "dT": "biopsy., CE CT Scan Face + Neck(Rs 4749/-), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), Viral Markers(Rs 949/-)",
+   "dT": "biopsy., CE CT Scan Face + Neck(Rs 4749/-), Viral Markers(Rs 949/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 6787,
+   "eD": 6498,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -12683,22 +12633,12 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "Viral Markers",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -12921,12 +12861,12 @@
    "d": "2026-09-15",
    "r": "Sireesh Kumar CH",
    "t": "OP",
-   "dT": "BRAF Mutation by PCR(Rs 4749/-), CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-), TSH(Rs 189/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), Amoebic Serology(Rs 854/-)",
+   "dT": "BRAF Mutation by PCR(Rs 4749/-), TSH(Rs 189/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), Amoebic Serology(Rs 854/-), MD0081-Health Package(Rs 800/-)",
    "pT": "NIVOLUMAB PAP - 100mg(Rs 99500/-), NIVOLUMAB - 40mg(Rs 13950/-)",
    "gT": "",
    "cT": "NIVOLUMAB PAP - 100mg(Rs 99500/-), NIVOLUMAB - 40mg(Rs 13950/-)",
    "eP": 113450,
-   "eD": 9767,
+   "eD": 9454,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -12938,21 +12878,6 @@
    "dM": [
     [
      "BRAF Mutation by PCR",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
      null,
      null
     ],
@@ -12973,6 +12898,11 @@
     ],
     [
      "Amoebic Serology",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -13651,12 +13581,12 @@
    "d": "2026-09-14",
    "r": "Vidur Garg",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), Anaerobic Blood Culture & Sensitivity(Rs 949/-), Anaerobic Urine Culture & Sensitivity(Rs 949/-), H1N1(Rs 3600/-)",
+   "dT": "Anaerobic Blood Culture & Sensitivity(Rs 949/-), Anaerobic Urine Culture & Sensitivity(Rs 949/-), H1N1(Rs 3600/-), MD0081-Health Package(Rs 800/-)",
    "pT": "inj Paracetamol - 1000mg(Rs 561/-), AZITHROMYCIN - 500mg(Rs 26/-), cetirizine, alex",
    "gT": "inj Paracetamol - 1000mg(Rs 561/-), AZITHROMYCIN - 500mg(Rs 26/-), cetirizine, alex",
    "cT": "",
    "eP": 0,
-   "eD": 6587,
+   "eD": 6298,
    "eG": 587,
    "k": "followup",
    "hD": 1,
@@ -13666,21 +13596,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "Anaerobic Blood Culture & Sensitivity",
      null,
@@ -13693,6 +13608,11 @@
     ],
     [
      "H1N1",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -13822,12 +13742,12 @@
    "d": "2026-09-14",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), HbA1c(Rs 338/-), BC0514-Thyroid Profile, Total(Rs 480/-), CA 125 Level(Rs 759/-), USG Abdomen(Rs 949/-), Digital X-Ray Chest PA(Rs 237/-)",
+   "dT": "HbA1c(Rs 338/-), BC0514-Thyroid Profile, Total(Rs 480/-), CA 125 Level(Rs 759/-), USG Abdomen(Rs 949/-), Digital X-Ray Chest PA(Rs 237/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Versatile Forte(Rs 40/-), a to z",
    "gT": "Versatile Forte(Rs 40/-), a to z",
    "cT": "",
    "eP": 0,
-   "eD": 3852,
+   "eD": 3563,
    "eG": 40,
    "k": "followup",
    "hD": 1,
@@ -13837,21 +13757,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "HbA1c",
      null,
@@ -13879,6 +13784,11 @@
     ],
     [
      "Digital X-Ray Chest PA",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -14013,12 +13923,12 @@
    "d": "2026-09-14",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-), VITAMIN D, Lipid Profile(Rs 474/-), Digital X-Ray Chest PA(Rs 237/-), USG Abdomen(Rs 949/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), VITAMIN D, Lipid Profile(Rs 474/-), Digital X-Ray Chest PA(Rs 237/-), USG Abdomen(Rs 949/-), MD0081-Health Package(Rs 800/-)",
    "pT": "shelcal 500, osteofos, a to z, Anastrozole 1",
    "gT": "shelcal 500, osteofos, a to z",
    "cT": "Anastrozole 1",
    "eP": 0,
-   "eD": 3229,
+   "eD": 2940,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -14028,21 +13938,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "Thyroid Profile",
      null,
@@ -14070,6 +13965,11 @@
     ],
     [
      "USG Abdomen",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -14137,12 +14037,12 @@
    "d": "2026-09-14",
    "r": "K M Parthasarathy",
    "t": "OP",
-   "dT": "PSMA Whole Body PET/CT(Rs 16625/-), PSA(Rs 488/-), CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-), LDH(Rs 263/-), Protein Electrophoresis(Rs 474/-), HE0041-Lambda - Free Light Chain, Serum(Rs 2376/-)",
+   "dT": "PSMA Whole Body PET/CT(Rs 16625/-), PSA(Rs 488/-), LDH(Rs 263/-), Protein Electrophoresis(Rs 474/-), HE0041-Lambda - Free Light Chain, Serum(Rs 2376/-), MD0081-Health Package(Rs 800/-)",
    "pT": "ultracet",
    "gT": "ultracet",
    "cT": "",
    "eP": 0,
-   "eD": 21339,
+   "eD": 21026,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -14163,21 +14063,6 @@
      "PCD - BC0458-Prostate Specific Antigen (PSA), Free"
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "LDH",
      "hi",
      "PCD - BC0322-Lactate Dehydrogenase (LDH)"
@@ -14196,6 +14081,11 @@
      "Serum",
      null,
      null
+    ],
+    [
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -14755,12 +14645,12 @@
    "d": "2026-09-14",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-), mri paranasal sinuses with contrast and diffusion",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), mri paranasal sinuses with contrast and diffusion, MD0081-Health Package(Rs 800/-)",
    "pT": "ultracet, aptivate, Versatile Forte(Rs 40/-), a to z, Calcimax-P(Rs 188/-), NIVOLUMAB - 100mg(Rs 109450/-), Nivolumab - 40mg(Rs 39800/-)",
    "gT": "ultracet, aptivate, Versatile Forte(Rs 40/-), a to z, Calcimax-P(Rs 188/-)",
    "cT": "NIVOLUMAB - 100mg(Rs 109450/-), Nivolumab - 40mg(Rs 39800/-)",
    "eP": 149250,
-   "eD": 1569,
+   "eD": 1280,
    "eG": 228,
    "k": "followup",
    "hD": 1,
@@ -14770,21 +14660,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "Thyroid Profile",
      null,
@@ -14797,6 +14672,11 @@
     ],
     [
      "mri paranasal sinuses with contrast and diffusion",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -15355,12 +15235,12 @@
    "d": "2026-09-12",
    "r": "K M Parthasarathy",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Denosumab - 60mg(Rs 15458/-), Neukine - 300mcg(Rs 1299/-), Pembrolizumab - 100mg(Rs 433000/-), Pembrolizumab - 100mg(Rs 433000/-), padcev",
    "gT": "",
    "cT": "Denosumab - 60mg(Rs 15458/-), Neukine - 300mcg(Rs 1299/-), Pembrolizumab - 100mg(Rs 433000/-), Pembrolizumab - 100mg(Rs 433000/-), padcev",
    "eP": 449757,
-   "eD": 1113,
+   "eD": 800,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -15371,17 +15251,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -15696,12 +15566,12 @@
    "d": "2026-09-12",
    "r": "K M Parthasarathy",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-), LDH(Rs 263/-), CEA - Carcinoembryonic Antigen(Rs 427/-), CA 15.3(Rs 854/-), CA 19.9(Rs 949/-), RBS(Rs 47/-), SERUM PROTEIN ELECTROPHORESIS(Rs 1120/-), FREE LIGHT CHAIN ASSAY& SERUM IMMUNO ELECTROPHORESIS(Rs 5760/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), LDH(Rs 263/-), CEA - Carcinoembryonic Antigen(Rs 427/-), CA 15.3(Rs 854/-), CA 19.9(Rs 949/-), RBS(Rs 47/-), SERUM PROTEIN ELECTROPHORESIS(Rs 1120/-), FREE LIGHT CHAIN ASSAY& SERUM IMMUNO ELECTROPHORESIS(Rs 5760/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 22533,
+   "eD": 22220,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -15715,21 +15585,6 @@
      "18 F FDG PET/CT Whole Body",
      "md",
      "Mol-PET CT"
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
     ],
     [
      "LDH",
@@ -15765,6 +15620,11 @@
      "FREE LIGHT CHAIN ASSAY& SERUM IMMUNO ELECTROPHORESIS",
      null,
      null
+    ],
+    [
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [],
@@ -15833,12 +15693,12 @@
    "d": "2026-09-12",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-), Lipid Profile(Rs 474/-), HbA1c(Rs 338/-), Digital X-Ray Chest PA(Rs 237/-), USG Abdomen(Rs 949/-), 2D ECHO(Rs 2625/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), Lipid Profile(Rs 474/-), HbA1c(Rs 338/-), Digital X-Ray Chest PA(Rs 237/-), USG Abdomen(Rs 949/-), 2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "a to z, Protinex, SYP LOOZ 20ML",
    "gT": "a to z, Protinex, SYP LOOZ 20ML",
    "cT": "",
    "eP": 0,
-   "eD": 6192,
+   "eD": 5903,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -15848,21 +15708,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "Thyroid Profile",
      null,
@@ -15895,6 +15740,11 @@
     ],
     [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -16008,12 +15858,12 @@
    "d": "2026-09-11",
    "r": "K M Parthasarathy",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CA 19.9(Rs 949/-), CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-), RBS(Rs 47/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CA 19.9(Rs 949/-), RBS(Rs 47/-), MD0081-Health Package(Rs 800/-)",
    "pT": "ultracet, tydol, Emeset 4mg(Rs 13/-), Neukine - 300mcg(Rs 1299/-), imfinzi, Cisplatin - 10mg(Rs 237/-), Cisplatin - 10mg(Rs 237/-), Cisplatin - 10mg(Rs 237/-), Gemcitabine-1.2G(Rs 6276.56/-)",
    "gT": "ultracet, tydol, Emeset 4mg(Rs 13/-), Neukine - 300mcg(Rs 1299/-)",
    "cT": "imfinzi, Cisplatin - 10mg(Rs 237/-), Cisplatin - 10mg(Rs 237/-), Cisplatin - 10mg(Rs 237/-), Gemcitabine-1.2G(Rs 6276.56/-)",
    "eP": 6514,
-   "eD": 14109,
+   "eD": 13796,
    "eG": 1312,
    "k": "fresh",
    "hD": 1,
@@ -16034,22 +15884,12 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "RBS",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -16333,12 +16173,12 @@
    "d": "2026-09-11",
    "r": "Vikram Singhal",
    "t": "OP",
-   "dT": "ngs comprehensive genomic profiling, T4484-IHC PDL1 SP142 Histo(Rs 7605/-), CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-)",
+   "dT": "ngs comprehensive genomic profiling, T4484-IHC PDL1 SP142 Histo(Rs 7605/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 11580,
+   "eD": 11267,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -16359,27 +16199,17 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
      "ECG",
      null,
      null
     ],
     [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -16449,12 +16279,12 @@
    "d": "2026-09-11",
    "r": "Sireesh Kumar CH",
    "t": "OP",
-   "dT": "PDL1 (DAKO)(Rs 10500/-), MSI(Rs 6750/-), Ultrasound Chest(Rs 1614/-), Fluid Cytology(Rs 371.25/-), CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-)",
+   "dT": "PDL1 (DAKO)(Rs 10500/-), MSI(Rs 6750/-), Ultrasound Chest(Rs 1614/-), Fluid Cytology(Rs 371.25/-), MD0081-Health Package(Rs 800/-)",
    "pT": "TRANEXAMIC(Rs 71.97/-), Rapitus, tuxq-x, pulmoclear, Protein Powder(Rs 1349/-), INH DUOLIN + BUDECORT",
    "gT": "TRANEXAMIC(Rs 71.97/-), Rapitus, tuxq-x, pulmoclear, Protein Powder(Rs 1349/-), INH DUOLIN + BUDECORT",
    "cT": "",
    "eP": 0,
-   "eD": 20348,
+   "eD": 20035,
    "eG": 1421,
    "k": "fresh",
    "hD": 1,
@@ -16485,17 +16315,7 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -16787,12 +16607,12 @@
    "d": "2026-09-11",
    "r": "Vikram Singhal",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "PAN-DSR, betone, mucel, myporeuron, glutalan sachet, Uprise",
    "gT": "PAN-DSR, betone, mucel, myporeuron, glutalan sachet, Uprise",
    "cT": "",
    "eP": 0,
-   "eD": 13113,
+   "eD": 12800,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -16808,17 +16628,7 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -16942,12 +16752,12 @@
    "d": "2026-09-10",
    "r": "Vikram Singhal",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Celecoxib - 200MG(Rs 15/-), Betadine Gargle - 100ml(Rs 334/-), a to z, mucel, Orofer-XT, Morphine, DOLO(Rs 32.12/-), Dulcolax, sorafenib, METHOTREXATE - 15 MG(Rs 57/-)",
    "gT": "Celecoxib - 200MG(Rs 15/-), Betadine Gargle - 100ml(Rs 334/-), a to z, mucel, Orofer-XT, Morphine, DOLO(Rs 32.12/-), Dulcolax",
    "cT": "sorafenib, METHOTREXATE - 15 MG(Rs 57/-)",
    "eP": 57,
-   "eD": 1113,
+   "eD": 800,
    "eG": 381,
    "k": "fresh",
    "hD": 1,
@@ -16958,17 +16768,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -17168,12 +16968,12 @@
    "d": "2026-09-10",
    "r": "Mohit Saxena",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), PT/INR(Rs 375/-), HIV(Rs 284/-), HBsAg (CLIA)(Rs 375/-), Anti HCV (CLIA)(Rs 750/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "PT/INR(Rs 375/-), HIV(Rs 284/-), HBsAg (CLIA)(Rs 375/-), Anti HCV (CLIA)(Rs 750/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 17735,
+   "eD": 17446,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -17183,21 +16983,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "PT/INR",
      null,
@@ -17230,6 +17015,11 @@
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -17553,12 +17343,12 @@
    "d": "2026-09-10",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), MI0002-Advance Viral marker Profile (HIV, HbsAg, Anti HCV)(Rs 1275/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), BC0514-Thyroid Profile, Total(Rs 480/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), MI0002-Advance Viral marker Profile (HIV, HbsAg, Anti HCV)(Rs 1275/-), MD0081-Health Package(Rs 800/-)",
    "pT": "ultracet, ifosfamide - 1gm(Rs 461.3/-), adriamycin",
    "gT": "ultracet",
    "cT": "ifosfamide - 1gm(Rs 461.3/-), adriamycin",
    "eP": 461,
-   "eD": 17706,
+   "eD": 17417,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -17570,21 +17360,6 @@
    "dM": [
     [
      "18 F FDG PET/CT Whole Body",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
      null,
      null
     ],
@@ -17610,6 +17385,11 @@
     ],
     [
      "Advance Viral marker Profile (HIV, HbsAg, Anti HCV)",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -18028,12 +17808,12 @@
    "d": "2026-09-09",
    "r": "Ashish Goel",
    "t": "OP",
-   "dT": "body PET-CT with contrast(Rs 12/-), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), Fasting Blood Glucose (FBS)(Rs 49.5/-), HbA1c(Rs 338/-), CA 125 Level(Rs 759/-), CEA - Carcinoembryonic Antigen(Rs 427/-), CA 19.9(Rs 949/-), Viral Markers(Rs 949/-), PT/INR(Rs 375/-)",
+   "dT": "body PET-CT with contrast(Rs 12/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), Fasting Blood Glucose (FBS)(Rs 49.5/-), HbA1c(Rs 338/-), CA 125 Level(Rs 759/-), CEA - Carcinoembryonic Antigen(Rs 427/-), CA 19.9(Rs 949/-), Viral Markers(Rs 949/-), PT/INR(Rs 375/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 5348,
+   "eD": 5059,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -18045,21 +17825,6 @@
    "dM": [
     [
      "body PET-CT with contrast",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
      null,
      null
     ],
@@ -18102,6 +17867,11 @@
      "PT/INR",
      null,
      null
+    ],
+    [
+     "Health Package",
+     null,
+     null
     ]
    ],
    "pM": [],
@@ -18116,12 +17886,12 @@
    "d": "2026-09-09",
    "r": "Vikram Singhal",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), Viral Markers(Rs 949/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-)",
+   "dT": "Viral Markers(Rs 949/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "UDILIV 300MG(Rs 62/-), GEMCITABINE(Rs 400/-), CISPLATIN(Rs 79/-), Durvalumab - 500mg(Rs 171324/-)",
    "gT": "UDILIV 300MG(Rs 62/-)",
    "cT": "GEMCITABINE(Rs 400/-), CISPLATIN(Rs 79/-), Durvalumab - 500mg(Rs 171324/-)",
    "eP": 171803,
-   "eD": 4900,
+   "eD": 4611,
    "eG": 62,
    "k": "fresh",
    "hD": 1,
@@ -18131,21 +17901,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "Viral Markers",
      null,
@@ -18158,6 +17913,11 @@
     ],
     [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -18266,12 +18026,12 @@
    "d": "2026-09-09",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), next generation sequencing",
+   "dT": "next generation sequencing, MD0081-Health Package(Rs 800/-)",
    "pT": "APRECAP - 125MG(Rs 775/-), Cardivas, Dapagliflozin, Lasilactone, GCSF, UDILIV 300MG(Rs 62/-), maxiliv, Gemcitabine - 1400mg(Rs 1615/-), Gemcitabine - 200mg(Rs 977/-), Carboplatin - 150 mg(Rs 1892.84/-), Carboplatin - 150 mg(Rs 1892.84/-), Pembrolizumab - 100mg(Rs 433000/-), Pembrolizumab - 100mg(Rs 433000/-), tevimbra",
    "gT": "APRECAP - 125MG(Rs 775/-), Cardivas, Dapagliflozin, Lasilactone, GCSF, UDILIV 300MG(Rs 62/-), maxiliv",
    "cT": "Gemcitabine - 1400mg(Rs 1615/-), Gemcitabine - 200mg(Rs 977/-), Carboplatin - 150 mg(Rs 1892.84/-), Carboplatin - 150 mg(Rs 1892.84/-), Pembrolizumab - 100mg(Rs 433000/-), Pembrolizumab - 100mg(Rs 433000/-), tevimbra",
    "eP": 437485,
-   "eD": 1089,
+   "eD": 800,
    "eG": 837,
    "k": "fresh",
    "hD": 1,
@@ -18282,22 +18042,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "next generation sequencing",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -18985,12 +18735,12 @@
    "d": "2026-09-08",
    "r": "Sushant Mittal",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), Lactate Dehydrogenase (LDH)(Rs 265/-), MI0002-Advance Viral marker Profile (HIV, HbsAg, Anti HCV)(Rs 1275/-), 2D ECHO(Rs 2625/-)",
+   "dT": "Lactate Dehydrogenase (LDH)(Rs 265/-), MI0002-Advance Viral marker Profile (HIV, HbsAg, Anti HCV)(Rs 1275/-), 2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Rituximab - 500mg(Rs 38314/-), polatuzumab, Doxorubicin - 50mg(Rs 845/-), Cyclophosphamide - 500mg(Rs 77/-), Vincristine - 1mg(Rs 60/-), filgrastim 300",
    "gT": "",
    "cT": "Rituximab - 500mg(Rs 38314/-), polatuzumab, Doxorubicin - 50mg(Rs 845/-), Cyclophosphamide - 500mg(Rs 77/-), Vincristine - 1mg(Rs 60/-), filgrastim 300",
    "eP": 39296,
-   "eD": 5254,
+   "eD": 4965,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -19000,21 +18750,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "Lactate Dehydrogenase (LDH)",
      null,
@@ -19027,6 +18762,11 @@
     ],
     [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -19117,12 +18857,12 @@
    "d": "2026-09-08",
    "r": "Sireesh Kumar CH",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 13113,
+   "eD": 12800,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -19138,17 +18878,7 @@
      "NEW - PET -FDG- Whole Body"
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -19165,12 +18895,12 @@
    "d": "2026-09-08",
    "r": "Vivek Tayal",
    "t": "OP",
-   "dT": "HbA1c(Rs 338/-), LFT(Rs 450/-), KFT(Rs 450/-), CBC(Rs 189/-)",
+   "dT": "HbA1c(Rs 338/-), MD0081-Health Package(Rs 800/-)",
    "pT": "amaryl, Ondero Met",
    "gT": "amaryl, Ondero Met",
    "cT": "",
    "eP": 0,
-   "eD": 1427,
+   "eD": 1138,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -19186,17 +18916,7 @@
      null
     ],
     [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "CBC",
+     "Health Package",
      null,
      null
     ]
@@ -19481,12 +19201,12 @@
    "d": "2026-09-08",
    "r": "Bharat Bhushan Bassan",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), APTT(Rs 332/-), PT/INR(Rs 375/-), Viral Markers(Rs 949/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), APTT(Rs 332/-), PT/INR(Rs 375/-), Viral Markers(Rs 949/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 15145,
+   "eD": 14856,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -19498,21 +19218,6 @@
    "dM": [
     [
      "18 F FDG PET/CT Whole Body",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
      null,
      null
     ],
@@ -19533,6 +19238,11 @@
     ],
     [
      "Thyroid Function Test-TFT (T3, T4, TSH)",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -19789,12 +19499,12 @@
    "d": "2026-09-07",
    "r": "S K Sahoo",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), RBS(Rs 47/-), HE0035-Glycosylated Hemoglobin (HbA1c)(Rs 440/-), BLOOD GROUP AND RH(Rs 132/-), HIV(Rs 284/-), Anti HCV(Rs 825/-), HBsAg (CLIA)(Rs 375/-), PT/INR(Rs 375/-), APTT(Rs 332/-), Digital X-Ray Chest PA(Rs 237/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-)",
+   "dT": "BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), RBS(Rs 47/-), HE0035-Glycosylated Hemoglobin (HbA1c)(Rs 440/-), BLOOD GROUP AND RH(Rs 132/-), HIV(Rs 284/-), Anti HCV(Rs 825/-), HBsAg (CLIA)(Rs 375/-), PT/INR(Rs 375/-), APTT(Rs 332/-), Digital X-Ray Chest PA(Rs 237/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 7398,
+   "eD": 7109,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -19804,21 +19514,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "Thyroid Function Test-TFT (T3, T4, TSH)",
      null,
@@ -19876,6 +19571,11 @@
     ],
     [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -20144,12 +19844,12 @@
    "d": "2026-09-07",
    "r": "Vivek Tayal",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), T1555-Dengue Antigen (NS1)- Rapid(Rs 217/-), LYF MP ANTIGEN, Typhidot IgM(Rs 379/-), HbsAg (ELISA)(Rs 660/-)",
+   "dT": "T1555-Dengue Antigen (NS1)- Rapid(Rs 217/-), LYF MP ANTIGEN, Typhidot IgM(Rs 379/-), HbsAg (ELISA)(Rs 660/-), MD0081-Health Package(Rs 800/-)",
    "pT": "TAZACT 4.5GM(Rs 447/-), Doxycycline - 100mg(Rs 563/-), Pantoprazole - 40mg(Rs 56/-), PARACETAMOL - 1000 MG(Rs 360/-), Emeset 4ml(Rs 27/-), tamiflu 75, neurokind, formacort",
    "gT": "TAZACT 4.5GM(Rs 447/-), Doxycycline - 100mg(Rs 563/-), Pantoprazole - 40mg(Rs 56/-), PARACETAMOL - 1000 MG(Rs 360/-), Emeset 4ml(Rs 27/-), tamiflu 75, neurokind, formacort",
    "cT": "",
    "eP": 0,
-   "eD": 2345,
+   "eD": 2056,
    "eG": 1453,
    "k": "followup",
    "hD": 1,
@@ -20159,21 +19859,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "Dengue Antigen (NS1)- Rapid",
      null,
@@ -20191,6 +19876,11 @@
     ],
     [
      "HbsAg (ELISA)",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -20418,12 +20108,12 @@
    "d": "2026-09-07",
    "r": "Dharma Kumar",
    "t": "OP",
-   "dT": "Histo Biopsy Breast - True cut Biopsy(Rs 569/-), CT CHEST / THORAX(Rs 4400/-), Ultrasound Lower Abdomen/Pelvis(Rs 854/-), BILATERAL MAMMOGRAPHY(Rs 2475/-), CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-), PT/INR(Rs 375/-), Digital X-Ray Chest PA(Rs 237/-), ECG(Rs 237/-)",
+   "dT": "Histo Biopsy Breast - True cut Biopsy(Rs 569/-), CT CHEST / THORAX(Rs 4400/-), Ultrasound Lower Abdomen/Pelvis(Rs 854/-), BILATERAL MAMMOGRAPHY(Rs 2475/-), PT/INR(Rs 375/-), Digital X-Ray Chest PA(Rs 237/-), ECG(Rs 237/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 10260,
+   "eD": 9947,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -20454,21 +20144,6 @@
      "CAD - Bilateral Breast Mammography"
     ],
     [
-     "CBC",
-     "hi",
-     "CAD - CBC"
-    ],
-    [
-     "RFT",
-     "lo",
-     "CAD - KFT"
-    ],
-    [
-     "LFT",
-     "hi",
-     "CAD - LFT"
-    ],
-    [
      "PT/INR",
      null,
      null
@@ -20482,6 +20157,11 @@
      "ECG",
      "hi",
      "CAD - ECG"
+    ],
+    [
+     "Health Package",
+     null,
+     null
     ]
    ],
    "pM": [],
@@ -20496,12 +20176,12 @@
    "d": "2026-09-07",
    "r": "Ashish Goel",
    "t": "OP",
-   "dT": "body PET scan with contrast(Rs 12/-), CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), Fasting Blood Glucose (FBS)(Rs 49.5/-), PT/INR(Rs 375/-), 2D ECHO(Rs 2625/-), ECG(Rs 237/-), Viral Markers(Rs 949/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-)",
+   "dT": "body PET scan with contrast(Rs 12/-), Fasting Blood Glucose (FBS)(Rs 49.5/-), PT/INR(Rs 375/-), 2D ECHO(Rs 2625/-), ECG(Rs 237/-), Viral Markers(Rs 949/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 5737,
+   "eD": 5448,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -20515,21 +20195,6 @@
      "body PET scan with contrast",
      "md",
      "HOD-18 F FDG PET/CT Whole Body"
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
     ],
     [
      "Fasting Blood Glucose",
@@ -20560,6 +20225,11 @@
      "Thyroid Function Test-TFT (T3, T4, TSH)",
      "hi",
      "PCD - BC0514-Thyroid Function Test-TFT (T3, T4, TSH)"
+    ],
+    [
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [],
@@ -21425,12 +21095,12 @@
    "d": "2026-09-05",
    "r": "Rakesh Sharma",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), PT/INR(Rs 375/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "PT/INR(Rs 375/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 13464,
+   "eD": 13175,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -21441,27 +21111,17 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "PT/INR",
      null,
      null
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -21792,12 +21452,12 @@
    "d": "2026-09-05",
    "r": "Gajendra Himanshu",
    "t": "OP",
-   "dT": "Punch Biopsy Procedure, CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "Punch Biopsy Procedure, MD0081-Health Package(Rs 800/-)",
    "pT": "CANDID MOUTH PAINT(Rs 180/-), NEURAFORT D, a to z",
    "gT": "CANDID MOUTH PAINT(Rs 180/-), NEURAFORT D, a to z",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 180,
    "k": "fresh",
    "hD": 1,
@@ -21813,17 +21473,7 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -22061,12 +21711,12 @@
    "d": "2026-09-05",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "NGS Breast Panel (ESR-1, PTEN, AKT, PIK3CA), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), Digital X-Ray Chest PA(Rs 237/-)",
+   "dT": "NGS Breast Panel (ESR-1, PTEN, AKT, PIK3CA), Digital X-Ray Chest PA(Rs 237/-), MD0081-Health Package(Rs 800/-)",
    "pT": "shelcal 500, Anastrozole 1, Palbociclib -100mg(Rs 1780/-)",
    "gT": "shelcal 500",
    "cT": "Anastrozole 1, Palbociclib -100mg(Rs 1780/-)",
    "eP": 1780,
-   "eD": 1326,
+   "eD": 1037,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -22082,22 +21732,12 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "Digital X-Ray Chest PA",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -22277,12 +21917,12 @@
    "d": "2026-09-05",
    "r": "S K Sahoo",
    "t": "OP",
-   "dT": "Mammogram Bilateral Breasts(Rs 1899/-), US ABDOMEN - PELVIS(Rs 990/-), CA 15.3(Rs 854/-), CEA - Carcinoembryonic Antigen(Rs 427/-), CA 125 Level(Rs 759/-), CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), Lipid Profile(Rs 474/-), 5888Urine Routine And Microscopy, STOOL ROUTINE & MICROSCOP, CP0020-Stool Examination, Occult Blood(Rs 160/-), ENDOSCOPY (UGIE), COLONOSCOPY(Rs 5130/-)",
+   "dT": "Mammogram Bilateral Breasts(Rs 1899/-), US ABDOMEN - PELVIS(Rs 990/-), CA 15.3(Rs 854/-), CEA - Carcinoembryonic Antigen(Rs 427/-), CA 125 Level(Rs 759/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), Lipid Profile(Rs 474/-), 5888Urine Routine And Microscopy, STOOL ROUTINE & MICROSCOP, CP0020-Stool Examination, Occult Blood(Rs 160/-), ENDOSCOPY (UGIE), COLONOSCOPY(Rs 5130/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 12182,
+   "eD": 11893,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -22314,21 +21954,6 @@
     ],
     [
      "CA 125 Level",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
      null,
      null
     ],
@@ -22369,6 +21994,11 @@
     ],
     [
      "COLONOSCOPY",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -22841,12 +22471,12 @@
    "d": "2026-09-04",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 2D ECHO(Rs 2625/-)",
+   "dT": "2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "aprepitant, CHOLECALCIFEROL - 60k(Rs 34/-), ultracet, Becosules, Protein Powder(Rs 1349/-), Leucovorin - 50mg(Rs 359/-), FLUOROURACIL (5-FU)(Rs 135/-), Oxaliplatin - 50mg(Rs 2346/-)",
    "gT": "aprepitant, CHOLECALCIFEROL - 60k(Rs 34/-), ultracet, Becosules, Protein Powder(Rs 1349/-)",
    "cT": "Leucovorin - 50mg(Rs 359/-), FLUOROURACIL (5-FU)(Rs 135/-), Oxaliplatin - 50mg(Rs 2346/-)",
    "eP": 2840,
-   "eD": 3714,
+   "eD": 3425,
    "eG": 1383,
    "k": "fresh",
    "hD": 1,
@@ -22857,22 +22487,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -23164,12 +22784,12 @@
    "d": "2026-09-03",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "atarax, TRASTUZUMAB - 150 MG(Rs 5275/-)",
    "gT": "atarax",
    "cT": "TRASTUZUMAB - 150 MG(Rs 5275/-)",
    "eP": 5275,
-   "eD": 13569,
+   "eD": 13280,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -23179,21 +22799,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "Thyroid Profile",
      null,
@@ -23206,6 +22811,11 @@
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -23303,12 +22913,12 @@
    "d": "2026-09-03",
    "r": "Sukriti Gupta",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), Peripheral Smear(Rs 113/-), Reticulocyte Count(Rs 150/-), LFT(Rs 450/-), KFT(Rs 450/-), LDH(Rs 263/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), SERUM IRON / IRON TEST/ FE(Rs 440/-), TIBC(Rs 188/-), Ferritin(Rs 379/-), Vitamin B12(Rs 664/-)",
+   "dT": "Peripheral Smear(Rs 113/-), Reticulocyte Count(Rs 150/-), LDH(Rs 263/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), SERUM IRON / IRON TEST/ FE(Rs 440/-), TIBC(Rs 188/-), Ferritin(Rs 379/-), Vitamin B12(Rs 664/-), MD0081-Health Package(Rs 800/-)",
    "pT": "",
    "gT": "",
    "cT": "",
    "eP": 0,
-   "eD": 3686,
+   "eD": 3397,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -23319,11 +22929,6 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     "hi",
-     "BHA-Haemogram(CBC) & ESR"
-    ],
-    [
      "Peripheral Smear",
      "hi",
      "BHA-Peripheral Smear"
@@ -23332,16 +22937,6 @@
      "Reticulocyte Count",
      "hi",
      "BHA-Reticulocyte Count"
-    ],
-    [
-     "LFT",
-     "hi",
-     "BHA-LFT"
-    ],
-    [
-     "KFT",
-     "hi",
-     "BHA-KFT"
     ],
     [
      "LDH",
@@ -23372,6 +22967,11 @@
      "Vitamin B12",
      "hi",
      "BHA-Vitamin B12, Serum"
+    ],
+    [
+     "Health Package",
+     null,
+     null
     ]
    ],
    "pM": [],
@@ -23631,12 +23231,12 @@
    "d": "2026-09-03",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), ncct whole body",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), ncct whole body, MD0081-Health Package(Rs 800/-)",
    "pT": "Duloxetine, Abemaciclib - 100mg(Rs 23876/-), ERIBULIN(Rs 32880/-)",
    "gT": "Duloxetine",
    "cT": "Abemaciclib - 100mg(Rs 23876/-), ERIBULIN(Rs 32880/-)",
    "eP": 56756,
-   "eD": 13569,
+   "eD": 13280,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -23657,27 +23257,17 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
      null,
      null
     ],
     [
      "ncct whole body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -23733,12 +23323,12 @@
    "d": "2026-09-03",
    "r": "Mohit Saxena",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), ENDOSCOPY (UGIE), ENDOSCOPY / COLONOSCOPY BIOPSY PROCEDURE CHARGES(Rs 1260/-), NGS.",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), ENDOSCOPY (UGIE), ENDOSCOPY / COLONOSCOPY BIOPSY PROCEDURE CHARGES(Rs 1260/-), NGS., MD0081-Health Package(Rs 800/-)",
    "pT": "Aminoven 10%(Rs 1045/-)",
    "gT": "Aminoven 10%(Rs 1045/-)",
    "cT": "",
    "eP": 0,
-   "eD": 14349,
+   "eD": 14060,
    "eG": 1045,
    "k": "followup",
    "hD": 1,
@@ -23748,21 +23338,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "18 F FDG PET/CT Whole Body",
      null,
@@ -23780,6 +23355,11 @@
     ],
     [
      "NGS.",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -24120,12 +23700,12 @@
    "d": "2026-09-02",
    "r": "Bharat Bhushan Bassan",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), PT/INR(Rs 375/-), APTT(Rs 332/-), Viral Markers(Rs 949/-), Digital X-Ray Chest PA(Rs 237/-), 2D ECHO(Rs 2625/-), ECG(Rs 237/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), PT/INR(Rs 375/-), APTT(Rs 332/-), Viral Markers(Rs 949/-), Digital X-Ray Chest PA(Rs 237/-), 2D ECHO(Rs 2625/-), ECG(Rs 237/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Chlorhexidine, Sigroflam",
    "gT": "Chlorhexidine, Sigroflam",
    "cT": "",
    "eP": 0,
-   "eD": 17844,
+   "eD": 17555,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -24137,21 +23717,6 @@
    "dM": [
     [
      "18 F FDG PET/CT Whole Body",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
      null,
      null
     ],
@@ -24182,6 +23747,11 @@
     ],
     [
      "ECG",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -24272,12 +23842,12 @@
    "d": "2026-09-02",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), HIV(Rs 284/-), HBsAg (CLIA)(Rs 375/-), Anti HCV (CLIA)(Rs 750/-), BC0514-Thyroid Profile, Total(Rs 480/-), Cortisol level- Random(Rs 705/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), HIV(Rs 284/-), HBsAg (CLIA)(Rs 375/-), Anti HCV (CLIA)(Rs 750/-), BC0514-Thyroid Profile, Total(Rs 480/-), Cortisol level- Random(Rs 705/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-), tremelimumab",
    "gT": "",
    "cT": "Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-), tremelimumab",
    "eP": 513972,
-   "eD": 15683,
+   "eD": 15394,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -24291,21 +23861,6 @@
      "18 F FDG PET/CT Whole Body",
      "hi",
      "HOD-18 F FDG PET/CT Whole Body"
-    ],
-    [
-     "CBC",
-     "hi",
-     "BHA-Haemogram(CBC) & ESR"
-    ],
-    [
-     "KFT",
-     "hi",
-     "BHA-KFT"
-    ],
-    [
-     "LFT",
-     "hi",
-     "BHA-LFT"
     ],
     [
      "HIV",
@@ -24336,6 +23891,11 @@
      "Cortisol level- Random",
      "lo",
      "BHA-Cortisol (Morning)"
+    ],
+    [
+     "Health Package",
+     null,
+     null
     ]
    ],
    "pM": [
@@ -24912,12 +24472,12 @@
    "d": "2026-09-01",
    "r": "Sireesh Kumar CH",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), RBS(Rs 47/-), RFT(Rs 474/-), LFT(Rs 450/-), Amoebic Serology(Rs 854/-), 1 IHC, PDL1 (DAKO)(Rs 10500/-), IA0107-HER2(Rs 1840/-), MSI(Rs 6750/-)",
+   "dT": "RBS(Rs 47/-), Amoebic Serology(Rs 854/-), 1 IHC, PDL1 (DAKO)(Rs 10500/-), IA0107-HER2(Rs 1840/-), MSI(Rs 6750/-), MD0081-Health Package(Rs 800/-)",
    "pT": "folfox",
    "gT": "",
    "cT": "folfox",
    "eP": 0,
-   "eD": 21104,
+   "eD": 20791,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -24928,22 +24488,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
      "RBS",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
      null,
      null
     ],
@@ -24969,6 +24514,11 @@
     ],
     [
      "MSI",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -25142,12 +24692,12 @@
    "d": "2026-09-01",
    "r": "Vikram Singhal",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), LDH(Rs 263/-)",
+   "dT": "LDH(Rs 263/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Lumia",
    "gT": "Lumia",
    "cT": "",
    "eP": 0,
-   "eD": 1352,
+   "eD": 1063,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -25158,22 +24708,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
      "LDH",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -25204,12 +24744,12 @@
    "d": "2026-09-01",
    "r": "Sireesh Kumar CH",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-), Calcium(Rs 94/-), PSA(Rs 488/-), Amoebic Serology(Rs 854/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-)",
+   "dT": "Calcium(Rs 94/-), PSA(Rs 488/-), Amoebic Serology(Rs 854/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "ZOLEDRONIC ACID - 4mg(Rs 1200/-), Docetaxel - 80mg(Rs 11039/-), ABIRATERONE ACETATE - 500mg(Rs 21600/-), PREDNISOLONE(Rs 26/-)",
    "gT": "ZOLEDRONIC ACID - 4mg(Rs 1200/-)",
    "cT": "Docetaxel - 80mg(Rs 11039/-), ABIRATERONE ACETATE - 500mg(Rs 21600/-), PREDNISOLONE(Rs 26/-)",
    "eP": 32665,
-   "eD": 5411,
+   "eD": 5098,
    "eG": 1200,
    "k": "fresh",
    "hD": 1,
@@ -25219,21 +24759,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
     [
      "Calcium",
      null,
@@ -25256,6 +24781,11 @@
     ],
     [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -25409,12 +24939,12 @@
    "d": "2026-09-01",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "NGS Lung Cancer Panel(Rs 18999/-), PDL1 (DAKO)(Rs 10500/-), 3T MRI Brain(Rs 3799/-), 2D ECHO(Rs 2625/-), CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), HIV(Rs 284/-), HBsAg (CLIA)(Rs 375/-), Anti HCV(Rs 854/-)",
+   "dT": "NGS Lung Cancer Panel(Rs 18999/-), PDL1 (DAKO)(Rs 10500/-), 3T MRI Brain(Rs 3799/-), 2D ECHO(Rs 2625/-), HIV(Rs 284/-), HBsAg (CLIA)(Rs 375/-), Anti HCV(Rs 854/-), MD0081-Health Package(Rs 800/-)",
    "pT": "ultracet, pulmosmart, Denosumab - 120mg(Rs 28787/-), Pembrolizumab PAP - 100mg(Rs 208580/-), Paclitaxel - 30mg(Rs 1206/-), Carboplatin - 150 mg(Rs 946.42/-), TISLELIZUMAB - 100 MG(Rs 59548.28/-)",
    "gT": "ultracet, pulmosmart, Denosumab - 120mg(Rs 28787/-)",
    "cT": "Pembrolizumab PAP - 100mg(Rs 208580/-), Paclitaxel - 30mg(Rs 1206/-), Carboplatin - 150 mg(Rs 946.42/-), TISLELIZUMAB - 100 MG(Rs 59548.28/-)",
    "eP": 270281,
-   "eD": 38525,
+   "eD": 38236,
    "eG": 28787,
    "k": "fresh",
    "hD": 1,
@@ -25445,21 +24975,6 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "HIV",
      null,
      null
@@ -25471,6 +24986,11 @@
     ],
     [
      "Anti HCV",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -25601,12 +25121,12 @@
    "d": "2026-09-01",
    "r": "Bharat Bhushan Bassan",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), Digital X-Ray Chest PA(Rs 237/-), ECG(Rs 237/-), PT/INR(Rs 375/-), APTT(Rs 332/-), Viral Markers(Rs 949/-), 2D ECHO(Rs 2625/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), Digital X-Ray Chest PA(Rs 237/-), ECG(Rs 237/-), PT/INR(Rs 375/-), APTT(Rs 332/-), Viral Markers(Rs 949/-), 2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Chlorhexidine, signoflam",
    "gT": "Chlorhexidine, signoflam",
    "cT": "",
    "eP": 0,
-   "eD": 17844,
+   "eD": 17555,
    "eG": 0,
    "k": "fresh",
    "hD": 1,
@@ -25618,21 +25138,6 @@
    "dM": [
     [
      "18 F FDG PET/CT Whole Body",
-     null,
-     null
-    ],
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
      null,
      null
     ],
@@ -25663,6 +25168,11 @@
     ],
     [
      "2D ECHO",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -25705,12 +25215,12 @@
    "d": "2026-09-01",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), CEA - Carcinoembryonic Antigen(Rs 427/-), BC0514-Thyroid Profile, Total(Rs 480/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "CEA - Carcinoembryonic Antigen(Rs 427/-), BC0514-Thyroid Profile, Total(Rs 480/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "CAPECITABINE(Rs 1203.6/-), Bevacizumab - 100mg(Rs 33863/-)",
    "gT": "",
    "cT": "CAPECITABINE(Rs 1203.6/-), Bevacizumab - 100mg(Rs 33863/-)",
    "eP": 35067,
-   "eD": 13996,
+   "eD": 13707,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -25720,21 +25230,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "CEA - Carcinoembryonic Antigen",
      null,
@@ -25752,6 +25247,11 @@
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -25909,12 +25409,12 @@
    "d": "2026-09-01",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Septran-DS, ecosprin, LENALIDOMIDE - 10mg(Rs 4234/-)",
    "gT": "Septran-DS, ecosprin",
    "cT": "LENALIDOMIDE - 10mg(Rs 4234/-)",
    "eP": 4234,
-   "eD": 13089,
+   "eD": 12800,
    "eG": 0,
    "k": "followup",
    "hD": 1,
@@ -25925,22 +25425,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -25996,12 +25486,12 @@
    "d": "2026-09-01",
    "r": "S M",
    "t": "OP",
-   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CECT(Rs 5000/-), CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), CEA - Carcinoembryonic Antigen(Rs 427/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CECT(Rs 5000/-), CEA - Carcinoembryonic Antigen(Rs 427/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Neutraforte, Panto-DSR, Emeset 4mg(Rs 13/-), Neutra-Pro, CAPECITABINE - 500mg(Rs 1183/-)",
    "gT": "Neutraforte, Panto-DSR, Emeset 4mg(Rs 13/-), Neutra-Pro",
    "cT": "CAPECITABINE - 500mg(Rs 1183/-)",
    "eP": 1183,
-   "eD": 18516,
+   "eD": 18227,
    "eG": 13,
    "k": "fresh",
    "hD": 1,
@@ -26022,22 +25512,12 @@
      null
     ],
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
      "CEA - Carcinoembryonic Antigen",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -48523,12 +48003,12 @@
    "d": "2026-09-15",
    "r": "K M Parthasarathy",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Acivir 200, Pregaba-NT, Emeset 8mg(Rs 10/-), cap Razo D(Rs 24/-), Becosules, dexorange, syp Cremaffin plus(Rs 327/-), Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Acivir 200, Pregaba-NT, Emeset 8mg(Rs 10/-), cap Razo D(Rs 24/-), Becosules, dexorange, syp Cremaffin plus(Rs 327/-), Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1331,
    "k": null,
    "hD": 1,
@@ -48539,17 +48019,7 @@
    "bv": 914,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -48700,12 +48170,12 @@
    "d": "2026-09-15",
    "r": "Mohit Saxena",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Lesuride, Dolo(Rs 2/-), PAN 40(Rs 57/-), a to z, syp Cremaffin plus(Rs 327/-), ULTRACET(Rs 18/-)",
    "gT": "Lesuride, Dolo(Rs 2/-), PAN 40(Rs 57/-), a to z, syp Cremaffin plus(Rs 327/-), ULTRACET(Rs 18/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 404,
    "k": null,
    "hD": 1,
@@ -48716,17 +48186,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -48975,12 +48435,12 @@
    "d": "2026-09-15",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), CAPECITABINE - 500mg(Rs 1183/-), Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 18/-), NEUTRA FORTE, Goldcal-Max, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), a to z, LOOZ, Chlorhexidine, Dolo(Rs 2/-), Immodium, Dulcoflex",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), CAPECITABINE - 500mg(Rs 1183/-), Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 18/-), NEUTRA FORTE, Goldcal-Max, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), a to z, LOOZ, Chlorhexidine, Dolo(Rs 2/-), Immodium, Dulcoflex",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 6152,
    "k": null,
    "hD": 1,
@@ -48991,17 +48451,7 @@
    "bv": 4298,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -49188,12 +48638,12 @@
    "d": "2026-09-15",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-), CA-125 level(Rs 850/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "CA-125 level(Rs 850/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Peg-GCSF, RAZO D(Rs 22/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), Dexamethasone 4mg(Rs 5/-), mucobenz mouth wash(Rs 560/-), Ensure, MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-), Aptivate, Versatile Forte(Rs 40/-), Immodium, Dolo(Rs 2/-)",
    "gT": "Peg-GCSF, RAZO D(Rs 22/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), Dexamethasone 4mg(Rs 5/-), mucobenz mouth wash(Rs 560/-), Ensure, MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-), Aptivate, Versatile Forte(Rs 40/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 13963,
+   "eD": 13650,
    "eG": 967,
    "k": null,
    "hD": 1,
@@ -49204,27 +48654,17 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
      "CA-125 level",
      null,
      null
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -49387,12 +48827,12 @@
    "d": "2026-09-14",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-), CORTISOL RANDOM(Rs 720/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), CORTISOL RANDOM(Rs 720/-), MD0081-Health Package(Rs 800/-)",
    "pT": "cabozantinib, cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), ROSUVASTATIN - 10mg(Rs 23/-), Anastrozole 1, Coralium, ULTRACET(Rs 18/-), RPQ, LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ZYTEE GEL(Rs 119/-), Clogen, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-), OLIMAB 60 MG [DENOSUMAB ](Rs 14990/-)",
    "gT": "cabozantinib, cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), ROSUVASTATIN - 10mg(Rs 23/-), Anastrozole 1, Coralium, ULTRACET(Rs 18/-), RPQ, LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ZYTEE GEL(Rs 119/-), Clogen, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "OLIMAB 60 MG [DENOSUMAB ](Rs 14990/-)",
    "eP": 14990,
-   "eD": 2289,
+   "eD": 2000,
    "eG": 760,
    "k": null,
    "hD": 1,
@@ -49402,21 +48842,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "Thyroid Profile",
      null,
@@ -49429,6 +48854,11 @@
     ],
     [
      "CORTISOL RANDOM",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -49640,12 +49070,12 @@
    "d": "2026-09-14",
    "r": "Pooja Gupta",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 18/-), CALCIROL 60K, Goldcal-Max, Protein Powder(Rs 1349/-), citralka, LOOZ, Chlorhexidine, Dolo(Rs 2/-), Immodium, Dulcoflex",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 18/-), CALCIROL 60K, Goldcal-Max, Protein Powder(Rs 1349/-), citralka, LOOZ, Chlorhexidine, Dolo(Rs 2/-), Immodium, Dulcoflex",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 2329,
    "k": null,
    "hD": 1,
@@ -49656,17 +49086,7 @@
    "bv": 1223,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -49841,12 +49261,12 @@
    "d": "2026-09-14",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Fort, Benzocool, Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Fort, Benzocool, Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 3539,
    "k": null,
    "hD": 1,
@@ -49857,17 +49277,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -50066,12 +49476,12 @@
    "d": "2026-09-14",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BRCA 1 & BRCA 2(Rs 15000/-)",
+   "dT": "BRCA 1 & BRCA 2(Rs 15000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Perinorm 2ml 10mg(Rs 6/-), shelcal 500, a to z, Orofer-XT, mucobenz mouth wash(Rs 560/-), wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "PAN 40(Rs 57/-), Perinorm 2ml 10mg(Rs 6/-), shelcal 500, a to z, Orofer-XT, mucobenz mouth wash(Rs 560/-), wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 16089,
+   "eD": 15800,
    "eG": 1819,
    "k": null,
    "hD": 1,
@@ -50082,22 +49492,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "BRCA 1 & BRCA 2",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -50694,12 +50094,12 @@
    "d": "2026-09-14",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PEG RELIGRAST 6MG(Rs 5240/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PANTOP 40(Rs 56/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifort, Benzydamine, Orofer-XT, Ensure, LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "PEG RELIGRAST 6MG(Rs 5240/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PANTOP 40(Rs 56/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifort, Benzydamine, Orofer-XT, Ensure, LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 6650,
    "k": null,
    "hD": 1,
@@ -50710,17 +50110,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -51027,12 +50417,12 @@
    "d": "2026-09-12",
    "r": "Sukriti Bhasin",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "TRENAXA 500mg (tranexamic acid)(Rs 19/-), Crocin, PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, a to z, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Ondem",
    "gT": "TRENAXA 500mg (tranexamic acid)(Rs 19/-), Crocin, PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, a to z, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1285,
    "k": null,
    "hD": 1,
@@ -51043,17 +50433,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -51240,12 +50620,12 @@
    "d": "2026-09-12",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, a to z, mucobenz mouth wash(Rs 560/-), Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, a to z, mucobenz mouth wash(Rs 560/-), Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 4099,
    "k": null,
    "hD": 1,
@@ -51256,19 +50636,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     "hi",
-     "LYF - CBC"
-    ],
-    [
-     "KFT",
-     "hi",
-     "LYF - KFT"
-    ],
-    [
-     "LFT",
-     "hi",
-     "LYF - LFT"
+     "Health Package",
+     null,
+     null
     ]
    ],
    "pM": [
@@ -51664,12 +51034,12 @@
    "d": "2026-09-12",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), HbA1c(Rs 338/-), BC0514-Thyroid Profile, Total(Rs 480/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "HbA1c(Rs 338/-), BC0514-Thyroid Profile, Total(Rs 480/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "APTIVATE(Rs 170/-), Versatile Forte(Rs 40/-), metformin 500, Coconut, atarax, Emeset 8mg(Rs 10/-), a to z, syp Cremaffin plus(Rs 327/-), cap Razo D(Rs 24/-), mucobenz mouth wash(Rs 560/-), Ensure, Magnorate, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "gT": "APTIVATE(Rs 170/-), Versatile Forte(Rs 40/-), metformin 500, Coconut, atarax, Emeset 8mg(Rs 10/-), a to z, syp Cremaffin plus(Rs 327/-), cap Razo D(Rs 24/-), mucobenz mouth wash(Rs 560/-), Ensure, Magnorate, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 13907,
+   "eD": 13618,
    "eG": 1151,
    "k": null,
    "hD": 1,
@@ -51679,21 +51049,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "HbA1c",
      null,
@@ -51711,6 +51066,11 @@
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -51909,12 +51269,12 @@
    "d": "2026-09-12",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "INJ PEGSTIM 6MG (PEGFILGRASTIM)(Rs 5240/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, Erifit-Fort, Benzocool, Orafer XT, Ensure, LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "INJ PEGSTIM 6MG (PEGFILGRASTIM)(Rs 5240/-), Aprecap Kit(Rs 1314/-), Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, Erifit-Fort, Benzocool, Orafer XT, Ensure, LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 6651,
    "k": null,
    "hD": 1,
@@ -51925,17 +51285,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -52173,12 +51523,12 @@
    "d": "2026-09-12",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), Emeset 4mg(Rs 13/-), PAN 40(Rs 57/-), Perinorm 2ml 10mg(Rs 6/-), shelcal 500, UPRISE D3 60K, Erifit-Fort, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Dulcoflex, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), Emeset 4mg(Rs 13/-), PAN 40(Rs 57/-), Perinorm 2ml 10mg(Rs 6/-), shelcal 500, UPRISE D3 60K, Erifit-Fort, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Dulcoflex, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 2571,
    "k": null,
    "hD": 1,
@@ -52189,17 +51539,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -52410,12 +51750,12 @@
    "d": "2026-09-12",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "APRECAP 125/80(Rs 775/-), CAPECITABINE - 500mg(Rs 1183/-), GCSF, Thyronorm, cap Razo D(Rs 24/-), Limce, maxiliv, ULTRACET(Rs 36/-), Emeset 8mg(Rs 10/-), Dytor, APiXABAN - 5mg(Rs 54/-), Nerveheal, Duloxetine, ULTRACET(Rs 36/-), Coconut, Cremaffin(Rs 309/-), mucobenz mouth wash(Rs 560/-), Ensure, BUVALOR (BUPRENORPHINE) PATCH 10 MCG -EST(Rs 1340/-), ECOSPIRIN, Dolo(Rs 2/-), Immodium",
    "gT": "APRECAP 125/80(Rs 775/-), CAPECITABINE - 500mg(Rs 1183/-), GCSF, Thyronorm, cap Razo D(Rs 24/-), Limce, maxiliv, ULTRACET(Rs 36/-), Emeset 8mg(Rs 10/-), Dytor, APiXABAN - 5mg(Rs 54/-), Nerveheal, Duloxetine, ULTRACET(Rs 36/-), Coconut, Cremaffin(Rs 309/-), mucobenz mouth wash(Rs 560/-), Ensure, BUVALOR (BUPRENORPHINE) PATCH 10 MCG -EST(Rs 1340/-), ECOSPIRIN, Dolo(Rs 2/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 13089,
+   "eD": 12800,
    "eG": 4293,
    "k": null,
    "hD": 1,
@@ -52426,22 +51766,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -52724,12 +52054,12 @@
    "d": "2026-09-12",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "PEGASTA, PAN 40(Rs 57/-), Oleanz 2.5(Rs 10/-), Oleanz 2.5(Rs 10/-), Dolo(Rs 4/-), Emeset 4mg(Rs 13/-), Nerveheal, Dolo(Rs 4/-), biotin 5mg, Mobizox, Immodium, CAP REDOTIL 100mg (TACECADOTRIL)(Rs 28/-), Mucaine Gel, PMS-DROTIN-DROTAVERINE-MHE-1415(Rs 41/-), Becosules, Cremaffin(Rs 309/-), Chlorhexidine, ULTRACET(Rs 18/-), Crocin",
    "gT": "PEGASTA, PAN 40(Rs 57/-), Oleanz 2.5(Rs 10/-), Oleanz 2.5(Rs 10/-), Dolo(Rs 4/-), Emeset 4mg(Rs 13/-), Nerveheal, Dolo(Rs 4/-), biotin 5mg, Mobizox, Immodium, CAP REDOTIL 100mg (TACECADOTRIL)(Rs 28/-), Mucaine Gel, PMS-DROTIN-DROTAVERINE-MHE-1415(Rs 41/-), Becosules, Cremaffin(Rs 309/-), Chlorhexidine, ULTRACET(Rs 18/-), Crocin",
    "cT": "",
    "eP": 0,
-   "eD": 13089,
+   "eD": 12800,
    "eG": 480,
    "k": null,
    "hD": 1,
@@ -52740,22 +52070,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -53002,12 +52322,12 @@
    "d": "2026-09-12",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APRECAP 125/80(Rs 775/-), Emeset 8mg(Rs 10/-), Adyn-DSR, IMMUTIDE FORTE, NEUTRA FORTE, ADYN LOSE, shelcal 500, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APRECAP 125/80(Rs 775/-), Emeset 8mg(Rs 10/-), Adyn-DSR, IMMUTIDE FORTE, NEUTRA FORTE, ADYN LOSE, shelcal 500, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 5744,
    "k": null,
    "hD": 1,
@@ -53018,17 +52338,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -53203,12 +52513,12 @@
    "d": "2026-09-12",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), PAN-DSR, FERROGEN-XT, nutra forte d, syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), PAN-DSR, FERROGEN-XT, nutra forte d, syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 5286,
    "k": null,
    "hD": 1,
@@ -53219,17 +52529,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -53383,12 +52683,12 @@
    "d": "2026-09-11",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), RFT(Rs 474/-), LFT(Rs 450/-), ECG(Rs 237/-), 2D ECHO(Rs 2625/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "ECG(Rs 237/-), 2D ECHO(Rs 2625/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "INJ PEGSTIM 6MG (PEGFILGRASTIM)(Rs 5240/-), Aprecap Kit -EST(Rs 1314/-), Prednisolone - 40mg(Rs 2/-), Prednisolone - 40mg(Rs 2/-), Prednisolone - 20mg(Rs 3/-), Septran-DS, VALCIVIR 500mg (VALACYCLOVIR)(Rs 71/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, a to z, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "INJ PEGSTIM 6MG (PEGFILGRASTIM)(Rs 5240/-), Aprecap Kit -EST(Rs 1314/-), Prednisolone - 40mg(Rs 2/-), Prednisolone - 40mg(Rs 2/-), Prednisolone - 20mg(Rs 3/-), Septran-DS, VALCIVIR 500mg (VALACYCLOVIR)(Rs 71/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, a to z, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 15975,
+   "eD": 15662,
    "eG": 7896,
    "k": null,
    "hD": 1,
@@ -53398,21 +52698,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "ECG",
      null,
@@ -53425,6 +52710,11 @@
     ],
     [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -53796,12 +53086,12 @@
    "d": "2026-09-11",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "CAPECITABINE - 500mg(Rs 1183/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), Dexamethasone 4mg(Rs 5/-), arachitol nano 60k, SLN - SHELCAL 500 MG TAB - 8LV2N088(Rs 163.45/-), Cardivas, Trajenta, ROSUVASTATIN - 10mg(Rs 23/-), ECOSPIRIN, VIZYLAC (LACTIC ACID BACILUS(Rs 6/-), Calpol-T, Imodium 2mg(Rs 4/-), a to z, neosporin powder, LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "gT": "CAPECITABINE - 500mg(Rs 1183/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), Dexamethasone 4mg(Rs 5/-), arachitol nano 60k, SLN - SHELCAL 500 MG TAB - 8LV2N088(Rs 163.45/-), Cardivas, Trajenta, ROSUVASTATIN - 10mg(Rs 23/-), ECOSPIRIN, VIZYLAC (LACTIC ACID BACILUS(Rs 6/-), Calpol-T, Imodium 2mg(Rs 4/-), a to z, neosporin powder, LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 13089,
+   "eD": 12800,
    "eG": 1998,
    "k": null,
    "hD": 1,
@@ -53812,22 +53102,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -53978,12 +53258,12 @@
    "d": "2026-09-11",
    "r": "Sukriti Bhasin",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PEGSTIM 6MG(Rs 5240/-), Crocin, PAN 40 (PANTOPRAZOLE)(Rs 11/-), Emeset 4mg(Rs 13/-), SHELCAL 500MG(Rs 9/-), UPRISE D3 60K, a to z, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "PEGSTIM 6MG(Rs 5240/-), Crocin, PAN 40 (PANTOPRAZOLE)(Rs 11/-), Emeset 4mg(Rs 13/-), SHELCAL 500MG(Rs 9/-), UPRISE D3 60K, a to z, Benzydamine, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 6469,
    "k": null,
    "hD": 1,
@@ -53994,17 +53274,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -54203,12 +53473,12 @@
    "d": "2026-09-11",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "CAPECITABINE - 500mg(Rs 1183/-), Dom-DT, RANTAC 150mg (ranitidine)(Rs 2/-), VIZYLAC (LACTIC ACID BACILUS(Rs 6/-), Hafoos, Moisture, VDO, Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Forte, Chlorhexidine, Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "CAPECITABINE - 500mg(Rs 1183/-), Dom-DT, RANTAC 150mg (ranitidine)(Rs 2/-), VIZYLAC (LACTIC ACID BACILUS(Rs 6/-), Hafoos, Moisture, VDO, Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Forte, Chlorhexidine, Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 2400,
    "k": null,
    "hD": 1,
@@ -54219,17 +53489,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -54296,12 +53556,12 @@
    "d": "2026-09-11",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), CEA - Carcinoembryonic Antigen(Rs 427/-)",
+   "dT": "CEA - Carcinoembryonic Antigen(Rs 427/-), MD0081-Health Package(Rs 800/-)",
    "pT": "TAB OLANZAPINE 2.5MG, PAN 40(Rs 57/-), resner plus, a to z, shelcal 500, UPRISE D3 60K, Emeset 8mg(Rs 10/-), Lomotil, ORS [ORAL REHYDRATION(Rs 24/-), Mouth Wash(Rs 347/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "gT": "TAB OLANZAPINE 2.5MG, PAN 40(Rs 57/-), resner plus, a to z, shelcal 500, UPRISE D3 60K, Emeset 8mg(Rs 10/-), Lomotil, ORS [ORAL REHYDRATION(Rs 24/-), Mouth Wash(Rs 347/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1516,
+   "eD": 1227,
    "eG": 458,
    "k": null,
    "hD": 1,
@@ -54312,22 +53572,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "CEA - Carcinoembryonic Antigen",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -54490,12 +53740,12 @@
    "d": "2026-09-11",
    "r": "K M Parthasarathy",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), APRECAP 125/80(Rs 775/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), STEMETIL - 5mg(Rs 13/-), DEXONA - 0.5mg(Rs 1/-), Oleanz 2.5(Rs 5/-), Becosules, DEXORANGE (multivitamins +antioxidant)(Rs 187/-), syp Cremaffin plus(Rs 327/-), Mucaine Gel, Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-), INTAXEL 30 MG (PACLITAXEL ) .(Rs 815/-), Carboplatin 150mg(Rs 783/-)",
    "gT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), APRECAP 125/80(Rs 775/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), STEMETIL - 5mg(Rs 13/-), DEXONA - 0.5mg(Rs 1/-), Oleanz 2.5(Rs 5/-), Becosules, DEXORANGE (multivitamins +antioxidant)(Rs 187/-), syp Cremaffin plus(Rs 327/-), Mucaine Gel, Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "INTAXEL 30 MG (PACLITAXEL ) .(Rs 815/-), Carboplatin 150mg(Rs 783/-)",
    "eP": 1598,
-   "eD": 1089,
+   "eD": 800,
    "eG": 2661,
    "k": null,
    "hD": 1,
@@ -54506,17 +53756,7 @@
    "bv": 1000,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -54755,12 +53995,12 @@
    "d": "2026-09-11",
    "r": "Govind Eriat",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "LENALIDOMIDE - 25mg(Rs 8156/-), sepmax ds, SHELCAL, acyclovir 200, PAN-DSR, FLUCONAZOLE - 200 MG(Rs 20/-), Dulcolax, CANDID MOUTH PAINT(Rs 180/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, Emeset 8mg(Rs 10/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "LENALIDOMIDE - 25mg(Rs 8156/-), sepmax ds, SHELCAL, acyclovir 200, PAN-DSR, FLUCONAZOLE - 200 MG(Rs 20/-), Dulcolax, CANDID MOUTH PAINT(Rs 180/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, Emeset 8mg(Rs 10/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 8413,
    "k": null,
    "hD": 1,
@@ -54771,18 +54011,8 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
+     "Health Package",
      "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "LFT",
-     "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "RFT",
-     "lo",
      "Neu - Health Package ( CBC, KFT, LFT )"
     ]
    ],
@@ -54980,12 +54210,12 @@
    "d": "2026-09-10",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), Lipid Profile(Rs 474/-), Fasting Blood Glucose (FBS)(Rs 49.5/-)",
+   "dT": "BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), Lipid Profile(Rs 474/-), Fasting Blood Glucose (FBS)(Rs 49.5/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Emeset 8mg(Rs 10/-), PAN-DSR, S1., allegra, UDILIV 300MG(Rs 62/-), thyroxine, ATORVA 20mg (ATORVASTIN)(Rs 21.1/-), Fenofibrate, metformin 500, SLN - TELMA BS 5 TAB - BISOPROLOL 5 MG + TELMISARTAN 40 MG - ETE01ABB(Rs 140.63/-), cresp 100, ULTRACET(Rs 18/-), LOOZ, aspirin 75., Chlorhexidine, Dolo(Rs 2/-)",
    "gT": "Emeset 8mg(Rs 10/-), PAN-DSR, S1., allegra, UDILIV 300MG(Rs 62/-), thyroxine, ATORVA 20mg (ATORVASTIN)(Rs 21.1/-), Fenofibrate, metformin 500, SLN - TELMA BS 5 TAB - BISOPROLOL 5 MG + TELMISARTAN 40 MG - ETE01ABB(Rs 140.63/-), cresp 100, ULTRACET(Rs 18/-), LOOZ, aspirin 75., Chlorhexidine, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 2013,
+   "eD": 1724,
    "eG": 254,
    "k": null,
    "hD": 1,
@@ -54995,21 +54225,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
     [
      "Thyroid Function Test-TFT (T3, T4, TSH)",
      null,
@@ -55022,6 +54237,11 @@
     ],
     [
      "Fasting Blood Glucose",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -55232,12 +54452,12 @@
    "d": "2026-09-10",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), MD0081-Health Package(Rs 800/-)",
    "pT": "IPRAVENT RESPULES(Rs 7/-), PAN-DSR, Emeset 8mg(Rs 10/-), a to z, DOMSTAL DT 10MG(Rs 3/-), shelcal 500, Dexamethasone 4mg(Rs 5/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "IPRAVENT RESPULES(Rs 7/-), PAN-DSR, Emeset 8mg(Rs 10/-), a to z, DOMSTAL DT 10MG(Rs 3/-), shelcal 500, Dexamethasone 4mg(Rs 5/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1569,
+   "eD": 1280,
    "eG": 609,
    "k": null,
    "hD": 1,
@@ -55248,27 +54468,17 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "Thyroid Profile",
      null,
      null
     ],
     [
      "Total",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -55568,12 +54778,12 @@
    "d": "2026-09-10",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "CAPECITABINE - 500mg(Rs 1183/-), Dom-DT, Vizylac/Bifilac, RANTAC 150mg (ranitidine)(Rs 2/-), Moisturex, Oral Rehydration Salts (Sodium Chloride, Potassium Chloride, Sodium Citrate, Dextrose)(Rs 24/-), MEGESTROL ACETATE - 160 MG(Rs 1190/-), elixir neogadine, MAH-MUCAINE GEL -ANTAACID-2520428E(Rs 194/-), Sucral-O, Dexamethasone 4mg(Rs 5/-), Emeset 4mg(Rs 13/-), SHELCAL, UPRISE D3 60K, VDO, a to z, mucobenz mouth wash(Rs 560/-), wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "CAPECITABINE - 500mg(Rs 1183/-), Dom-DT, Vizylac/Bifilac, RANTAC 150mg (ranitidine)(Rs 2/-), Moisturex, Oral Rehydration Salts (Sodium Chloride, Potassium Chloride, Sodium Citrate, Dextrose)(Rs 24/-), MEGESTROL ACETATE - 160 MG(Rs 1190/-), elixir neogadine, MAH-MUCAINE GEL -ANTAACID-2520428E(Rs 194/-), Sucral-O, Dexamethasone 4mg(Rs 5/-), Emeset 4mg(Rs 13/-), SHELCAL, UPRISE D3 60K, VDO, a to z, mucobenz mouth wash(Rs 560/-), wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 4367,
    "k": null,
    "hD": 1,
@@ -55584,17 +54794,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -55889,12 +55089,12 @@
    "d": "2026-09-10",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Dom-DT, UPRISE D3 60K, VDO, a to z, wemsure protein powder(Rs 1178/-), LOOZ, ULTRACET(Rs 18/-)",
    "gT": "Dom-DT, UPRISE D3 60K, VDO, a to z, wemsure protein powder(Rs 1178/-), LOOZ, ULTRACET(Rs 18/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1196,
    "k": null,
    "hD": 1,
@@ -55905,17 +55105,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -56018,12 +55208,12 @@
    "d": "2026-09-10",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 18/-), Gabapentin (100mg) + Nortriptyline (10mg)(Rs 13/-), LOOZ, Nurafort-D, SLN - A TO Z SYRUP - 25660021(Rs 210/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "gT": "Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 18/-), Gabapentin (100mg) + Nortriptyline (10mg)(Rs 13/-), LOOZ, Nurafort-D, SLN - A TO Z SYRUP - 25660021(Rs 210/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 4242,
    "k": null,
    "hD": 1,
@@ -56034,17 +55224,7 @@
    "bv": 2355,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -56195,12 +55375,12 @@
    "d": "2026-09-10",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap(Rs 775/-), letrocan, Gel ZYTEE GEL(Rs 119/-), Emeset 8mg(Rs 10/-), PAN-DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium, DOSTRALIMAB- 500mg(Rs 390692/-)",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap(Rs 775/-), letrocan, Gel ZYTEE GEL(Rs 119/-), Emeset 8mg(Rs 10/-), PAN-DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "cT": "DOSTRALIMAB- 500mg(Rs 390692/-)",
    "eP": 390692,
-   "eD": 1113,
+   "eD": 800,
    "eG": 6382,
    "k": null,
    "hD": 1,
@@ -56211,17 +55391,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -56409,12 +55579,12 @@
    "d": "2026-09-10",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), PAN-DSR, ULTRACET(Rs 18/-), nutra forte d, LOOZ, SMS-OPTIMAG-MAGNESIUM OROTATE AND DIBASIC CALCIUM PHOSPHATE SPTO4730(Rs 431/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), PAN-DSR, ULTRACET(Rs 18/-), nutra forte d, LOOZ, SMS-OPTIMAG-MAGNESIUM OROTATE AND DIBASIC CALCIUM PHOSPHATE SPTO4730(Rs 431/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 5390,
    "k": null,
    "hD": 1,
@@ -56425,19 +55595,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -56574,12 +55734,12 @@
    "d": "2026-09-10",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Perinorm 2ml 10mg(Rs 6/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Fort, Chlorhexidine, Orafer XT, POWDER wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "Perinorm 2ml 10mg(Rs 6/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Fort, Chlorhexidine, Orafer XT, POWDER wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1276,
    "k": null,
    "hD": 1,
@@ -56590,19 +55750,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     "hi",
-     "LYF - CBC"
-    ],
-    [
-     "LFT",
-     "hi",
-     "LYF - LFT"
-    ],
-    [
-     "KFT",
-     "hi",
-     "LYF - KFT"
+     "Health Package",
+     null,
+     null
     ]
    ],
    "pM": [
@@ -56775,12 +55925,12 @@
    "d": "2026-09-10",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "PAN 40(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 128,
    "k": null,
    "hD": 1,
@@ -56791,18 +55941,8 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
+     "Health Package",
      "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "LFT",
-     "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "RFT",
-     "lo",
      "Neu - Health Package ( CBC, KFT, LFT )"
     ]
    ],
@@ -56916,12 +56056,12 @@
    "d": "2026-09-10",
    "r": "P N Uppal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "APRECAP 125/80(Rs 775/-), Neukine 300mcg (FILGRASTIM )(Rs 950/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 36/-), PAN-DSR, Orafer XT, NEURAFORT D, IMMUTIDE FORTE, LOOZ, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Augmentin - 625mg(Rs 19/-), METROGYL 400mg(METRONIDAZOLE )(Rs 2/-), Zolfresh, Immodium, ULTRACET(Rs 36/-), Crocin",
    "gT": "APRECAP 125/80(Rs 775/-), Neukine 300mcg (FILGRASTIM )(Rs 950/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 36/-), PAN-DSR, Orafer XT, NEURAFORT D, IMMUTIDE FORTE, LOOZ, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Augmentin - 625mg(Rs 19/-), METROGYL 400mg(METRONIDAZOLE )(Rs 2/-), Zolfresh, Immodium, ULTRACET(Rs 36/-), Crocin",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 5781,
    "k": null,
    "hD": 1,
@@ -56932,17 +56072,7 @@
    "bv": 1111,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -57165,12 +56295,12 @@
    "d": "2026-09-10",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Aprecap(Rs 775/-), GCSF, cap Razo D(Rs 24/-), Emeset 4mg(Rs 13/-), Dexamethasone 4mg(Rs 5/-), ULTRACET(Rs 18/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, Immodium, Dolo(Rs 2/-)",
    "gT": "Aprecap(Rs 775/-), GCSF, cap Razo D(Rs 24/-), Emeset 4mg(Rs 13/-), Dexamethasone 4mg(Rs 5/-), ULTRACET(Rs 18/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1397,
    "k": null,
    "hD": 1,
@@ -57181,17 +56311,7 @@
    "bv": 912,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -57342,12 +56462,12 @@
    "d": "2026-09-10",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Grafeel, Olanzapine, PAN 40(Rs 57/-), a to z, UDILIV 300MG(Rs 62/-), LOOZ, Emeset 8mg(Rs 10/-), Mouth Wash(Rs 347/-), ULTRACET(Rs 18/-), Crocin",
    "gT": "Grafeel, Olanzapine, PAN 40(Rs 57/-), a to z, UDILIV 300MG(Rs 62/-), LOOZ, Emeset 8mg(Rs 10/-), Mouth Wash(Rs 347/-), ULTRACET(Rs 18/-), Crocin",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 494,
    "k": null,
    "hD": 1,
@@ -57358,19 +56478,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -57507,12 +56617,12 @@
    "d": "2026-09-09",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 34,
    "k": null,
    "hD": 1,
@@ -57523,17 +56633,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -57600,12 +56700,12 @@
    "d": "2026-09-09",
    "r": "Sireesh Kumar CH",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PEGFILGRASTIM - 6mg(Rs 5240/-), abiraterone 250, prednisolone 5mg, PAN 40(Rs 57/-), Dolo(Rs 2/-), eldoper, Chlorhexidine, Dexamethasone 4mg(Rs 5/-), ULTRACET(Rs 18/-), Cyclopam, eldoper, inj.Perinorm 2ml 10mg(Rs 6/-), MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-), Venusia",
    "gT": "PEGFILGRASTIM - 6mg(Rs 5240/-), abiraterone 250, prednisolone 5mg, PAN 40(Rs 57/-), Dolo(Rs 2/-), eldoper, Chlorhexidine, Dexamethasone 4mg(Rs 5/-), ULTRACET(Rs 18/-), Cyclopam, eldoper, inj.Perinorm 2ml 10mg(Rs 6/-), MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-), Venusia",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 5638,
    "k": null,
    "hD": 1,
@@ -57616,17 +56716,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -58159,12 +57249,12 @@
    "d": "2026-09-09",
    "r": "Mohit Saxena",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg(Rs 950/-), Emeset 4mg(Rs 13/-), PAN-DSR, a to z, ULTRACET(Rs 36/-), LOOZ, Chlorhexidine, Immodium, ULTRACET(Rs 36/-), Crocin",
    "gT": "Neukine 300mcg(Rs 950/-), Emeset 4mg(Rs 13/-), PAN-DSR, a to z, ULTRACET(Rs 36/-), LOOZ, Chlorhexidine, Immodium, ULTRACET(Rs 36/-), Crocin",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 999,
    "k": null,
    "hD": 1,
@@ -58175,17 +57265,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -58670,12 +57750,12 @@
    "d": "2026-09-09",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Nefrosave, tab Emeset 8mg(Rs 10/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, shelcal 500, ULTRACET(Rs 18/-), CETAPHIL LOTION, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "PAN 40(Rs 57/-), Nefrosave, tab Emeset 8mg(Rs 10/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, shelcal 500, ULTRACET(Rs 18/-), CETAPHIL LOTION, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 651,
    "k": null,
    "hD": 1,
@@ -58686,17 +57766,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -58847,12 +57917,12 @@
    "d": "2026-09-09",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Perinorm 2ml 10mg(Rs 6/-), Chlorhexidine, Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "PAN 40(Rs 57/-), Perinorm 2ml 10mg(Rs 6/-), Chlorhexidine, Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 124,
    "k": null,
    "hD": 1,
@@ -58863,18 +57933,8 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
+     "Health Package",
      "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "LFT",
-     "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "RFT",
-     "lo",
      "Neu - Health Package ( CBC, KFT, LFT )"
     ]
    ],
@@ -59000,12 +58060,12 @@
    "d": "2026-09-08",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "a to z, Olanzapine, Emeset 4mg(Rs 13/-), shelcal 500, LOOZ, mucobenz mouth wash(Rs 560/-), ULTRACET(Rs 18/-), Crocin, Pembrolizumab - 100mg(Rs 216500/-)",
    "gT": "a to z, Olanzapine, Emeset 4mg(Rs 13/-), shelcal 500, LOOZ, mucobenz mouth wash(Rs 560/-), ULTRACET(Rs 18/-), Crocin",
    "cT": "Pembrolizumab - 100mg(Rs 216500/-)",
    "eP": 216500,
-   "eD": 1089,
+   "eD": 800,
    "eG": 591,
    "k": null,
    "hD": 1,
@@ -59016,17 +58076,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -59154,12 +58204,12 @@
    "d": "2026-09-08",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), S. Cortisol (8 am)(Rs 332/-)",
+   "dT": "BC0514-Thyroid Function Test-TFT (T3, T4, TSH)(Rs 400/-), S. Cortisol (8 am)(Rs 332/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Grafeel, Romy 250 mcg(Rs 3037/-), Folic Acid - 5mg(Rs 2/-), PAN 40(Rs 57/-), DOMSTAL DT - 10MG(Rs 3/-), ME 12 OD(Rs 9/-), autirn, Olanzapine, APTIVATE(Rs 170/-), Emeset 4mg(Rs 13/-), shelcal 500, LOOZ, mucobenz mouth wash(Rs 560/-), ULTRACET(Rs 18/-), Crocin",
    "gT": "Grafeel, Romy 250 mcg(Rs 3037/-), Folic Acid - 5mg(Rs 2/-), PAN 40(Rs 57/-), DOMSTAL DT - 10MG(Rs 3/-), ME 12 OD(Rs 9/-), autirn, Olanzapine, APTIVATE(Rs 170/-), Emeset 4mg(Rs 13/-), shelcal 500, LOOZ, mucobenz mouth wash(Rs 560/-), ULTRACET(Rs 18/-), Crocin",
    "cT": "",
    "eP": 0,
-   "eD": 1821,
+   "eD": 1532,
    "eG": 3869,
    "k": null,
    "hD": 1,
@@ -59170,27 +58220,17 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
      "Thyroid Function Test-TFT (T3, T4, TSH)",
      null,
      null
     ],
     [
      "S. Cortisol (8 am)",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -59505,12 +58545,12 @@
    "d": "2026-09-08",
    "r": "K M Parthasarathy",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Acivir 200, Pregaba NT, tab Emeset 8mg(Rs 10/-), RAZO D(Rs 22/-), Becosules, dexorange, syp Cremaffin plus(Rs 327/-), Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Acivir 200, Pregaba NT, tab Emeset 8mg(Rs 10/-), RAZO D(Rs 22/-), Becosules, dexorange, syp Cremaffin plus(Rs 327/-), Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1329,
    "k": null,
    "hD": 1,
@@ -59521,19 +58561,9 @@
    "bv": 1828,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -59682,12 +58712,12 @@
    "d": "2026-09-08",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-), BC0514-Thyroid Profile, Total(Rs 480/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), MD0081-Health Package(Rs 800/-)",
    "pT": "pan it, Emeset 8mg(Rs 10/-), Roseday, Mucinac, a to z, LOOZ, mucobenz mouth wash(Rs 560/-), ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "gT": "pan it, Emeset 8mg(Rs 10/-), Roseday, Mucinac, a to z, LOOZ, mucobenz mouth wash(Rs 560/-), ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1593,
+   "eD": 1280,
    "eG": 590,
    "k": null,
    "hD": 1,
@@ -59698,27 +58728,17 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
      "Thyroid Profile",
      null,
      null
     ],
     [
      "Total",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -60367,12 +59387,12 @@
    "d": "2026-09-08",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), SHELCAL, UPRISE D3 60K, a to z, Benzydamine, Orafer XT, POWDER wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), SHELCAL, UPRISE D3 60K, a to z, Benzydamine, Orafer XT, POWDER wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1270,
    "k": null,
    "hD": 1,
@@ -60383,17 +59403,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -60568,12 +59578,12 @@
    "d": "2026-09-08",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), SHELCAL 500MG(Rs 9/-), UPRISE D3 60K, Erifit-Fort, Benzocool, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), SHELCAL 500MG(Rs 9/-), UPRISE D3 60K, Erifit-Fort, Benzocool, Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 1279,
    "k": null,
    "hD": 1,
@@ -60584,17 +59594,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -60984,12 +59984,12 @@
    "d": "2026-09-07",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Lasilactone, UDILIV 300MG(Rs 62/-), evion lc, LOOZ, Protein Powder(Rs 1349/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), econorm sachet 250mg(Rs 63/-), Immodium, Dolo(Rs 2/-)",
    "gT": "Lasilactone, UDILIV 300MG(Rs 62/-), evion lc, LOOZ, Protein Powder(Rs 1349/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), econorm sachet 250mg(Rs 63/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1569,
+   "eD": 1280,
    "eG": 1528,
    "k": null,
    "hD": 1,
@@ -61000,27 +60000,17 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     "hi",
-     "BHA-Haemogram(CBC) & ESR"
-    ],
-    [
-     "KFT",
-     "hi",
-     "BHA-KFT"
-    ],
-    [
-     "LFT",
-     "hi",
-     "BHA-LFT"
-    ],
-    [
      "Thyroid Profile",
      "hi",
      "BHA-Thyroid Profile"
     ],
     [
      "Total",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -61356,12 +60346,12 @@
    "d": "2026-09-07",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), Imodium 2mg(Rs 4/-), Lomotil, Darolac, Mucaine Gel, shelcal 500, UPRISE D3 60K, Erifit-Fort, Benzocool, wemsure protein powder(Rs 1178/-), LOOZ, ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), Imodium 2mg(Rs 4/-), Lomotil, Darolac, Mucaine Gel, shelcal 500, UPRISE D3 60K, Erifit-Fort, Benzocool, wemsure protein powder(Rs 1178/-), LOOZ, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1270,
    "k": null,
    "hD": 1,
@@ -61372,17 +60362,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -61911,12 +60891,12 @@
    "d": "2026-09-07",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), BC0514-Thyroid Profile, Total(Rs 480/-)",
+   "dT": "BC0514-Thyroid Profile, Total(Rs 480/-), MD0081-Health Package(Rs 800/-)",
    "pT": "IPRAVENT RESPULES(Rs 7/-), Augmentin - 625mg(Rs 19/-), tab Forcan 200 -EST(Rs 20/-), Carvedilol, ECOSPIRIN, shelcal 500, cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), a to z, Dexamethasone 4mg(Rs 5/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "gT": "IPRAVENT RESPULES(Rs 7/-), Augmentin - 625mg(Rs 19/-), tab Forcan 200 -EST(Rs 20/-), Carvedilol, ECOSPIRIN, shelcal 500, cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), a to z, Dexamethasone 4mg(Rs 5/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1569,
+   "eD": 1280,
    "eG": 665,
    "k": null,
    "hD": 1,
@@ -61927,21 +60907,6 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     "hi",
-     "PCD - MD0042-Complete Blood Count (CBC)"
-    ],
-    [
-     "KFT",
-     "lo",
-     "PCD - BC0317-Kidney Function Test"
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "Thyroid Profile",
      "hi",
      "PCD - BC0514-Thyroid Profile, Total"
@@ -61950,6 +60915,11 @@
      "Total",
      null,
      null
+    ],
+    [
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -62561,12 +61531,12 @@
    "d": "2026-09-05",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Cardivas, Lasilactone, MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-), Razo-D, Protinex, ULTRACET(Rs 18/-), atarax, a to z, Emeset 8mg(Rs 10/-), Immodium, Dolo(Rs 2/-)",
    "gT": "Cardivas, Lasilactone, MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-), Razo-D, Protinex, ULTRACET(Rs 18/-), atarax, a to z, Emeset 8mg(Rs 10/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 340,
    "k": null,
    "hD": 1,
@@ -62577,17 +61547,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -62851,12 +61811,12 @@
    "d": "2026-09-05",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Peg-GCSF, Emeset 8mg(Rs 10/-), Pantop-DSR, Voveron, Chymoral, nutra forte d, Tirca, Orafer XT, Cremaffin(Rs 309/-), Neutra-Pro, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "Peg-GCSF, Emeset 8mg(Rs 10/-), Pantop-DSR, Voveron, Chymoral, nutra forte d, Tirca, Orafer XT, Cremaffin(Rs 309/-), Neutra-Pro, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 339,
    "k": null,
    "hD": 1,
@@ -62867,17 +61827,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -63337,12 +62287,12 @@
    "d": "2026-09-05",
    "r": "K M Parthasarathy",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 2D ECHO(Rs 2625/-)",
+   "dT": "2D ECHO(Rs 2625/-), MD0081-Health Package(Rs 800/-)",
    "pT": "pegex, DEXONA - 0.5mg(Rs 1/-), Emeset 8mg(Rs 10/-), cap Razo D(Rs 24/-), STEMETIL - 5mg(Rs 13/-), Oleanz 2.5(Rs 10/-), Oleanz 2.5(Rs 10/-), Becosules, DEXORANGE SYRUP, syp Cremaffin plus(Rs 327/-), Ensure, ULTRACET(Rs 18/-), Dolo(Rs 2/-)",
    "gT": "pegex, DEXONA - 0.5mg(Rs 1/-), Emeset 8mg(Rs 10/-), cap Razo D(Rs 24/-), STEMETIL - 5mg(Rs 13/-), Oleanz 2.5(Rs 10/-), Oleanz 2.5(Rs 10/-), Becosules, DEXORANGE SYRUP, syp Cremaffin plus(Rs 327/-), Ensure, ULTRACET(Rs 18/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 3714,
+   "eD": 3425,
    "eG": 405,
    "k": null,
    "hD": 1,
@@ -63353,24 +62303,14 @@
    "bv": 5706,
    "dM": [
     [
-     "CBC",
-     "hi",
-     "SRS - CBC"
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "2D ECHO",
      null,
      null
+    ],
+    [
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -63543,12 +62483,12 @@
    "d": "2026-09-05",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APREPITANT, Dexamethasone 4mg(Rs 5/-), PANTOP 40(Rs 56/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Fort, Benzocool, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APREPITANT, Dexamethasone 4mg(Rs 5/-), PANTOP 40(Rs 56/-), Emeset 4mg(Rs 13/-), shelcal 500, Erifit-Fort, Benzocool, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 2224,
    "k": null,
    "hD": 1,
@@ -63559,17 +62499,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -63756,12 +62686,12 @@
    "d": "2026-09-05",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), Emeset 8mg(Rs 10/-), Adyn-DSR, ULTRACET(Rs 36/-), NEURAFORT D, IMMUTIDE FORTE, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, ULTRACET(Rs 36/-), Crocin, ADYN LOSE",
    "gT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), Emeset 8mg(Rs 10/-), Adyn-DSR, ULTRACET(Rs 36/-), NEURAFORT D, IMMUTIDE FORTE, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, ULTRACET(Rs 36/-), Crocin, ADYN LOSE",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 5334,
    "k": null,
    "hD": 1,
@@ -63772,17 +62702,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -63933,12 +62853,12 @@
    "d": "2026-09-05",
    "r": "P N Uppal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PEGFILGRASTIM - 6mg(Rs 5240/-), Aprecap(Rs 775/-), ULTRACET(Rs 18/-), Emeset 8mg(Rs 10/-), PAN-DSR, Alprex, syp Cremaffin plus(Rs 327/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "gT": "PEGFILGRASTIM - 6mg(Rs 5240/-), Aprecap(Rs 775/-), ULTRACET(Rs 18/-), Emeset 8mg(Rs 10/-), PAN-DSR, Alprex, syp Cremaffin plus(Rs 327/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 6372,
    "k": null,
    "hD": 1,
@@ -63949,17 +62869,7 @@
    "bv": 2539,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -64098,12 +63008,12 @@
    "d": "2026-09-05",
    "r": "Pooja Gupta",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "Olanzapine, Mucaine Gel, Ondem, Dulcoflex, Dolo(Rs 2/-), ULTRACET(Rs 18/-), PREGABALIN - 75mg(Rs 18/-), Immodium, Talpal, Buvelor, Goldcal-Max, Cremaffin(Rs 309/-), NEUROBION FORTE, megestrol 40, UPRISE D3 60K, CAP DEXORANGE (multivitamins +antioxidant)(Rs 187/-), Crocin",
    "gT": "Olanzapine, Mucaine Gel, Ondem, Dulcoflex, Dolo(Rs 2/-), ULTRACET(Rs 18/-), PREGABALIN - 75mg(Rs 18/-), Immodium, Talpal, Buvelor, Goldcal-Max, Cremaffin(Rs 309/-), NEUROBION FORTE, megestrol 40, UPRISE D3 60K, CAP DEXORANGE (multivitamins +antioxidant)(Rs 187/-), Crocin",
    "cT": "",
    "eP": 0,
-   "eD": 13089,
+   "eD": 12800,
    "eG": 534,
    "k": null,
    "hD": 1,
@@ -64114,22 +63024,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -64352,12 +63252,12 @@
    "d": "2026-09-05",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "BUVALOR 20 (BUPRENORPHINE) PATCH -EST(Rs 2633/-), PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "BUVALOR 20 (BUPRENORPHINE) PATCH -EST(Rs 2633/-), PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 2761,
    "k": null,
    "hD": 1,
@@ -64368,17 +63268,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -64505,12 +63395,12 @@
    "d": "2026-09-05",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Peg-GCSF, PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "Peg-GCSF, PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 114,
    "k": null,
    "hD": 1,
@@ -64521,18 +63411,8 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
+     "Health Package",
      "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "LFT",
-     "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "RFT",
-     "lo",
      "Neu - Health Package ( CBC, KFT, LFT )"
     ]
    ],
@@ -64658,12 +63538,12 @@
    "d": "2026-09-05",
    "r": "Pooja Gupta",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "TAMOXIFEN - 20 MG(Rs 3/-), Ondem, STEMETIL MD 5MG(Rs 13/-), PAN 40(Rs 57/-), Hexidine, ULTRACET(Rs 18/-), Dulcoflex, Immodium, Dolo(Rs 2/-), Protein Powder(Rs 1349/-), DIGENE GEL MINT(Rs 175/-), BUSCOGASTT 20 mg(Rs 14/-), dexorange, SLN - A TO Z SYRUP - 25660021(Rs 210/-), Ondem",
    "gT": "TAMOXIFEN - 20 MG(Rs 3/-), Ondem, STEMETIL MD 5MG(Rs 13/-), PAN 40(Rs 57/-), Hexidine, ULTRACET(Rs 18/-), Dulcoflex, Immodium, Dolo(Rs 2/-), Protein Powder(Rs 1349/-), DIGENE GEL MINT(Rs 175/-), BUSCOGASTT 20 mg(Rs 14/-), dexorange, SLN - A TO Z SYRUP - 25660021(Rs 210/-), Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1841,
    "k": null,
    "hD": 1,
@@ -64674,17 +63554,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -64883,12 +63753,12 @@
    "d": "2026-09-05",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Peg-GCSF, PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "Peg-GCSF, PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 114,
    "k": null,
    "hD": 1,
@@ -64899,17 +63769,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -65036,12 +63896,12 @@
    "d": "2026-09-05",
    "r": "Sukriti Gupta",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg(Rs 950/-), OMNACORTIL 40mg (PREDNISOLONE )(Rs 8/-), OMNACORTIL 40mg (PREDNISOLONE )(Rs 8/-), OMNACORTIL 20mg(prednisolone)(Rs 3/-), RANTAC 150mg (ranitidine)(Rs 2/-), SLN - ONDEM MD 4 TAB - EC066(Rs 60.62/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "gT": "Neukine 300mcg(Rs 950/-), OMNACORTIL 40mg (PREDNISOLONE )(Rs 8/-), OMNACORTIL 40mg (PREDNISOLONE )(Rs 8/-), OMNACORTIL 20mg(prednisolone)(Rs 3/-), RANTAC 150mg (ranitidine)(Rs 2/-), SLN - ONDEM MD 4 TAB - EC066(Rs 60.62/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1044,
    "k": null,
    "hD": 1,
@@ -65052,17 +63912,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -65587,12 +64437,12 @@
    "d": "2026-09-05",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), PT/INR(Rs 375/-), BC0514-Thyroid Profile, Total(Rs 480/-), PIVKA II Levels(Rs 2564/-)",
+   "dT": "PT/INR(Rs 375/-), BC0514-Thyroid Profile, Total(Rs 480/-), PIVKA II Levels(Rs 2564/-), MD0081-Health Package(Rs 800/-)",
    "pT": "RAZO D(Rs 22/-), FFN-EMESET MD-8TAB-ONDANSETRON-35N1734(Rs 103/-), UDILIV 300MG(Rs 62/-), MAXILIV (GLUTATHION)(Rs 144/-), Lasilactone, Lumia, Clogen, ULTRACET(Rs 18/-), Ciplar-LA, Amlokind, atarax, LOOZ, mucobenz mouth wash(Rs 560/-), Hinex-HP, Magnorate, Immodium, Dolo(Rs 2/-)",
    "gT": "RAZO D(Rs 22/-), FFN-EMESET MD-8TAB-ONDANSETRON-35N1734(Rs 103/-), UDILIV 300MG(Rs 62/-), MAXILIV (GLUTATHION)(Rs 144/-), Lasilactone, Lumia, Clogen, ULTRACET(Rs 18/-), Ciplar-LA, Amlokind, atarax, LOOZ, mucobenz mouth wash(Rs 560/-), Hinex-HP, Magnorate, Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 4508,
+   "eD": 4219,
    "eG": 911,
    "k": null,
    "hD": 1,
@@ -65602,21 +64452,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "PT/INR",
      null,
@@ -65634,6 +64469,11 @@
     ],
     [
      "PIVKA II Levels",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -65939,12 +64779,12 @@
    "d": "2026-09-04",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), PT/INR(Rs 375/-), BC0514-Thyroid Profile, Total(Rs 480/-), PIVKA II Levels(Rs 2564/-)",
+   "dT": "PT/INR(Rs 375/-), BC0514-Thyroid Profile, Total(Rs 480/-), PIVKA II Levels(Rs 2564/-), MD0081-Health Package(Rs 800/-)",
    "pT": "cap Razo D(Rs 24/-), FFN-EMESET MD-8TAB-ONDANSETRON-35N1734(Rs 103/-), UDILIV 300MG(Rs 62/-), MAXILIV (GLUTATHION)(Rs 144/-), Lasilactone, Lumia, Clogen, ULTRACET(Rs 18/-), Ciplar-LA, Amlokind, atarax, LOOZ, mucobenz mouth wash(Rs 560/-), Hinex-HP, Magnorate, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "cap Razo D(Rs 24/-), FFN-EMESET MD-8TAB-ONDANSETRON-35N1734(Rs 103/-), UDILIV 300MG(Rs 62/-), MAXILIV (GLUTATHION)(Rs 144/-), Lasilactone, Lumia, Clogen, ULTRACET(Rs 18/-), Ciplar-LA, Amlokind, atarax, LOOZ, mucobenz mouth wash(Rs 560/-), Hinex-HP, Magnorate, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 4508,
+   "eD": 4219,
    "eG": 917,
    "k": null,
    "hD": 1,
@@ -65954,21 +64794,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "PT/INR",
      null,
@@ -65986,6 +64811,11 @@
     ],
     [
      "PIVKA II Levels",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -66208,12 +65038,12 @@
    "d": "2026-09-04",
    "r": "Govind Eriat",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "LENALIDOMIDE - 25mg(Rs 8156/-), sepmax ds, SHELCAL, acyclovir 200, PAN-DSR, FLUCONAZOLE - 200 MG(Rs 20/-), Dulcolax, CANDID MOUTH PAINT(Rs 180/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), Emeset 8mg(Rs 10/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "LENALIDOMIDE - 25mg(Rs 8156/-), sepmax ds, SHELCAL, acyclovir 200, PAN-DSR, FLUCONAZOLE - 200 MG(Rs 20/-), Dulcolax, CANDID MOUTH PAINT(Rs 180/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), Emeset 8mg(Rs 10/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 8427,
    "k": null,
    "hD": 1,
@@ -66224,18 +65054,8 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
+     "Health Package",
      "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "LFT",
-     "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "RFT",
-     "lo",
      "Neu - Health Package ( CBC, KFT, LFT )"
     ]
    ],
@@ -66433,12 +65253,12 @@
    "d": "2026-09-04",
    "r": "K M Parthasarathy",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "APRECAP 125/80(Rs 775/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), STEMETIL - 5mg(Rs 13/-), DEXONA - 0.5mg(Rs 1/-), Oleanz 2.5(Rs 5/-), Becosules, DEXORANGE SYRUP, syp Cremaffin plus(Rs 327/-), Mucaine Gel, Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-), INTAXEL 30 MG (PACLITAXEL ) .(Rs 815/-), Carboplatin 150mg(Rs 783/-)",
    "gT": "APRECAP 125/80(Rs 775/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), STEMETIL - 5mg(Rs 13/-), DEXONA - 0.5mg(Rs 1/-), Oleanz 2.5(Rs 5/-), Becosules, DEXORANGE SYRUP, syp Cremaffin plus(Rs 327/-), Mucaine Gel, Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "INTAXEL 30 MG (PACLITAXEL ) .(Rs 815/-), Carboplatin 150mg(Rs 783/-)",
    "eP": 1598,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1175,
    "k": null,
    "hD": 1,
@@ -66449,17 +65269,7 @@
    "bv": 2000,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -66659,12 +65469,12 @@
    "d": "2026-09-04",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), 2D ECHO(Rs 2625/-), BC0514-Thyroid Profile, Total(Rs 480/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), 2D ECHO(Rs 2625/-), BC0514-Thyroid Profile, Total(Rs 480/-), MD0081-Health Package(Rs 800/-)",
    "pT": "GCSF, APRECAP 125/80(Rs 775/-), SITRIO 50MG, Wysolone, PAN-DSR, Emeset 8mg(Rs 10/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "GCSF, APRECAP 125/80(Rs 775/-), SITRIO 50MG, Wysolone, PAN-DSR, Emeset 8mg(Rs 10/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 16194,
+   "eD": 15905,
    "eG": 1369,
    "k": null,
    "hD": 1,
@@ -66674,21 +65484,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "18 F FDG PET/CT Whole Body",
      null,
@@ -66706,6 +65501,11 @@
     ],
     [
      "Total",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -66868,12 +65668,12 @@
    "d": "2026-09-04",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Dexamethasone 4mg(Rs 5/-), Emeset 8mg(Rs 10/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, SHELCAL, ULTRACET(Rs 18/-), Rosvas, Imodium 2mg(Rs 4/-), Peg-GCSF, Dolo(Rs 2/-)",
    "gT": "PAN 40(Rs 57/-), Dexamethasone 4mg(Rs 5/-), Emeset 8mg(Rs 10/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, SHELCAL, ULTRACET(Rs 18/-), Rosvas, Imodium 2mg(Rs 4/-), Peg-GCSF, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 656,
    "k": null,
    "hD": 1,
@@ -66884,17 +65684,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -67353,12 +66143,12 @@
    "d": "2026-09-03",
    "r": "P N Uppal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Aprecap(Rs 775/-), Neukine 300mcg (FILGRASTIM )(Rs 950/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), PAN-DSR, Orafer XT, NEURAFORT D, IMMUTIDE FORTE, LOOZ, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Immodium, Crocin, NIVOLUMAB PAP - 240mg(Rs 238800/-)",
    "gT": "Aprecap(Rs 775/-), Neukine 300mcg (FILGRASTIM )(Rs 950/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), PAN-DSR, Orafer XT, NEURAFORT D, IMMUTIDE FORTE, LOOZ, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Immodium, Crocin",
    "cT": "NIVOLUMAB PAP - 240mg(Rs 238800/-)",
    "eP": 238800,
-   "eD": 1089,
+   "eD": 800,
    "eG": 5742,
    "k": null,
    "hD": 1,
@@ -67369,17 +66159,7 @@
    "bv": 1641,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -67567,12 +66347,12 @@
    "d": "2026-09-03",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "PAN 40(Rs 57/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 144,
    "k": null,
    "hD": 1,
@@ -67583,18 +66363,8 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
+     "Health Package",
      "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "LFT",
-     "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "RFT",
-     "lo",
      "Neu - Health Package ( CBC, KFT, LFT )"
     ]
    ],
@@ -67857,12 +66627,12 @@
    "d": "2026-09-03",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APRECAP 125/80(Rs 775/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, ULTRACET(Rs 18/-), nutra forte d, LOOZ, SMS-OPTIMAG-MAGNESIUM OROTATE AND DIBASIC CALCIUM PHOSPHATE SPTO4730(Rs 431/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APRECAP 125/80(Rs 775/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, ULTRACET(Rs 18/-), nutra forte d, LOOZ, SMS-OPTIMAG-MAGNESIUM OROTATE AND DIBASIC CALCIUM PHOSPHATE SPTO4730(Rs 431/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 6191,
    "k": null,
    "hD": 1,
@@ -67873,19 +66643,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -68058,12 +66818,12 @@
    "d": "2026-09-03",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Grafeel, TAB OLANZAPINE 2.5MG, PAN 40(Rs 57/-), A TO Z (multivitamin antioxidanty multimineral(Rs 18/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Mouthwash 300ml(Rs 600/-), ULTRACET(Rs 18/-), Crocin",
    "gT": "Grafeel, TAB OLANZAPINE 2.5MG, PAN 40(Rs 57/-), A TO Z (multivitamin antioxidanty multimineral(Rs 18/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Mouthwash 300ml(Rs 600/-), ULTRACET(Rs 18/-), Crocin",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 719,
    "k": null,
    "hD": 1,
@@ -68074,19 +66834,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -68151,12 +66901,12 @@
    "d": "2026-09-03",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "GCSF, cap Razo D(Rs 24/-), Dexamtehasone - 4mg(Rs 5/-), ULTRACET(Rs 18/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, tab Emeset 8mg(Rs 10/-), Immodium, Dolo(Rs 2/-)",
    "gT": "GCSF, cap Razo D(Rs 24/-), Dexamtehasone - 4mg(Rs 5/-), ULTRACET(Rs 18/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, tab Emeset 8mg(Rs 10/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 619,
    "k": null,
    "hD": 1,
@@ -68167,17 +66917,7 @@
    "bv": 1831,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -68316,12 +67056,12 @@
    "d": "2026-09-03",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APRECAP 125/80(Rs 775/-), Emeset 8mg(Rs 10/-), PAN-DSR, SMS-OPTIMAG-MAGNESIUM OROTATE AND DIBASIC CALCIUM PHOSPHATE SPTO4730(Rs 431/-), NEUTRA FORTE, syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), APRECAP 125/80(Rs 775/-), Emeset 8mg(Rs 10/-), PAN-DSR, SMS-OPTIMAG-MAGNESIUM OROTATE AND DIBASIC CALCIUM PHOSPHATE SPTO4730(Rs 431/-), NEUTRA FORTE, syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 6502,
    "k": null,
    "hD": 1,
@@ -68332,17 +67072,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -68493,12 +67223,12 @@
    "d": "2026-09-02",
    "r": "Sukriti Gupta",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg(Rs 950/-), PANTOP 40(Rs 56/-), Levetiracetam - 500mg(Rs 129/-), Doxycycline - 100mg(Rs 563/-), VALCIVIR 500mg (VALACYCLOVIR)(Rs 71/-), FORCAN 150MG (fluconazole)(Rs 28/-), FORCAN 150MG (fluconazole)(Rs 28/-), PARACETAMOL - 1000 MG(Rs 360/-), shelcal 500, fexofenadine, MONTELUKAST(Rs 235.78/-), bilastine, Clonazepam, Dulcoflex, OMNACORTIL 10mg(prednisolone)(Rs 1/-), mometasome, lactocalamine, Protein Powder(Rs 1349/-), Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "Neukine 300mcg(Rs 950/-), PANTOP 40(Rs 56/-), Levetiracetam - 500mg(Rs 129/-), Doxycycline - 100mg(Rs 563/-), VALCIVIR 500mg (VALACYCLOVIR)(Rs 71/-), FORCAN 150MG (fluconazole)(Rs 28/-), FORCAN 150MG (fluconazole)(Rs 28/-), PARACETAMOL - 1000 MG(Rs 360/-), shelcal 500, fexofenadine, MONTELUKAST(Rs 235.78/-), bilastine, Clonazepam, Dulcoflex, OMNACORTIL 10mg(prednisolone)(Rs 1/-), mometasome, lactocalamine, Protein Powder(Rs 1349/-), Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 3765,
    "k": null,
    "hD": 1,
@@ -68509,19 +67239,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -68829,12 +67549,12 @@
    "d": "2026-09-02",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), CECT(Rs 5000/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), CECT(Rs 5000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "ADYN DSR, Orafer XT, NEUTRA FORTE, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "ADYN DSR, Orafer XT, NEUTRA FORTE, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 18089,
+   "eD": 17800,
    "eG": 20,
    "k": null,
    "hD": 1,
@@ -68845,27 +67565,17 @@
    "bv": 1869,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
      null,
      null
     ],
     [
      "CECT",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -69009,12 +67719,12 @@
    "d": "2026-09-02",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PENTATE 40mg(pantaprozole)(Rs 57/-), Perinorm, Chlorhexidine, Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "gT": "PENTATE 40mg(pantaprozole)(Rs 57/-), Perinorm, Chlorhexidine, Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 118,
    "k": null,
    "hD": 1,
@@ -69025,18 +67735,8 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
+     "Health Package",
      "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "LFT",
-     "hi",
-     "Neu - Health Package ( CBC, KFT, LFT )"
-    ],
-    [
-     "RFT",
-     "lo",
      "Neu - Health Package ( CBC, KFT, LFT )"
     ]
    ],
@@ -69162,12 +67862,12 @@
    "d": "2026-09-02",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-), BC0514-Thyroid Profile, Total(Rs 480/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), BC0514-Thyroid Profile, Total(Rs 480/-), MD0081-Health Package(Rs 800/-)",
    "pT": "FOLITRAX 15(METHOTREXATE)(Rs 57/-), ERLOTINIB - 100 MG(Rs 163/-), CELECOXIB - 200 MG(Rs 15/-), BUVALOR 20 (BUPRENORPHINE) PATCH -EST(Rs 2633/-), ketorol dt, ULTRACET(Rs 18/-), Polybion, cap Razo D(Rs 24/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), LOOZ, Ensure, mucobenz mouth wash(Rs 560/-), Dolo(Rs 2/-), Imodium 2mg(Rs 4/-)",
    "gT": "FOLITRAX 15(METHOTREXATE)(Rs 57/-), ERLOTINIB - 100 MG(Rs 163/-), CELECOXIB - 200 MG(Rs 15/-), BUVALOR 20 (BUPRENORPHINE) PATCH -EST(Rs 2633/-), ketorol dt, ULTRACET(Rs 18/-), Polybion, cap Razo D(Rs 24/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), LOOZ, Ensure, mucobenz mouth wash(Rs 560/-), Dolo(Rs 2/-), Imodium 2mg(Rs 4/-)",
    "cT": "",
    "eP": 0,
-   "eD": 13569,
+   "eD": 13280,
    "eG": 3502,
    "k": null,
    "hD": 1,
@@ -69177,21 +67877,6 @@
    "bt": 0,
    "bv": 0,
    "dM": [
-    [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
     [
      "18 F FDG PET/CT Whole Body",
      null,
@@ -69204,6 +67889,11 @@
     ],
     [
      "Total",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -69402,12 +68092,12 @@
    "d": "2026-09-02",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "dT": "18 F FDG PET/CT Whole Body(Rs 12000/-), MD0081-Health Package(Rs 800/-)",
    "pT": "GCSF, Dexamethasone 4mg(Rs 5/-), PAN D(Rs 4/-), UDILIV 300MG(Rs 62/-), MAXILIV (GLUTATHION)(Rs 144/-), A TO Z (multivitamin antioxidanty multimineral(Rs 18/-), Protein Powder(Rs 1349/-), ECOSPIRIN, mucobenz mouth wash(Rs 560/-), APiXABAN - 2.5mg(Rs 44/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "GCSF, Dexamethasone 4mg(Rs 5/-), PAN D(Rs 4/-), UDILIV 300MG(Rs 62/-), MAXILIV (GLUTATHION)(Rs 144/-), A TO Z (multivitamin antioxidanty multimineral(Rs 18/-), Protein Powder(Rs 1349/-), ECOSPIRIN, mucobenz mouth wash(Rs 560/-), APiXABAN - 2.5mg(Rs 44/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 13089,
+   "eD": 12800,
    "eG": 2236,
    "k": null,
    "hD": 1,
@@ -69418,24 +68108,14 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "18 F FDG PET/CT Whole Body",
      "hi",
      "HOD-18 F FDG PET/CT Whole Body"
+    ],
+    [
+     "Health Package",
+     null,
+     null
     ]
    ],
    "pM": [
@@ -69551,12 +68231,12 @@
    "d": "2026-09-01",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "INJ GRAFEEL 300MCG, Romy 250 mcg(Rs 3037/-), Folic Acid - 5mg(Rs 2/-), PANTOP 40(Rs 56/-), DOMSTAL DT 10MG(Rs 3/-), ULTRACET(Rs 18/-), Emeset 4mg(Rs 13/-), ME 12 OD(Rs 9/-), autrin, Olanzapine, Mucaine Gel, tus qx, SHELCAL, a to z, LOOZ, mucobenz mouth wash(Rs 560/-), Crocin, Serplulimab - 100mg(Rs 23437/-)",
    "gT": "INJ GRAFEEL 300MCG, Romy 250 mcg(Rs 3037/-), Folic Acid - 5mg(Rs 2/-), PANTOP 40(Rs 56/-), DOMSTAL DT 10MG(Rs 3/-), ULTRACET(Rs 18/-), Emeset 4mg(Rs 13/-), ME 12 OD(Rs 9/-), autrin, Olanzapine, Mucaine Gel, tus qx, SHELCAL, a to z, LOOZ, mucobenz mouth wash(Rs 560/-), Crocin",
    "cT": "Serplulimab - 100mg(Rs 23437/-)",
    "eP": 23437,
-   "eD": 1089,
+   "eD": 800,
    "eG": 3698,
    "k": null,
    "hD": 1,
@@ -69567,17 +68247,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -69813,12 +68483,12 @@
    "d": "2026-09-01",
    "r": "Ashish Goel",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "tab Emeset 8mg(Rs 10/-), ADYN DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), NEURAFORT D, LOOZ, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Alprax - 0.25mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "tab Emeset 8mg(Rs 10/-), ADYN DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), NEURAFORT D, LOOZ, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Alprax - 0.25mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 4232,
    "k": null,
    "hD": 1,
@@ -69829,17 +68499,7 @@
    "bv": 266,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -70256,12 +68916,12 @@
    "d": "2026-09-01",
    "r": "Sireesh Kumar CH",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-), RBS(Rs 47/-), Calcium(Rs 94/-)",
+   "dT": "RBS(Rs 47/-), Calcium(Rs 94/-), MD0081-Health Package(Rs 800/-)",
    "pT": "allopurinol, acivir 400, Septran-DS, PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), Duoline repsuls(Rs 23/-), Budecort repsuls 0.5 mg(Rs 24/-), pulmoclear, Tusq-X, Hexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Cyclopam, eldoper, Perinorm, duphalac, Venusia",
    "gT": "allopurinol, acivir 400, Septran-DS, PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), Duoline repsuls(Rs 23/-), Budecort repsuls 0.5 mg(Rs 24/-), pulmoclear, Tusq-X, Hexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Cyclopam, eldoper, Perinorm, duphalac, Venusia",
    "cT": "",
    "eP": 0,
-   "eD": 1254,
+   "eD": 941,
    "eG": 137,
    "k": null,
    "hD": 1,
@@ -70272,27 +68932,17 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
-     null,
-     null
-    ],
-    [
      "RBS",
      null,
      null
     ],
     [
      "Calcium",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -70515,12 +69165,12 @@
    "d": "2026-09-01",
    "r": "Rakesh Sharma",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Grafeel, Olanzapine, PANTOP 40(Rs 56/-), a to z, Emeset 4mg(Rs 13/-), LOOZ, Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "gT": "Grafeel, Olanzapine, PANTOP 40(Rs 56/-), a to z, Emeset 4mg(Rs 13/-), LOOZ, Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 89,
    "k": null,
    "hD": 1,
@@ -70531,17 +69181,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -70668,12 +69308,12 @@
    "d": "2026-09-01",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "INJ PEGSTIM 6MG (PEGFILGRASTIM)(Rs 5240/-), HI5 - APRECAP KIT - APREPITANT 125/80 MG - O5251654(Rs 1348.1/-), FFN-ZOLADEX LA 10.08 MG-SP413(Rs 28890/-), Letrozole - 2.5mg(Rs 9/-), PAN 40 (PANTOPRAZOLE)(Rs 11/-), Ondem, Olanzapine, UPRISE D3 60K, a to z, mucobenz mouth wash(Rs 560/-), Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "gT": "INJ PEGSTIM 6MG (PEGFILGRASTIM)(Rs 5240/-), HI5 - APRECAP KIT - APREPITANT 125/80 MG - O5251654(Rs 1348.1/-), FFN-ZOLADEX LA 10.08 MG-SP413(Rs 28890/-), Letrozole - 2.5mg(Rs 9/-), PAN 40 (PANTOPRAZOLE)(Rs 11/-), Ondem, Olanzapine, UPRISE D3 60K, a to z, mucobenz mouth wash(Rs 560/-), Orafer XT, wemsure protein powder(Rs 1178/-), LOOZ, Imodium 2mg(Rs 4/-), ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 37258,
    "k": null,
    "hD": 1,
@@ -70684,17 +69324,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
+     "Health Package",
      null,
      null
     ]
@@ -70917,12 +69547,12 @@
    "d": "2026-09-01",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "PEGFILGRASTIM - 6mg(Rs 5240/-), letrocan, ZYTEE GEL(Rs 119/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "PEGFILGRASTIM - 6mg(Rs 5240/-), letrocan, ZYTEE GEL(Rs 119/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 9931,
    "k": null,
    "hD": 1,
@@ -70933,17 +69563,7 @@
    "bv": 2500,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -71130,12 +69750,12 @@
    "d": "2026-09-01",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), RFT(Rs 474/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap(Rs 775/-), letrocan, ZYTEE GEL(Rs 119/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "gT": "Neukine 300mcg (FILGRASTIM )(Rs 950/-), Aprecap(Rs 775/-), letrocan, ZYTEE GEL(Rs 119/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, IMMUTIDE FORTE, SLN - A TO Z SYRUP - 25660021(Rs 210/-), syp Cremaffin plus(Rs 327/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 18/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1113,
+   "eD": 800,
    "eG": 6416,
    "k": null,
    "hD": 1,
@@ -71146,17 +69766,7 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "RFT",
+     "Health Package",
      null,
      null
     ]
@@ -71355,12 +69965,12 @@
    "d": "2026-09-01",
    "r": "S M",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), LFT(Rs 450/-), KFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "GEFTINAT 250MG(GEFITINIB)(Rs 197/-), Celecoxib - 200MG(Rs 15/-), BIOTREXATE 500MG (METHOTRAXATE)(Rs 1131/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, ULTRACET(Rs 18/-), Nurafort-D, SLN - A TO Z SYRUP - 25660021(Rs 210/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "gT": "GEFTINAT 250MG(GEFITINIB)(Rs 197/-), Celecoxib - 200MG(Rs 15/-), BIOTREXATE 500MG (METHOTRAXATE)(Rs 1131/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), PAN-DSR, ULTRACET(Rs 18/-), Nurafort-D, SLN - A TO Z SYRUP - 25660021(Rs 210/-), KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), Chlorhexidine, Dolo(Rs 2/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 5588,
    "k": null,
    "hD": 1,
@@ -71371,17 +69981,7 @@
    "bv": 1484,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
-     "KFT",
+     "Health Package",
      null,
      null
     ]
@@ -71556,12 +70156,12 @@
    "d": "2026-09-01",
    "r": "Mohit Saxena",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "Nuckein, Emeset 4mg(Rs 13/-), Olanzapine, Sompraz-D, a to z, ULTRACET(Rs 18/-), LOOZ, Mucaine Gel, Lesuirde, Chlorhexidine, Dolo(Rs 2/-)",
    "gT": "Nuckein, Emeset 4mg(Rs 13/-), Olanzapine, Sompraz-D, a to z, ULTRACET(Rs 18/-), LOOZ, Mucaine Gel, Lesuirde, Chlorhexidine, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1089,
+   "eD": 800,
    "eG": 33,
    "k": null,
    "hD": 1,
@@ -71572,19 +70172,9 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -71733,12 +70323,12 @@
    "d": "2026-09-01",
    "r": "K M Parthasarathy",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-)",
+   "dT": "MD0081-Health Package(Rs 800/-)",
    "pT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), Acivir 200, Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), meftal spas, cap Razo D(Rs 24/-), Becosules, CAP DEXORANGE (multivitamins +antioxidant)(Rs 187/-), syp Cremaffin plus(Rs 327/-), Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-), INJ GROSS 30MG (PACLITAXEL )(Rs 1206/-)",
    "gT": "INJ Neukine 300mcg (FILGRASTIM )(Rs 1299/-), Acivir 200, Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), meftal spas, cap Razo D(Rs 24/-), Becosules, CAP DEXORANGE (multivitamins +antioxidant)(Rs 187/-), syp Cremaffin plus(Rs 327/-), Ensure, Dolo(Rs 2/-), ULTRACET(Rs 18/-)",
    "cT": "INJ GROSS 30MG (PACLITAXEL )(Rs 1206/-)",
    "eP": 1206,
-   "eD": 1089,
+   "eD": 800,
    "eG": 1883,
    "k": null,
    "hD": 1,
@@ -71749,19 +70339,9 @@
    "bv": 1828,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -71935,12 +70515,12 @@
    "d": "2026-09-01",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), TSH(Rs 189/-)",
+   "dT": "TSH(Rs 189/-), MD0081-Health Package(Rs 800/-)",
    "pT": "cap Razo D(Rs 24/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Eltroxin, LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "cap Razo D(Rs 24/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Eltroxin, LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1278,
+   "eD": 989,
    "eG": 634,
    "k": null,
    "hD": 1,
@@ -71951,22 +70531,12 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "TSH",
+     null,
+     null
+    ],
+    [
+     "Health Package",
      null,
      null
     ]
@@ -72105,12 +70675,12 @@
    "d": "2026-09-01",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "CBC(Rs 189/-), KFT(Rs 450/-), LFT(Rs 450/-), FBS & PPBS(Rs 104/-)",
+   "dT": "FBS & PPBS(Rs 104/-), MD0081-Health Package(Rs 800/-)",
    "pT": "cap Razo D(Rs 24/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Dexamethasone 4mg(Rs 5/-), Dapagliflozin, inefita, ULTRACET(Rs 18/-), gliclazide, Trajenta, Lantus, actrapid 6, syp Cremaffin plus(Rs 327/-), mucobenz mouth wash(Rs 560/-), GABAPIN NT 100(Rs 13/-), CAP DEXORANGE (multivitamins +antioxidant)(Rs 187/-), BETADINE(Rs 329/-), Ensure, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "gT": "cap Razo D(Rs 24/-), Emeset 4mg(Rs 26/-), Emeset 4mg(Rs 26/-), Dexamethasone 4mg(Rs 5/-), Dapagliflozin, inefita, ULTRACET(Rs 18/-), gliclazide, Trajenta, Lantus, actrapid 6, syp Cremaffin plus(Rs 327/-), mucobenz mouth wash(Rs 560/-), GABAPIN NT 100(Rs 13/-), CAP DEXORANGE (multivitamins +antioxidant)(Rs 187/-), BETADINE(Rs 329/-), Ensure, Imodium 2mg(Rs 4/-), Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 1193,
+   "eD": 904,
    "eG": 1495,
    "k": null,
    "hD": 1,
@@ -72121,24 +70691,14 @@
    "bv": 0,
    "dM": [
     [
-     "CBC",
-     null,
-     null
-    ],
-    [
-     "KFT",
-     null,
-     null
-    ],
-    [
-     "LFT",
-     null,
-     null
-    ],
-    [
      "FBS & PPBS",
      null,
      null
+    ],
+    [
+     "Health Package",
+     "hi",
+     "PCD - MD0081-Health Package"
     ]
    ],
    "pM": [
@@ -226460,7 +225020,7 @@
    ""
   ]
  ],
- "publishedAt": "2026-09-17T06:07:37.627Z",
+ "publishedAt": "2026-09-17T07:48:50.272Z",
  "minDate": "2025-07-21",
  "maxDate": "2026-09-16",
  "encMin": "2026-08-01",
@@ -254624,7 +253184,7 @@
    "op": {
     "n": 4,
     "sugD": 2,
-    "expRev": 3051,
+    "expRev": 2762,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -254635,7 +253195,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -254665,7 +253225,7 @@
    "op": {
     "n": 3,
     "sugD": 3,
-    "expRev": 65610,
+    "expRev": 64743,
     "sugP": 3,
     "bilP": 0,
     "pSug": 2,
@@ -254676,7 +253236,7 @@
    "ip": {
     "n": 2,
     "sugD": 2,
-    "expRev": 2471,
+    "expRev": 1893,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -254706,7 +253266,7 @@
    "op": {
     "n": 3,
     "sugD": 3,
-    "expRev": 21620,
+    "expRev": 21331,
     "sugP": 3,
     "bilP": 0,
     "pSug": 3,
@@ -254717,7 +253277,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 3267,
+    "expRev": 2400,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -254747,7 +253307,7 @@
    "op": {
     "n": 4,
     "sugD": 2,
-    "expRev": 26515,
+    "expRev": 25889,
     "sugP": 3,
     "bilP": 0,
     "pSug": 1,
@@ -254799,7 +253359,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1254,
+    "expRev": 941,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -254840,7 +253400,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -254870,7 +253430,7 @@
    "op": {
     "n": 3,
     "sugD": 2,
-    "expRev": 22334,
+    "expRev": 22045,
     "sugP": 2,
     "bilP": 1,
     "pSug": 1,
@@ -254881,7 +253441,7 @@
    "ip": {
     "n": 4,
     "sugD": 4,
-    "expRev": 4404,
+    "expRev": 3200,
     "sugP": 4,
     "bilP": 4,
     "pSug": 4,
@@ -254952,7 +253512,7 @@
    "op": {
     "n": 2,
     "sugD": 2,
-    "expRev": 16416,
+    "expRev": 16127,
     "sugP": 2,
     "bilP": 1,
     "pSug": 1,
@@ -254963,7 +253523,7 @@
    "ip": {
     "n": 2,
     "sugD": 2,
-    "expRev": 26658,
+    "expRev": 26080,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -254993,7 +253553,7 @@
    "op": {
     "n": 3,
     "sugD": 2,
-    "expRev": 34118,
+    "expRev": 33829,
     "sugP": 2,
     "bilP": 0,
     "pSug": 2,
@@ -255004,7 +253564,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255045,7 +253605,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255086,7 +253646,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 18089,
+    "expRev": 17800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255157,7 +253717,7 @@
    "op": {
     "n": 7,
     "sugD": 4,
-    "expRev": 31463,
+    "expRev": 30596,
     "sugP": 5,
     "bilP": 2,
     "pSug": 4,
@@ -255168,7 +253728,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255198,7 +253758,7 @@
    "op": {
     "n": 2,
     "sugD": 2,
-    "expRev": 16575,
+    "expRev": 16286,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -255209,7 +253769,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255250,7 +253810,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -255332,7 +253892,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 3267,
+    "expRev": 2400,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -255403,7 +253963,7 @@
    "op": {
     "n": 2,
     "sugD": 1,
-    "expRev": 3714,
+    "expRev": 3425,
     "sugP": 2,
     "bilP": 1,
     "pSug": 1,
@@ -255414,7 +253974,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 21791,
+    "expRev": 20924,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -255496,7 +254056,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255578,7 +254138,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255660,7 +254220,7 @@
    "ip": {
     "n": 3,
     "sugD": 2,
-    "expRev": 2178,
+    "expRev": 1600,
     "sugP": 3,
     "bilP": 2,
     "pSug": 3,
@@ -255690,7 +254250,7 @@
    "op": {
     "n": 7,
     "sugD": 4,
-    "expRev": 43065,
+    "expRev": 42487,
     "sugP": 6,
     "bilP": 2,
     "pSug": 5,
@@ -255701,7 +254261,7 @@
    "ip": {
     "n": 5,
     "sugD": 3,
-    "expRev": 6260,
+    "expRev": 5682,
     "sugP": 4,
     "bilP": 4,
     "pSug": 4,
@@ -255731,7 +254291,7 @@
    "op": {
     "n": 5,
     "sugD": 2,
-    "expRev": 13864,
+    "expRev": 13575,
     "sugP": 4,
     "bilP": 1,
     "pSug": 2,
@@ -255742,7 +254302,7 @@
    "ip": {
     "n": 3,
     "sugD": 2,
-    "expRev": 14178,
+    "expRev": 13600,
     "sugP": 3,
     "bilP": 2,
     "pSug": 3,
@@ -255783,7 +254343,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 2415,
+    "expRev": 1789,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -255824,7 +254384,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255865,7 +254425,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 3714,
+    "expRev": 3425,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -255895,7 +254455,7 @@
    "op": {
     "n": 3,
     "sugD": 2,
-    "expRev": 1101,
+    "expRev": 812,
     "sugP": 2,
     "bilP": 0,
     "pSug": 2,
@@ -255906,7 +254466,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 3291,
+    "expRev": 2400,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -256111,7 +254671,7 @@
    "ip": {
     "n": 2,
     "sugD": 2,
-    "expRev": 1278,
+    "expRev": 989,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -256141,7 +254701,7 @@
    "op": {
     "n": 4,
     "sugD": 4,
-    "expRev": 36685,
+    "expRev": 36396,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -256152,7 +254712,7 @@
    "ip": {
     "n": 4,
     "sugD": 4,
-    "expRev": 4416,
+    "expRev": 3838,
     "sugP": 4,
     "bilP": 4,
     "pSug": 4,
@@ -256182,7 +254742,7 @@
    "op": {
     "n": 2,
     "sugD": 2,
-    "expRev": 78345,
+    "expRev": 78056,
     "sugP": 2,
     "bilP": 0,
     "pSug": 1,
@@ -256223,7 +254783,7 @@
    "op": {
     "n": 2,
     "sugD": 1,
-    "expRev": 10260,
+    "expRev": 9947,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -256305,7 +254865,7 @@
    "op": {
     "n": 4,
     "sugD": 2,
-    "expRev": 16237,
+    "expRev": 15948,
     "sugP": 3,
     "bilP": 1,
     "pSug": 2,
@@ -256357,7 +254917,7 @@
    "ip": {
     "n": 2,
     "sugD": 2,
-    "expRev": 2202,
+    "expRev": 1600,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -256398,7 +254958,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 3271,
+    "expRev": 2958,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -256428,7 +254988,7 @@
    "op": {
     "n": 4,
     "sugD": 4,
-    "expRev": 38048,
+    "expRev": 37470,
     "sugP": 3,
     "bilP": 0,
     "pSug": 3,
@@ -256439,7 +254999,7 @@
    "ip": {
     "n": 2,
     "sugD": 2,
-    "expRev": 2910,
+    "expRev": 2332,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -256469,7 +255029,7 @@
    "op": {
     "n": 4,
     "sugD": 3,
-    "expRev": 26046,
+    "expRev": 25733,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -256562,7 +255122,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -256592,7 +255152,7 @@
    "op": {
     "n": 3,
     "sugD": 2,
-    "expRev": 5254,
+    "expRev": 4965,
     "sugP": 2,
     "bilP": 0,
     "pSug": 1,
@@ -256633,7 +255193,7 @@
    "op": {
     "n": 3,
     "sugD": 2,
-    "expRev": 5374,
+    "expRev": 5085,
     "sugP": 2,
     "bilP": 0,
     "pSug": 2,
@@ -256674,7 +255234,7 @@
    "op": {
     "n": 4,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 4,
     "bilP": 2,
     "pSug": 4,
@@ -256685,7 +255245,7 @@
    "ip": {
     "n": 3,
     "sugD": 2,
-    "expRev": 2178,
+    "expRev": 1600,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -256726,7 +255286,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -256767,7 +255327,7 @@
    "ip": {
     "n": 2,
     "sugD": 2,
-    "expRev": 1922,
+    "expRev": 1609,
     "sugP": 2,
     "bilP": 1,
     "pSug": 2,
@@ -256808,7 +255368,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -256879,7 +255439,7 @@
    "op": {
     "n": 2,
     "sugD": 2,
-    "expRev": 7047,
+    "expRev": 6758,
     "sugP": 0,
     "bilP": 0,
     "pSug": 0,
@@ -256920,7 +255480,7 @@
    "op": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -256931,7 +255491,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 3267,
+    "expRev": 2400,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -256961,7 +255521,7 @@
    "op": {
     "n": 1,
     "sugD": 1,
-    "expRev": 17706,
+    "expRev": 17417,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -256972,7 +255532,7 @@
    "ip": {
     "n": 3,
     "sugD": 2,
-    "expRev": 2658,
+    "expRev": 2080,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -257002,7 +255562,7 @@
    "op": {
     "n": 3,
     "sugD": 3,
-    "expRev": 30185,
+    "expRev": 29896,
     "sugP": 2,
     "bilP": 0,
     "pSug": 2,
@@ -257013,7 +255573,7 @@
    "ip": {
     "n": 2,
     "sugD": 2,
-    "expRev": 3102,
+    "expRev": 2524,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -257054,7 +255614,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -257177,7 +255737,7 @@
    "ip": {
     "n": 4,
     "sugD": 4,
-    "expRev": 4380,
+    "expRev": 3200,
     "sugP": 4,
     "bilP": 4,
     "pSug": 4,
@@ -257207,7 +255767,7 @@
    "op": {
     "n": 3,
     "sugD": 3,
-    "expRev": 24693,
+    "expRev": 24067,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -257218,7 +255778,7 @@
    "ip": {
     "n": 4,
     "sugD": 3,
-    "expRev": 18153,
+    "expRev": 17262,
     "sugP": 4,
     "bilP": 3,
     "pSug": 4,
@@ -257259,7 +255819,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 13089,
+    "expRev": 12800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -257300,7 +255860,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1516,
+    "expRev": 1227,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -257330,7 +255890,7 @@
    "op": {
     "n": 4,
     "sugD": 3,
-    "expRev": 62166,
+    "expRev": 61853,
     "sugP": 2,
     "bilP": 0,
     "pSug": 2,
@@ -257341,7 +255901,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1113,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -257412,7 +255972,7 @@
    "op": {
     "n": 2,
     "sugD": 1,
-    "expRev": 14109,
+    "expRev": 13796,
     "sugP": 2,
     "bilP": 0,
     "pSug": 1,
@@ -257423,7 +255983,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -257505,7 +256065,7 @@
    "ip": {
     "n": 4,
     "sugD": 4,
-    "expRev": 4356,
+    "expRev": 3200,
     "sugP": 4,
     "bilP": 4,
     "pSug": 4,
@@ -257535,7 +256095,7 @@
    "op": {
     "n": 2,
     "sugD": 1,
-    "expRev": 6192,
+    "expRev": 5903,
     "sugP": 2,
     "bilP": 1,
     "pSug": 2,
@@ -257546,7 +256106,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 27659,
+    "expRev": 27081,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -257587,7 +256147,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 13089,
+    "expRev": 12800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -257658,7 +256218,7 @@
    "op": {
     "n": 5,
     "sugD": 4,
-    "expRev": 39824,
+    "expRev": 39198,
     "sugP": 4,
     "bilP": 0,
     "pSug": 3,
@@ -257710,7 +256270,7 @@
    "ip": {
     "n": 3,
     "sugD": 2,
-    "expRev": 2178,
+    "expRev": 1600,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -257792,7 +256352,7 @@
    "ip": {
     "n": 5,
     "sugD": 3,
-    "expRev": 18267,
+    "expRev": 17400,
     "sugP": 4,
     "bilP": 4,
     "pSug": 4,
@@ -257822,7 +256382,7 @@
    "op": {
     "n": 10,
     "sugD": 8,
-    "expRev": 46385,
+    "expRev": 45518,
     "sugP": 9,
     "bilP": 1,
     "pSug": 6,
@@ -257833,7 +256393,7 @@
    "ip": {
     "n": 3,
     "sugD": 3,
-    "expRev": 32594,
+    "expRev": 32305,
     "sugP": 3,
     "bilP": 3,
     "pSug": 3,
@@ -257863,7 +256423,7 @@
    "op": {
     "n": 6,
     "sugD": 4,
-    "expRev": 100391,
+    "expRev": 100102,
     "sugP": 3,
     "bilP": 0,
     "pSug": 2,
@@ -257945,7 +256505,7 @@
    "op": {
     "n": 1,
     "sugD": 1,
-    "expRev": 21339,
+    "expRev": 21026,
     "sugP": 1,
     "bilP": 0,
     "pSug": 1,
@@ -257997,7 +256557,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -258027,7 +256587,7 @@
    "op": {
     "n": 5,
     "sugD": 3,
-    "expRev": 15227,
+    "expRev": 14625,
     "sugP": 2,
     "bilP": 0,
     "pSug": 1,
@@ -258068,7 +256628,7 @@
    "op": {
     "n": 4,
     "sugD": 3,
-    "expRev": 34934,
+    "expRev": 34356,
     "sugP": 3,
     "bilP": 1,
     "pSug": 3,
@@ -258079,7 +256639,7 @@
    "ip": {
     "n": 3,
     "sugD": 2,
-    "expRev": 15106,
+    "expRev": 14793,
     "sugP": 2,
     "bilP": 2,
     "pSug": 2,
@@ -258109,7 +256669,7 @@
    "op": {
     "n": 3,
     "sugD": 2,
-    "expRev": 18360,
+    "expRev": 18071,
     "sugP": 2,
     "bilP": 0,
     "pSug": 2,
@@ -258120,7 +256680,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -258150,7 +256710,7 @@
    "op": {
     "n": 5,
     "sugD": 4,
-    "expRev": 29282,
+    "expRev": 28656,
     "sugP": 2,
     "bilP": 0,
     "pSug": 0,
@@ -258243,7 +256803,7 @@
    "ip": {
     "n": 1,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
@@ -258284,7 +256844,7 @@
    "ip": {
     "n": 2,
     "sugD": 1,
-    "expRev": 1089,
+    "expRev": 800,
     "sugP": 1,
     "bilP": 1,
     "pSug": 1,
