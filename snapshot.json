@@ -11582,24 +11582,153 @@
    "d": "2026-09-16",
    "r": "Raajit Chanana",
    "t": "OP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
-   "cT": "",
-   "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "dT": "MD0081-Health Package(Rs 800/-)",
+   "pT": "Lasilactone, UDILIV 300MG(Rs 62/-), evion lc, Protein Powder(Rs 1349/-), Razo-D, SYP LOOZ 20ML, econorm sachet - 250mg(Rs 63/-), Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-)",
+   "gT": "Lasilactone, UDILIV 300MG(Rs 62/-), evion lc, Protein Powder(Rs 1349/-), Razo-D, SYP LOOZ 20ML, econorm sachet - 250mg(Rs 63/-)",
+   "cT": "Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-), Durvalumab - 500mg(Rs 513972/-)",
+   "eP": 513972,
+   "eD": 800,
+   "eG": 1474,
    "k": "followup",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
-   "cM": [],
-   "rM": []
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Lasilactone",
+     null,
+     null
+    ],
+    [
+     "UDILIV 300MG",
+     null,
+     null
+    ],
+    [
+     "evion lc",
+     null,
+     null
+    ],
+    [
+     "Protein Powder",
+     null,
+     null
+    ],
+    [
+     "Razo-D",
+     null,
+     null
+    ],
+    [
+     "SYP LOOZ 20ML",
+     null,
+     null
+    ],
+    [
+     "econorm sachet - 250mg",
+     null,
+     null
+    ],
+    [
+     "Durvalumab - 500mg",
+     null,
+     null
+    ],
+    [
+     "Durvalumab - 500mg",
+     null,
+     null
+    ],
+    [
+     "Durvalumab - 500mg",
+     null,
+     null
+    ]
+   ],
+   "cM": [
+    [
+     "Durvalumab - 500mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Durvalumab - 500mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Durvalumab - 500mg",
+     null,
+     null,
+     0,
+     0
+    ]
+   ],
+   "rM": [
+    [
+     "Lasilactone",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "UDILIV 300MG",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "evion lc",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Protein Powder",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Razo-D",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "SYP LOOZ 20ML",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "econorm sachet - 250mg",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Gyan  Devi ",
@@ -11690,24 +11819,49 @@
    "d": "2026-09-16",
    "r": "Sukriti Bhasin",
    "t": "OP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "USG B/L Breast(Rs 1699/-), usg axillae",
+   "pT": "Uprise",
+   "gT": "Uprise",
    "cT": "",
    "eP": 0,
-   "eD": 0,
+   "eD": 1699,
    "eG": 0,
    "k": "fresh",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "USG B/L Breast",
+     null,
+     null
+    ],
+    [
+     "usg axillae",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Uprise",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "Uprise",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Anupam Choudhary",
@@ -11744,24 +11898,56 @@
    "d": "2026-09-16",
    "r": "Hema Latha V",
    "t": "OP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "RBS(Rs 47/-)",
+   "pT": "Cremaffin(Rs 309/-), Protein Powder(Rs 1349/-)",
+   "gT": "Cremaffin(Rs 309/-), Protein Powder(Rs 1349/-)",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 47,
+   "eG": 1658,
    "k": "followup",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "RBS",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Cremaffin",
+     null,
+     null
+    ],
+    [
+     "Protein Powder",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "Cremaffin",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Protein Powder",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Anirudh Singh Yadav",
@@ -47679,24 +47865,205 @@
    "d": "2026-09-16",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-), CA 19.9(Rs 949/-)",
+   "pT": "Faronem, UDILIV 300MG(Rs 62/-), maxiliv, GCSF, Dexamethasone 4mg(Rs 5/-), PAN D(Rs 4/-), a to z, ECOSPIRIN, mucobenz mouth wash(Rs 560/-), APiXABAN - 2.5mg(Rs 44/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
+   "gT": "Faronem, UDILIV 300MG(Rs 62/-), maxiliv, GCSF, Dexamethasone 4mg(Rs 5/-), PAN D(Rs 4/-), a to z, ECOSPIRIN, mucobenz mouth wash(Rs 560/-), APiXABAN - 2.5mg(Rs 44/-), Emeset 8mg(Rs 10/-), ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 1749,
+   "eG": 705,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ],
+    [
+     "CA 19.9",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Faronem",
+     null,
+     null
+    ],
+    [
+     "UDILIV 300MG",
+     null,
+     null
+    ],
+    [
+     "maxiliv",
+     null,
+     null
+    ],
+    [
+     "GCSF",
+     null,
+     null
+    ],
+    [
+     "Dexamethasone 4mg",
+     "hi",
+     "MAH - DEXACIP 2ML - DEXAMETHASONE - CN3126002"
+    ],
+    [
+     "PAN D",
+     null,
+     null
+    ],
+    [
+     "a to z",
+     null,
+     null
+    ],
+    [
+     "ECOSPIRIN",
+     null,
+     null
+    ],
+    [
+     "mucobenz mouth wash",
+     null,
+     null
+    ],
+    [
+     "APiXABAN - 2.5mg",
+     null,
+     null
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Immodium",
+     null,
+     null
+    ],
+    [
+     "Dolo",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "Faronem",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "UDILIV 300MG",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "maxiliv",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "GCSF",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dexamethasone 4mg",
+     "hi",
+     "MAH - DEXACIP 2ML - DEXAMETHASONE - CN3126002",
+     9,
+     174
+    ],
+    [
+     "PAN D",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "a to z",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ECOSPIRIN",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "mucobenz mouth wash",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "APiXABAN - 2.5mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Immodium",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dolo",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Chand Pasha",
@@ -47706,24 +48073,253 @@
    "d": "2026-09-16",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "pT": "romiplostim 125, Peg-GCSF, Prednisolone - 40mg(Rs 2/-), Prednisolone - 40mg(Rs 2/-), Prednisolone - 20mg(Rs 3/-), PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Cecad-M, Penegra, Valenta, Fruselac, Protein Powder(Rs 1349/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, ORS [ORAL REHYDRATION(Rs 24/-)",
+   "gT": "romiplostim 125, Peg-GCSF, Prednisolone - 40mg(Rs 2/-), Prednisolone - 40mg(Rs 2/-), Prednisolone - 20mg(Rs 3/-), PENTATE 40mg(pantaprozole)(Rs 57/-), Emeset 8mg(Rs 10/-), Cecad-M, Penegra, Valenta, Fruselac, Protein Powder(Rs 1349/-), Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan 20, ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 12800,
+   "eG": 1468,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ],
+    [
+     "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "romiplostim 125",
+     "hi",
+     "HI5 - ROMY 250 MCG INJ - ROMIPLOSTIM - 28030088"
+    ],
+    [
+     "Peg-GCSF",
+     null,
+     null
+    ],
+    [
+     "Prednisolone - 40mg",
+     null,
+     null
+    ],
+    [
+     "Prednisolone - 40mg",
+     null,
+     null
+    ],
+    [
+     "Prednisolone - 20mg",
+     null,
+     null
+    ],
+    [
+     "PENTATE 40mg(pantaprozole)",
+     "md",
+     "MAH - PENTATE 40 MG INJECTION - PANTOPRAZOLE - D25JR127A"
+    ],
+    [
+     "Emeset 8mg",
+     "hi",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRON"
+    ],
+    [
+     "Cecad-M",
+     null,
+     null
+    ],
+    [
+     "Penegra",
+     null,
+     null
+    ],
+    [
+     "Valenta",
+     null,
+     null
+    ],
+    [
+     "Fruselac",
+     null,
+     null
+    ],
+    [
+     "Protein Powder",
+     null,
+     null
+    ],
+    [
+     "Sporolac",
+     null,
+     null
+    ],
+    [
+     "Loperamide - 2mg",
+     null,
+     null
+    ],
+    [
+     "Dolo",
+     "lo",
+     "MAH - NEOMOL IV 100ML - PARACETAMOL - T383L1529"
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Buscopan 20",
+     null,
+     null
+    ],
+    [
+     "ORS [ORAL REHYDRATION",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "romiplostim 125",
+     "hi",
+     "HI5 - ROMY 250 MCG INJ - ROMIPLOSTIM - 28030088",
+     2385,
+     39
+    ],
+    [
+     "Peg-GCSF",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Prednisolone - 40mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Prednisolone - 40mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Prednisolone - 20mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "PENTATE 40mg(pantaprozole)",
+     "md",
+     "MAH - PENTATE 40 MG INJECTION - PANTOPRAZOLE - D25JR127A",
+     35,
+     71
+    ],
+    [
+     "Emeset 8mg",
+     "hi",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRON",
+     9,
+     79
+    ],
+    [
+     "Cecad-M",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Penegra",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Valenta",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Fruselac",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Protein Powder",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Sporolac",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Loperamide - 2mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dolo",
+     "lo",
+     "MAH - NEOMOL IV 100ML - PARACETAMOL - T383L1529",
+     342,
+     38
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Buscopan 20",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ORS [ORAL REHYDRATION",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Firdausi Bano",
@@ -47733,24 +48329,241 @@
    "d": "2026-09-16",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-), HbA1c(Rs 338/-)",
+   "pT": "RAZO D(Rs 22/-), Emeset 8mg(Rs 10/-), Dexamethasone 4mg(Rs 5/-), Dapagliflozin, GABAPIN NT 100(Rs 13/-), Lantus, actrapid 6, ULTRACET(Rs 18/-), gliclazide, Trajenta, inefita, dexorange, syp Cremaffin plus(Rs 327/-), mucobenz mouth wash(Rs 560/-), Ensure, Immodium, Dolo(Rs 2/-)",
+   "gT": "RAZO D(Rs 22/-), Emeset 8mg(Rs 10/-), Dexamethasone 4mg(Rs 5/-), Dapagliflozin, GABAPIN NT 100(Rs 13/-), Lantus, actrapid 6, ULTRACET(Rs 18/-), gliclazide, Trajenta, inefita, dexorange, syp Cremaffin plus(Rs 327/-), mucobenz mouth wash(Rs 560/-), Ensure, Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 1138,
+   "eG": 957,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ],
+    [
+     "HbA1c",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "RAZO D",
+     null,
+     null
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null
+    ],
+    [
+     "Dexamethasone 4mg",
+     "hi",
+     "MAH - DEXACIP 2ML - DEXAMETHASONE - CN3126002"
+    ],
+    [
+     "Dapagliflozin",
+     null,
+     null
+    ],
+    [
+     "GABAPIN NT 100",
+     null,
+     null
+    ],
+    [
+     "Lantus",
+     null,
+     null
+    ],
+    [
+     "actrapid 6",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "gliclazide",
+     null,
+     null
+    ],
+    [
+     "Trajenta",
+     null,
+     null
+    ],
+    [
+     "inefita",
+     null,
+     null
+    ],
+    [
+     "dexorange",
+     null,
+     null
+    ],
+    [
+     "syp Cremaffin plus",
+     null,
+     null
+    ],
+    [
+     "mucobenz mouth wash",
+     null,
+     null
+    ],
+    [
+     "Ensure",
+     null,
+     null
+    ],
+    [
+     "Immodium",
+     null,
+     null
+    ],
+    [
+     "Dolo",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "RAZO D",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dexamethasone 4mg",
+     "hi",
+     "MAH - DEXACIP 2ML - DEXAMETHASONE - CN3126002",
+     8,
+     156
+    ],
+    [
+     "Dapagliflozin",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "GABAPIN NT 100",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Lantus",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "actrapid 6",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "gliclazide",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Trajenta",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "inefita",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "dexorange",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "syp Cremaffin plus",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "mucobenz mouth wash",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Ensure",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Immodium",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dolo",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Bhup Ram",
@@ -47760,24 +48573,217 @@
    "d": "2026-09-16",
    "r": "Raajit Chanana",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "CBC(Rs 189/-), KFT(Rs 450/-)",
+   "pT": "IPRAVENT RESPULES(Rs 7/-), Carvedilol, ECOSPIRIN, SHELCAL 500MG(Rs 9/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), a to z, Augmentin - 625mg(Rs 19/-), Dexamethasone 4mg(Rs 5/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
+   "gT": "IPRAVENT RESPULES(Rs 7/-), Carvedilol, ECOSPIRIN, SHELCAL 500MG(Rs 9/-), cap Razo D(Rs 24/-), Emeset 8mg(Rs 10/-), a to z, Augmentin - 625mg(Rs 19/-), Dexamethasone 4mg(Rs 5/-), LOOZ, mucobenz mouth wash(Rs 560/-), Ensure, ULTRACET(Rs 18/-), Immodium, Dolo(Rs 2/-)",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 639,
+   "eG": 654,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "CBC",
+     null,
+     null
+    ],
+    [
+     "KFT",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "IPRAVENT RESPULES",
+     null,
+     null
+    ],
+    [
+     "Carvedilol",
+     null,
+     null
+    ],
+    [
+     "ECOSPIRIN",
+     null,
+     null
+    ],
+    [
+     "SHELCAL 500MG",
+     null,
+     null
+    ],
+    [
+     "cap Razo D",
+     "lo",
+     "MAH - PENTATE 40 MG INJECTION - PANTOPRAZOLE - D25JR127A"
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null
+    ],
+    [
+     "a to z",
+     null,
+     null
+    ],
+    [
+     "Augmentin - 625mg",
+     null,
+     null
+    ],
+    [
+     "Dexamethasone 4mg",
+     null,
+     null
+    ],
+    [
+     "LOOZ",
+     null,
+     null
+    ],
+    [
+     "mucobenz mouth wash",
+     null,
+     null
+    ],
+    [
+     "Ensure",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Immodium",
+     null,
+     null
+    ],
+    [
+     "Dolo",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "IPRAVENT RESPULES",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Carvedilol",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ECOSPIRIN",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "SHELCAL 500MG",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "cap Razo D",
+     "lo",
+     "MAH - PENTATE 40 MG INJECTION - PANTOPRAZOLE - D25JR127A",
+     38,
+     167
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "a to z",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Augmentin - 625mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dexamethasone 4mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "LOOZ",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "mucobenz mouth wash",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Ensure",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Immodium",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dolo",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Kalyana Kumara KS",
@@ -47787,24 +48793,212 @@
    "d": "2026-09-16",
    "r": "Sireesh Kumar CH",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-)",
+   "pT": "Emeset 4mg(Rs 13/-), Dolo(Rs 2/-), Neurobion, eldoper, Hydrocortisone(Rs 48/-), Venusia, Chlorhexidine, Doxycycline - 100mg(Rs 563/-), magmaxx, ULTRACET(Rs 18/-), Cyclopam, eldoper, PAN 40(Rs 57/-), Perinorm, MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-)",
+   "gT": "Emeset 4mg(Rs 13/-), Dolo(Rs 2/-), Neurobion, eldoper, Hydrocortisone(Rs 48/-), Venusia, Chlorhexidine, Doxycycline - 100mg(Rs 563/-), magmaxx, ULTRACET(Rs 18/-), Cyclopam, eldoper, PAN 40(Rs 57/-), Perinorm, MAH-DUPHALAC 250ML-LAXATIVE-843154D7(Rs 310/-)",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 800,
+   "eG": 1011,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Emeset 4mg",
+     "hi",
+     "HI5 - EMESET INJ 4 ML - ONDANSETRON - 5L60232"
+    ],
+    [
+     "Dolo",
+     null,
+     null
+    ],
+    [
+     "Neurobion",
+     null,
+     null
+    ],
+    [
+     "eldoper",
+     null,
+     null
+    ],
+    [
+     "Hydrocortisone",
+     null,
+     null
+    ],
+    [
+     "Venusia",
+     null,
+     null
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null
+    ],
+    [
+     "Doxycycline - 100mg",
+     null,
+     null
+    ],
+    [
+     "magmaxx",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Cyclopam",
+     null,
+     null
+    ],
+    [
+     "eldoper",
+     null,
+     null
+    ],
+    [
+     "PAN 40",
+     null,
+     null
+    ],
+    [
+     "Perinorm",
+     null,
+     null
+    ],
+    [
+     "MAH-DUPHALAC 250ML-LAXATIVE-843154D7",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "Emeset 4mg",
+     "hi",
+     "HI5 - EMESET INJ 4 ML - ONDANSETRON - 5L60232",
+     14,
+     15
+    ],
+    [
+     "Dolo",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Neurobion",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "eldoper",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Hydrocortisone",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Venusia",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Doxycycline - 100mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "magmaxx",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Cyclopam",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "eldoper",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "PAN 40",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Perinorm",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "MAH-DUPHALAC 250ML-LAXATIVE-843154D7",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Nagaraju P",
@@ -47814,24 +49008,140 @@
    "d": "2026-09-16",
    "r": "Kiran Kumar",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-)",
+   "pT": "PAN 40(Rs 57/-), Perinorm, Chlorhexidine, Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
+   "gT": "PAN 40(Rs 57/-), Perinorm, Chlorhexidine, Sporolac, Loperamide - 2mg(Rs 3/-), Dolo(Rs 2/-), ULTRACET(Rs 18/-), Buscopan(Rs 14/-), ORS [ORAL REHYDRATION(Rs 24/-)",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 800,
+   "eG": 118,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 1,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     "hi",
+     "Neu - Health Package ( CBC, KFT, LFT )"
+    ]
+   ],
+   "pM": [
+    [
+     "PAN 40",
+     null,
+     null
+    ],
+    [
+     "Perinorm",
+     null,
+     null
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null
+    ],
+    [
+     "Sporolac",
+     null,
+     null
+    ],
+    [
+     "Loperamide - 2mg",
+     null,
+     null
+    ],
+    [
+     "Dolo",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Buscopan",
+     null,
+     null
+    ],
+    [
+     "ORS [ORAL REHYDRATION",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "PAN 40",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Perinorm",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Sporolac",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Loperamide - 2mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dolo",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Buscopan",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ORS [ORAL REHYDRATION",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": " Amar Singh",
@@ -47841,24 +49151,200 @@
    "d": "2026-09-16",
    "r": "S M",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-)",
+   "pT": "CAPECITABINE - 500mg(Rs 1183/-), Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 36/-), nutra forte d, Goldcal-Max, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), a to z, LOOZ, Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 36/-), Immodium, Dulcoflex",
+   "gT": "CAPECITABINE - 500mg(Rs 1183/-), Emeset 8mg(Rs 10/-), PAN-DSR, ULTRACET(Rs 36/-), nutra forte d, Goldcal-Max, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), a to z, LOOZ, Chlorhexidine, Dolo(Rs 2/-), ULTRACET(Rs 36/-), Immodium, Dulcoflex",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 800,
+   "eG": 5220,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 1,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "CAPECITABINE - 500mg",
+     null,
+     null
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null
+    ],
+    [
+     "PAN-DSR",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "nutra forte d",
+     null,
+     null
+    ],
+    [
+     "Goldcal-Max",
+     null,
+     null
+    ],
+    [
+     "KQT-NEUTRA PRO PROTEIN -B-459",
+     null,
+     null
+    ],
+    [
+     "a to z",
+     null,
+     null
+    ],
+    [
+     "LOOZ",
+     null,
+     null
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null
+    ],
+    [
+     "Dolo",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Immodium",
+     null,
+     null
+    ],
+    [
+     "Dulcoflex",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "CAPECITABINE - 500mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Emeset 8mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "PAN-DSR",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "nutra forte d",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Goldcal-Max",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "KQT-NEUTRA PRO PROTEIN -B-459",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "a to z",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "LOOZ",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dolo",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Immodium",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dulcoflex",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Puja Arora",
@@ -47868,24 +49354,176 @@
    "d": "2026-09-16",
    "r": "S M",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-)",
+   "pT": "Peg-Filgrastim, Aprecap 125/80 mg(Rs 775/-), nutra forte d, Emeset 8mg(Rs 10/-), ADYN DSR, ADYN LOSE, Chlorhexidine, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), IMMUTIDE FORTE, ULTRACET(Rs 18/-), Dolo(Rs 2/-), Immodium",
+   "gT": "Peg-Filgrastim, Aprecap 125/80 mg(Rs 775/-), nutra forte d, Emeset 8mg(Rs 10/-), ADYN DSR, ADYN LOSE, Chlorhexidine, KQT-NEUTRA PRO PROTEIN -B-459(Rs 3989/-), IMMUTIDE FORTE, ULTRACET(Rs 18/-), Dolo(Rs 2/-), Immodium",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 800,
+   "eG": 4794,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Peg-Filgrastim",
+     null,
+     null
+    ],
+    [
+     "Aprecap 125/80 mg",
+     "hi",
+     "MAH-APRECAP-APREPITANT- 125MG-05260541"
+    ],
+    [
+     "nutra forte d",
+     null,
+     null
+    ],
+    [
+     "Emeset 8mg",
+     "hi",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRONE - 6S60038"
+    ],
+    [
+     "ADYN DSR",
+     null,
+     null
+    ],
+    [
+     "ADYN LOSE",
+     null,
+     null
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null
+    ],
+    [
+     "KQT-NEUTRA PRO PROTEIN -B-459",
+     null,
+     null
+    ],
+    [
+     "IMMUTIDE FORTE",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Dolo",
+     null,
+     null
+    ],
+    [
+     "Immodium",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "Peg-Filgrastim",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Aprecap 125/80 mg",
+     "hi",
+     "MAH-APRECAP-APREPITANT- 125MG-05260541",
+     802,
+     142
+    ],
+    [
+     "nutra forte d",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Emeset 8mg",
+     "hi",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRONE - 6S60038",
+     18,
+     144
+    ],
+    [
+     "ADYN DSR",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ADYN LOSE",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "KQT-NEUTRA PRO PROTEIN -B-459",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "IMMUTIDE FORTE",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dolo",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Immodium",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Rajeev  Yadav",
@@ -47895,24 +49533,272 @@
    "d": "2026-09-16",
    "r": "Vikram Singhal",
    "t": "IP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "MD0081-Health Package(Rs 800/-)",
+   "pT": "Peg-Filgrastim, Olanzapine, Mucaine Gel, BACLOFEN - 5MG(Rs 14/-), BACLOFEN - 5MG(Rs 14/-), Perinorm, Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, Erifit-Fort, Chlorhexidine, Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
+   "gT": "Peg-Filgrastim, Olanzapine, Mucaine Gel, BACLOFEN - 5MG(Rs 14/-), BACLOFEN - 5MG(Rs 14/-), Perinorm, Dexamethasone 4mg(Rs 5/-), PAN 40(Rs 57/-), Emeset 4mg(Rs 13/-), shelcal 500, UPRISE D3 60K, Erifit-Fort, Chlorhexidine, Orofer-XT, wemsure protein powder(Rs 1178/-), LOOZ, Immodium, ULTRACET(Rs 18/-), Crocin, Ondem",
    "cT": "",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 800,
+   "eG": 1285,
    "k": null,
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 1,
    "cP": 1,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Peg-Filgrastim",
+     "md",
+     "MAH-NEUKINE 300MCG-filgrastim-4480261"
+    ],
+    [
+     "Olanzapine",
+     null,
+     null
+    ],
+    [
+     "Mucaine Gel",
+     null,
+     null
+    ],
+    [
+     "BACLOFEN - 5MG",
+     null,
+     null
+    ],
+    [
+     "BACLOFEN - 5MG",
+     null,
+     null
+    ],
+    [
+     "Perinorm",
+     null,
+     null
+    ],
+    [
+     "Dexamethasone 4mg",
+     "hi",
+     "MAH - DEXACIP 2ML - DEXAMETHASONE - CN3126002"
+    ],
+    [
+     "PAN 40",
+     null,
+     null
+    ],
+    [
+     "Emeset 4mg",
+     "hi",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRONE - 6S60038"
+    ],
+    [
+     "shelcal 500",
+     null,
+     null
+    ],
+    [
+     "UPRISE D3 60K",
+     null,
+     null
+    ],
+    [
+     "Erifit-Fort",
+     null,
+     null
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null
+    ],
+    [
+     "Orofer-XT",
+     null,
+     null
+    ],
+    [
+     "wemsure protein powder",
+     null,
+     null
+    ],
+    [
+     "LOOZ",
+     null,
+     null
+    ],
+    [
+     "Immodium",
+     null,
+     null
+    ],
+    [
+     "ULTRACET",
+     null,
+     null
+    ],
+    [
+     "Crocin",
+     null,
+     null
+    ],
+    [
+     "Ondem",
+     "lo",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRONE - 6S60038"
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "Peg-Filgrastim",
+     "md",
+     "MAH-NEUKINE 300MCG-filgrastim-4480261",
+     0,
+     113
+    ],
+    [
+     "Olanzapine",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Mucaine Gel",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "BACLOFEN - 5MG",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "BACLOFEN - 5MG",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Perinorm",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Dexamethasone 4mg",
+     "hi",
+     "MAH - DEXACIP 2ML - DEXAMETHASONE - CN3126002",
+     0,
+     100
+    ],
+    [
+     "PAN 40",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Emeset 4mg",
+     "hi",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRONE - 6S60038",
+     0,
+     107
+    ],
+    [
+     "shelcal 500",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "UPRISE D3 60K",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Erifit-Fort",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Chlorhexidine",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Orofer-XT",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "wemsure protein powder",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "LOOZ",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Immodium",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "ULTRACET",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Crocin",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Ondem",
+     "lo",
+     "MAH - EMESET INJECTION 2ML - ONDANSETRONE - 6S60038",
+     0,
+     107
+    ]
+   ]
   },
   {
    "p": "Jabar Singh Panwar",
@@ -136240,7 +138126,7 @@
    0,
    "Chemo Running - Sep session - 3rd, 10th , 17th & 24th ",
    "",
-   "17 Sept 2026, 06:00 am - IP Chemotherapy (IP Chemotherapy)",
+   "",
    "2026-09-10"
   ],
   [
@@ -225020,7 +226906,7 @@
    ""
   ]
  ],
- "publishedAt": "2026-09-17T07:54:16.760Z",
+ "publishedAt": "2026-09-17T09:22:51.998Z",
  "minDate": "2025-07-21",
  "maxDate": "2026-09-16",
  "encMin": "2026-08-01",
@@ -256873,24 +258759,24 @@
    "btVal": 0,
    "op": {
     "n": 1,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
+    "sugD": 1,
+    "expRev": 1699,
+    "sugP": 1,
     "bilP": 0,
-    "pSug": 0,
+    "pSug": 1,
     "pBought": 0,
     "pAdv": 0,
     "pBil": 0
    },
    "ip": {
     "n": 1,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
-    "bilP": 0,
-    "pSug": 0,
+    "sugD": 1,
+    "expRev": 800,
+    "sugP": 1,
+    "bilP": 1,
+    "pSug": 1,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 1285,
     "pBil": 0
    }
   },
@@ -256914,24 +258800,24 @@
    "btVal": 0,
    "op": {
     "n": 2,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
+    "sugD": 1,
+    "expRev": 800,
+    "sugP": 1,
     "bilP": 0,
-    "pSug": 0,
+    "pSug": 1,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 1474,
     "pBil": 0
    },
    "ip": {
     "n": 3,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
-    "bilP": 0,
-    "pSug": 0,
+    "sugD": 3,
+    "expRev": 3526,
+    "sugP": 3,
+    "bilP": 3,
+    "pSug": 3,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 2316,
     "pBil": 0
    }
   },
@@ -256996,24 +258882,24 @@
    "btVal": 0,
    "op": {
     "n": 3,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
+    "sugD": 1,
+    "expRev": 47,
+    "sugP": 1,
     "bilP": 0,
-    "pSug": 0,
+    "pSug": 1,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 1658,
     "pBil": 0
    },
    "ip": {
     "n": 2,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
-    "bilP": 0,
-    "pSug": 0,
+    "sugD": 2,
+    "expRev": 13600,
+    "sugP": 2,
+    "bilP": 2,
+    "pSug": 2,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 1586,
     "pBil": 0
    }
   },
@@ -257048,13 +258934,13 @@
    },
    "ip": {
     "n": 1,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
-    "bilP": 0,
-    "pSug": 0,
+    "sugD": 1,
+    "expRev": 800,
+    "sugP": 1,
+    "bilP": 1,
+    "pSug": 1,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 1011,
     "pBil": 0
    }
   },
@@ -257089,13 +258975,13 @@
    },
    "ip": {
     "n": 2,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
-    "bilP": 0,
-    "pSug": 0,
+    "sugD": 2,
+    "expRev": 1600,
+    "sugP": 2,
+    "bilP": 2,
+    "pSug": 2,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 10014,
     "pBil": 0
    }
   }
