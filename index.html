@@ -668,7 +668,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "14-Sep-2026 70dc25";
+const BUILD = "17-Sep-2026 f88283";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1385,12 +1385,15 @@ function bar(v,max,color){
 function renderSummary(A){
   const head = ["Center","Consultations","Fresh OPD","Suggested diagnostics",
                 "① Fresh OPD → diag","② Follow-up → diag","③ Prior IP → diag","⑤ Returning patient","Counted","Diag %",
-                "Expected ₹","Billed ₹","Billed %","④ Diag w/o OPD","④ Revenue","⑤ Revenue (in Counted)","⊘ Same-day session"];
+                "Expected ₹","Billed ₹","Billed after OPD ₹","Billed after OPD %","Billed %","④ Diag w/o OPD","④ Revenue","⑤ Revenue (in Counted)","⊘ Same-day session"];
   let h = "<thead><tr>"+head.map(x=>"<th>"+x+"</th>").join("")+"</tr></thead><tbody>";
   const line = (r,cls) => {
     const dp = r.sugD?r.bilD/r.sugD:null;
     /* Billed % — diagnostics revenue actually invoiced against the value advised. */
     const cap = r.expRev ? r.bilRev/r.expRev : null;
+    /* Billed after OPD — billed revenue less the walk-ins who never consulted
+       (④), so it measures only money that followed an Oncare consultation. */
+    const aft = (r.bilRev||0) - (r.noOpdRev||0), aftP = r.expRev ? aft/r.expRev : null;
     return '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
       "<td>"+r.opd+"</td><td>"+r.fresh+"</td><td>"+r.sugD+"</td>"+
       "<td>"+r.bFresh+"</td><td>"+r.bFollow+"</td><td>"+r.bPrior+"</td><td>"+(r.bReturn||0)+"</td>"+
@@ -1398,6 +1401,9 @@ function renderSummary(A){
       '<td class="pct" style="color:'+(dp==null?"var(--text-muted)":"var(--series-diag)")+'">'+
         (dp==null?"—":Math.round(dp*100)+"% "+bar(dp,1,"var(--series-diag)"))+"</td>"+
       "<td>"+money(r.expRev)+"</td><td>"+money(r.bilRev)+"</td>"+
+      "<td><b>"+money(aft)+"</b></td>"+
+      '<td class="pct" style="color:'+(aftP==null?"var(--text-muted)":"var(--series-diag)")+'">'+
+        (aftP==null?"—":Math.round(aftP*100)+"%")+"</td>"+
       '<td class="pct" style="color:'+(cap==null?"var(--text-muted)":"var(--series-diag)")+'">'+
         (cap==null?"—":Math.round(cap*100)+"%")+"</td>"+
       '<td style="color:var(--series-pharm)">'+r.bNoOpd+"</td>"+
@@ -2929,12 +2935,13 @@ function exportCsv(){
   const L = [];
   L.push(["Center","Consultations","Fresh OPD","Suggested diagnostics",
           "1 Fresh OPD to diag","2 Follow-up to diag","3 Prior IP to diag","Counted","Diagnostics %",
-          "Expected revenue","Billed revenue","Billed %","4 Never consulted","4 Revenue",
+          "Expected revenue","Billed revenue","Billed after OPD","Billed after OPD %","Billed %","4 Never consulted","4 Revenue",
           "5 Returning patient","5 Revenue","Same-day sessions excluded",
           "Suggested pharmacy","Billed pharmacy","Pharmacy %"].map(q).join(","));
   [...LAST.per, LAST.tot].forEach(r=>L.push([r.center,r.opd,r.fresh,r.sugD,
     r.bFresh,r.bFollow,r.bPrior,r.bilD, r.sugD?Math.round(r.bilD/r.sugD*100):"",
     Math.round(r.expRev), Math.round(r.bilRev),
+    Math.round(r.bilRev-r.noOpdRev), r.expRev?Math.round((r.bilRev-r.noOpdRev)/r.expRev*100):"",
     r.expRev?Math.round(r.bilRev/r.expRev*100):"",
     r.bNoOpd, Math.round(r.noOpdRev),
     r.bReturn||0, Math.round(r.returnRev||0), r.bSameDay,
