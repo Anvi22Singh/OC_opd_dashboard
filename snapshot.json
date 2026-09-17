@@ -11738,7 +11738,7 @@
    "d": "2026-09-16",
    "r": "Sushant Mittal",
    "t": "OP",
-   "dT": "",
+   "dT": "ct guided lung biopsy, 24224Immunohistochemistry Individual Marker",
    "pT": "",
    "gT": "",
    "cT": "",
@@ -11746,13 +11746,24 @@
    "eD": 0,
    "eG": 0,
    "k": "fresh",
-   "hD": 0,
+   "hD": 1,
    "hP": 0,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
+   "dM": [
+    [
+     "ct guided lung biopsy",
+     null,
+     null
+    ],
+    [
+     "24224Immunohistochemistry Individual Marker",
+     null,
+     null
+    ]
+   ],
    "pM": [],
    "cM": [],
    "rM": []
@@ -11792,23 +11803,79 @@
    "d": "2026-09-16",
    "r": "Sushant Mittal",
    "t": "OP",
-   "dT": "",
-   "pT": "",
+   "dT": "BRCA 1 & 2 BY NGS (GERMLINE)(Rs 9750/-)",
+   "pT": "Paclitaxel - 100mg(Rs 3778/-), Paclitaxel - 30mg(Rs 1206/-), Carboplatin - 150 mg(Rs 946.42/-), TORIPALIMAB(Rs 125000/-)",
    "gT": "",
-   "cT": "",
-   "eP": 0,
-   "eD": 0,
+   "cT": "Paclitaxel - 100mg(Rs 3778/-), Paclitaxel - 30mg(Rs 1206/-), Carboplatin - 150 mg(Rs 946.42/-), TORIPALIMAB(Rs 125000/-)",
+   "eP": 130930,
+   "eD": 9750,
    "eG": 0,
    "k": "fresh",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
-   "cM": [],
+   "dM": [
+    [
+     "BRCA 1 & 2 BY NGS (GERMLINE)",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Paclitaxel - 100mg",
+     null,
+     null
+    ],
+    [
+     "Paclitaxel - 30mg",
+     null,
+     null
+    ],
+    [
+     "Carboplatin - 150 mg",
+     null,
+     null
+    ],
+    [
+     "TORIPALIMAB",
+     null,
+     null
+    ]
+   ],
+   "cM": [
+    [
+     "Paclitaxel - 100mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Paclitaxel - 30mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Carboplatin - 150 mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "TORIPALIMAB",
+     null,
+     null,
+     0,
+     0
+    ]
+   ],
    "rM": []
   },
   {
@@ -11871,24 +11938,61 @@
    "d": "2026-09-16",
    "r": "Ruchika Monga",
    "t": "OP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "TSH(Rs 189/-), USG B/L Breast(Rs 1699/-)",
+   "pT": "evion lc, primosa",
+   "gT": "evion lc, primosa",
    "cT": "",
    "eP": 0,
-   "eD": 0,
+   "eD": 1888,
    "eG": 0,
    "k": "fresh",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "TSH",
+     null,
+     null
+    ],
+    [
+     "USG B/L Breast",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "evion lc",
+     null,
+     null
+    ],
+    [
+     "primosa",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "evion lc",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "primosa",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Uday Shankar A N",
@@ -11957,24 +12061,122 @@
    "d": "2026-09-16",
    "r": "Sukriti Gupta",
    "t": "OP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
-   "cT": "",
+   "dT": "MD0081-Health Package(Rs 800/-), 18 F FDG PET/CT Whole Body(Rs 12000/-)",
+   "pT": "Wysolone, bactrim ds, VALACYCLOVIR - 500MG(Rs 71/-), FEBUXOSTAT - 40 MG(Rs 15/-), twinrix, shingrix, acalabrutinib",
+   "gT": "Wysolone, bactrim ds, VALACYCLOVIR - 500MG(Rs 71/-), FEBUXOSTAT - 40 MG(Rs 15/-), twinrix, shingrix",
+   "cT": "acalabrutinib",
    "eP": 0,
-   "eD": 0,
-   "eG": 0,
+   "eD": 12800,
+   "eG": 86,
    "k": "fresh",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
-   "cM": [],
-   "rM": []
+   "dM": [
+    [
+     "Health Package",
+     null,
+     null
+    ],
+    [
+     "18 F FDG PET/CT Whole Body",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "Wysolone",
+     null,
+     null
+    ],
+    [
+     "bactrim ds",
+     null,
+     null
+    ],
+    [
+     "VALACYCLOVIR - 500MG",
+     null,
+     null
+    ],
+    [
+     "FEBUXOSTAT - 40 MG",
+     null,
+     null
+    ],
+    [
+     "twinrix",
+     null,
+     null
+    ],
+    [
+     "shingrix",
+     null,
+     null
+    ],
+    [
+     "acalabrutinib",
+     null,
+     null
+    ]
+   ],
+   "cM": [
+    [
+     "acalabrutinib",
+     null,
+     null,
+     0,
+     0
+    ]
+   ],
+   "rM": [
+    [
+     "Wysolone",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "bactrim ds",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "VALACYCLOVIR - 500MG",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "FEBUXOSTAT - 40 MG",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "twinrix",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "shingrix",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Hanumanthappa M S",
@@ -11984,24 +12186,54 @@
    "d": "2026-09-16",
    "r": "Sireesh Kumar CH",
    "t": "OP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
+   "dT": "PT/INR(Rs 375/-), CA 19.9(Rs 949/-), biopsy.",
+   "pT": "d-protein",
+   "gT": "d-protein",
    "cT": "",
    "eP": 0,
-   "eD": 0,
+   "eD": 1324,
    "eG": 0,
    "k": "fresh",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
+   "dM": [
+    [
+     "PT/INR",
+     null,
+     null
+    ],
+    [
+     "CA 19.9",
+     null,
+     null
+    ],
+    [
+     "biopsy.",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "d-protein",
+     null,
+     null
+    ]
+   ],
    "cM": [],
-   "rM": []
+   "rM": [
+    [
+     "d-protein",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Nikita Itagi",
@@ -12011,24 +12243,98 @@
    "d": "2026-09-16",
    "r": "Srinivas B J",
    "t": "OP",
-   "dT": "",
-   "pT": "",
-   "gT": "",
-   "cT": "",
-   "eP": 0,
+   "dT": "54839Somatic Genomic Testing 352 (O), germline mutation test",
+   "pT": "PEGFILGRASTIM - 6mg(Rs 5240/-), Docetaxel - 120mg(Rs 22052/-), Carboplatin - 600mg(Rs 3968.33/-), Eleftha Trastuzumab - 440mg(Rs 20481/-), Eleftha Trastuzumab - 150mg(Rs 6924/-)",
+   "gT": "PEGFILGRASTIM - 6mg(Rs 5240/-)",
+   "cT": "Docetaxel - 120mg(Rs 22052/-), Carboplatin - 600mg(Rs 3968.33/-), Eleftha Trastuzumab - 440mg(Rs 20481/-), Eleftha Trastuzumab - 150mg(Rs 6924/-)",
+   "eP": 53425,
    "eD": 0,
-   "eG": 0,
+   "eG": 5240,
    "k": "fresh",
-   "hD": 0,
-   "hP": 0,
+   "hD": 1,
+   "hP": 1,
    "cD": 0,
    "cP": 0,
    "bt": 0,
    "bv": 0,
-   "dM": [],
-   "pM": [],
-   "cM": [],
-   "rM": []
+   "dM": [
+    [
+     "54839Somatic Genomic Testing 352",
+     null,
+     null
+    ],
+    [
+     "germline mutation test",
+     null,
+     null
+    ]
+   ],
+   "pM": [
+    [
+     "PEGFILGRASTIM - 6mg",
+     null,
+     null
+    ],
+    [
+     "Docetaxel - 120mg",
+     null,
+     null
+    ],
+    [
+     "Carboplatin - 600mg",
+     null,
+     null
+    ],
+    [
+     "Eleftha Trastuzumab - 440mg",
+     null,
+     null
+    ],
+    [
+     "Eleftha Trastuzumab - 150mg",
+     null,
+     null
+    ]
+   ],
+   "cM": [
+    [
+     "Docetaxel - 120mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Carboplatin - 600mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Eleftha Trastuzumab - 440mg",
+     null,
+     null,
+     0,
+     0
+    ],
+    [
+     "Eleftha Trastuzumab - 150mg",
+     null,
+     null,
+     0,
+     0
+    ]
+   ],
+   "rM": [
+    [
+     "PEGFILGRASTIM - 6mg",
+     null,
+     null,
+     0,
+     0
+    ]
+   ]
   },
   {
    "p": "Chikkanjinappa",
@@ -24742,7 +25048,7 @@
    "eP": 10331,
    "eD": 12000,
    "eG": 0,
-   "k": "followup",
+   "k": "fresh",
    "hD": 1,
    "hP": 1,
    "cD": 0,
@@ -226906,7 +227212,7 @@
    ""
   ]
  ],
- "publishedAt": "2026-09-17T09:22:51.998Z",
+ "publishedAt": "2026-09-17T14:59:34.092Z",
  "minDate": "2025-07-21",
  "maxDate": "2026-09-16",
  "encMin": "2026-08-01",
@@ -243163,7 +243469,7 @@
    "d": "2026-07-02",
    "c": "West Delhi",
    "opd": 1,
-   "fresh": 0,
+   "fresh": 1,
    "bilD": 0,
    "bFresh": 0,
    "bFollow": 0,
@@ -255217,7 +255523,7 @@
    "d": "2026-09-01",
    "c": "Kamala Nagar",
    "opd": 1,
-   "fresh": 0,
+   "fresh": 1,
    "bilD": 1,
    "bFresh": 1,
    "bFollow": 0,
@@ -258800,13 +259106,13 @@
    "btVal": 0,
    "op": {
     "n": 2,
-    "sugD": 1,
-    "expRev": 800,
-    "sugP": 1,
+    "sugD": 2,
+    "expRev": 13600,
+    "sugP": 2,
     "bilP": 0,
-    "pSug": 1,
+    "pSug": 2,
     "pBought": 0,
-    "pAdv": 1474,
+    "pAdv": 1560,
     "pBil": 0
    },
    "ip": {
@@ -258841,11 +259147,11 @@
    "btVal": 0,
    "op": {
     "n": 1,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
+    "sugD": 1,
+    "expRev": 1888,
+    "sugP": 1,
     "bilP": 0,
-    "pSug": 0,
+    "pSug": 1,
     "pBought": 0,
     "pAdv": 0,
     "pBil": 0
@@ -258923,13 +259229,13 @@
    "btVal": 0,
    "op": {
     "n": 2,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
+    "sugD": 2,
+    "expRev": 1324,
+    "sugP": 2,
     "bilP": 0,
-    "pSug": 0,
+    "pSug": 2,
     "pBought": 0,
-    "pAdv": 0,
+    "pAdv": 5240,
     "pBil": 0
    },
    "ip": {
@@ -258964,9 +259270,9 @@
    "btVal": 0,
    "op": {
     "n": 2,
-    "sugD": 0,
-    "expRev": 0,
-    "sugP": 0,
+    "sugD": 2,
+    "expRev": 9750,
+    "sugP": 1,
     "bilP": 0,
     "pSug": 0,
     "pBought": 0,
