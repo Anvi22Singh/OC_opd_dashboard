@@ -546,7 +546,18 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
       ④ and ⑤ are split using the patient master's <b>Onboarding Date</b>, matched on Hospital ID: onboarded on an earlier day means the patient already existed. Without that file the split falls back to whatever invoice history is loaded.<br>
       <b>Expected ₹</b> — the advised value, from Diagnostics Cost. <b>Billed ₹</b> — every diagnostics invoice at that center in the period, walk-ins included, so it ties to the diagnostics revenue in your books. Because Counted is a patient count and Billed ₹ is total revenue, the two are deliberately not the same population.
     </p>
+    <div id="sumScope"></div>
     <div class="tblwrap"><table id="sumTbl"></table></div>
+  </div>
+  <div class="card">
+    <h2>Did the session actually get its labs?</h2>
+    <p class="hint">One row per <b>session that advised diagnostics</b> — not per patient — because an IP patient on eight
+      chemo cycles needs bloods before each one. A session counts as done if a <b>lab line</b> was billed for that patient in
+      the window, <i>on any invoice</i>: over half of all lab lines are raised inside the chemotherapy or immunotherapy
+      invoice rather than on a separate Diagnostics invoice, and the Counted column above misses those.
+      Use the <b>OP / IP</b> filter to see one side at a time.</p>
+    <div class="tblwrap"><table id="labTbl"></table></div>
+    <div id="labNote"></div>
   </div>
   <div class="card">
     <h2>Conversion rate by center</h2>
@@ -668,7 +679,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "17-Sep-2026 f88283";
+const BUILD = "29-Sep-2026 3d2958";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1145,6 +1156,16 @@ function analyse(){
      collected on the next visit still fulfils the prescription. This matches the
      Pharmacy tab, which already counts purchases on any later date. */
   const phLines = BILL.filter(b=>b.isP);
+  /* Session-level lab compliance is judged on billing LINES, not on the invoice's
+     Procedure Type: better than half of all lab lines are raised inside the
+     chemotherapy or immunotherapy invoice rather than on a Diagnostics invoice,
+     and judging by invoice type alone loses every one of them. */
+  const labIdx = new Map();
+  BILL.filter(b=>b.isD && b.date).forEach(b=>{
+    const k = b.hid||b.mob||b.patient; if(!k) return;
+    if(!labIdx.has(k)) labIdx.set(k,[]); labIdx.get(k).push(b);
+  });
+  const LABWIN = [[0,0,"same"],[-3,0,"pre3"],[-7,1,"win"]];
   const all = V.op.map(o=>{
     const bD = linkedTo(o, dgInv), bP = linkedTo(o, phLines);
     /* Suggested = the Diagnostics Suggested cell has any content at all. The
@@ -1169,6 +1190,18 @@ function analyse(){
                                     i.date.getTime()===r.date.getTime());
       r.opdKind = same.length ? (same.some(i=>i.isNew) ? "fresh" : "followup") : "unknown";
     } else r.opdKind = null;
+    /* Labs for this session: same day, up to 3 days before, and the practical
+       pre-session window (7 days before to the day after). "any" is the patient
+       having labs billed at Oncare at any time at all. */
+    const labs = (labIdx.get(r.hid||r.mob||r.patient)||[])
+      .filter(b=>!sameCtr || b.center===r.center);
+    const delta = b => Math.round((b.date - r.date)/86400000);
+    LABWIN.forEach(([lo,hi,key])=>{
+      const hit = labs.filter(b=>{ const x=delta(b); return x>=lo && x<=hi; });
+      r["lab_"+key] = hit.length>0;
+      if(key==="win") r.labWinRev = hit.reduce((a,b)=>a+(b.net||0),0);
+    });
+    r.lab_any = labs.length>0;
     return r;
   });
   /* A patient can only be fresh once. Where several OP records carry the fresh
@@ -1183,9 +1216,35 @@ function analyse(){
 
   const ty = $("#fType").value;
   const rows = ty ? all.filter(r=>r.type===ty) : all;
-  /* Every diagnostics invoice is Invoice Type "opd" and carries no encounter
-     type, so billed diagnostics cannot be attributed to OP vs IP — only the
-     combined figure is meaningful. */
+  /* A diagnostics invoice carries no encounter type of its own, so each bill is
+     attributed to the NEAREST row in the OP/IP analysis exports for the same
+     patient: back as far as the lookback window, and up to a week forward,
+     because pre-session labs are billed a day or two AHEAD of the IP chemo
+     session they clear the patient for. Bills with no analysis row either side
+     — direct walk-ins, mostly — belong to neither and appear only under "Both". */
+  const ATTR_FWD = 7;
+  const encIdx = new Map();
+  OP.forEach(e=>{ if(!e.date) return; const k = e.hid||e.mob||e.patient; if(!k) return;
+    if(!encIdx.has(k)) encIdx.set(k,[]); encIdx.get(k).push(e); });
+  const attrType = d => {
+    const list = encIdx.get(d.hid||d.mob||d.patient); if(!list) return "";
+    let best=null, bestRank=Infinity;
+    list.forEach(e=>{
+      if(sameCtr && e.center!==d.center) return;
+      const delta = Math.round((e.date - d.date)/86400000);   // >0: encounter after the bill
+      if(delta > ATTR_FWD) return;
+      if(winDays==null){
+        if(!(e.date.getFullYear()===d.date.getFullYear() && e.date.getMonth()===d.date.getMonth())) return;
+      } else if(-delta > winDays) return;
+      /* nearest in time; a bill and an encounter on the same day rank first */
+      const rank = Math.abs(delta)*2 + (delta>0 ? 1 : 0);
+      if(rank < bestRank){ bestRank = rank; best = e; }
+    });
+    return best ? best.type : "";
+  };
+  dgAll.forEach(d=>{ d.encType = attrType(d); });
+  /* The billed side now follows the OP/IP filter, exactly like the advised side. */
+  const dgSel = ty ? dgAll.filter(d=>d.encType===ty) : dgAll;
   const dgCount = nCounted(dgAll);
   const opRows = all.filter(r=>r.type==="OP");
   const byEnc = [
@@ -1207,7 +1266,7 @@ function analyse(){
   const per = centers.map(c=>{
     const rr = rows.filter(r=>r.center===c);
     const ii = opdInv.filter(i=>i.center===c);
-    const dgHere = dgAll.filter(i=>i.center===c);
+    const dgHere = dgSel.filter(i=>i.center===c);
     const sd = rr.filter(r=>r.hasD), sp = rr.filter(r=>r.hasP);
     return {center:c,
       opd: new Set(ii.map(i=>i.invNo)).size,
@@ -1232,16 +1291,28 @@ function analyse(){
       bilRev: dgHere.reduce((a,i)=>a+i.net,0),
       sugP: sp.length, bilP: sp.filter(r=>r.convP).length};
   });
+  /* Lab compliance per centre, over the rows the OP/IP filter selected. */
+  const labPer = centers.map(c=>{
+    const rr = rows.filter(r=>r.center===c && r.hasD);
+    const n = f => rr.filter(f).length;
+    return {center:c, sess:rr.length, same:n(r=>r.lab_same), pre3:n(r=>r.lab_pre3),
+            win:n(r=>r.lab_win), any:n(r=>r.lab_any), none:n(r=>!r.lab_any),
+            adv:rr.reduce((a,r)=>a+(r.expD||0),0),
+            rev:rr.reduce((a,r)=>a+(r.labWinRev||0),0)};
+  });
+  const labTot = labPer.reduce((a,b)=>{ ["sess","same","pre3","win","any","none","adv","rev"]
+    .forEach(k=>a[k]+=b[k]); return a; },
+    {center:"All centers",sess:0,same:0,pre3:0,win:0,any:0,none:0,adv:0,rev:0});
   const KEYS = ["opd","fresh","sugD","bilD","expRev","bilRev","sugP","bilP",
                 "bFresh","bFollow","bPrior","bNoOpd","bReturn","bSameDay","noOpdRev","returnRev"];
   const tot = per.reduce((a,b)=>{ KEYS.forEach(k=>a[k]+=b[k]||0); return a; },
     Object.assign({center:"All centers"}, ...KEYS.map(k=>({[k]:0}))));
   /* Patient counts are recomputed over every centre at once: adding the columns
      up would count a patient twice if they were seen at two centres. */
-  Object.assign(tot, {bilD:nCounted(dgAll), bFresh:npat(dgAll,"fresh"),
-    bFollow:npat(dgAll,"followup"), bPrior:npat(dgAll,"prior"),
-    bNoOpd:npat(dgAll,"noopd"), bReturn:npat(dgAll,"returned"),
-    bSameDay:npat(dgAll,"sameday")});
+  Object.assign(tot, {bilD:nCounted(dgSel), bFresh:npat(dgSel,"fresh"),
+    bFollow:npat(dgSel,"followup"), bPrior:npat(dgSel,"prior"),
+    bNoOpd:npat(dgSel,"noopd"), bReturn:npat(dgSel,"returned"),
+    bSameDay:npat(dgSel,"sameday")});
   /* Back-tracking: for every diagnostics bill, what did this patient do NEXT?
      Answers whether walk-in diagnostics patients ever come back to Oncare. */
   const laterOf = d => INV
@@ -1276,7 +1347,8 @@ function analyse(){
   const pharmTot = pharmPer.reduce((a,b)=>({center:"All centers",sug:a.sug+b.sug,
     bought:a.bought+b.bought,adv:a.adv+b.adv,bil:a.bil+b.bil}),{sug:0,bought:0,adv:0,bil:0});
 
-  return {rows, allRows: all, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll,
+  return {rows, allRows: all, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll, dgSel, encTyped:true,
+          labPer, labTot,
           drugRows, pharmPer, pharmTot, V};
 }
 
@@ -1291,7 +1363,7 @@ function render(){
   }
   build();
   const A = LAST = analyse();
-  renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A);
+  renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderLabs(A); renderChart(A);
   renderDiag(A); renderItems(A); renderPatients(A);
   /* Radiation is independent of the rest; if it fails it must say so in its own
      panel rather than aborting the render and leaving the page half-drawn. */
@@ -1414,8 +1486,45 @@ function renderSummary(A){
   A.per.forEach(r=>{ h += line(r,""); });
   h += line(A.tot,"total") + "</tbody>";
   $("#sumTbl").innerHTML = h;
+  /* With an OP/IP filter on, say plainly which bills are in and which are out —
+     the billed side is attributed, not tagged, and walk-ins belong to neither. */
+  const ty = $("#fType").value, note = $("#sumScope");
+  if(note) note.innerHTML = !ty ? "" :
+    (A.encTyped === false
+      ? '<div class="warnbox">This shared snapshot was published before OP/IP attribution existed, so only the '+
+        '<b>Suggested</b> and <b>Expected ₹</b> columns follow the '+esc(ty)+' filter. Ask for a snapshot '+
+        'published from the current build to split the billed side too.</div>'
+      : '<div class="warnbox"><b>Showing '+esc(ty)+' only.</b> A diagnostics bill carries no OP/IP tag, so each one is '+
+        'credited to the nearest row in the analysis exports for that patient — up to the lookback window before it, '+
+        'and up to 7 days after, because pre-session labs are billed ahead of the session. Bills with no analysis row '+
+        'either side (direct walk-ins) are counted under <b>Both</b> only, so OP + IP is less than Both.</div>');
 }
 
+function renderLabs(A){
+  const el = $("#labTbl"); if(!el || !A.labPer) return;
+  const pc = (a,b) => b ? Math.round(a/b*100)+"%" : "—";
+  const cell = (v,d) => "<td>"+v+'</td><td class="pct" style="color:'+
+    (d?"var(--series-diag)":"var(--text-muted)")+'">'+pc(v,d)+"</td>";
+  const line = (r,cls) => '<tr class="'+cls+'"><td>'+esc(r.center)+"</td><td><b>"+r.sess+"</b></td>"+
+    cell(r.same,r.sess) + cell(r.pre3,r.sess) + cell(r.win,r.sess) + cell(r.any,r.sess) +
+    '<td style="color:var(--series-pharm)">'+r.none+"</td>"+
+    "<td>"+money(r.adv)+"</td><td>"+money(r.rev)+"</td></tr>";
+  el.innerHTML = "<thead><tr><th>Center</th><th>Sessions advising labs</th>"+
+    "<th>Same day</th><th>%</th><th>≤3 days before</th><th>%</th>"+
+    "<th>7 before → 1 after</th><th>%</th><th>Ever billed</th><th>%</th>"+
+    "<th>Never billed at all</th><th>Advised ₹</th><th>Lab ₹ in window</th></tr></thead><tbody>"+
+    (A.labPer.length ? A.labPer.filter(r=>r.sess).map(r=>line(r,"")).join("") : "")+
+    line(A.labTot,"total")+"</tbody>";
+  const t = A.labTot, ty = $("#fType").value;
+  $("#labNote").innerHTML = !t.sess ? (SNAPMODE
+    ? '<div class="warnbox">This shared snapshot was published before the session-level lab check existed. '+
+      'Republish it from the current build to fill this table.</div>' : "") :
+    '<div class="warnbox" style="margin-top:14px">Of <b>'+t.sess+"</b> "+(ty?esc(ty)+" ":"")+
+    "sessions that advised diagnostics, <b>"+t.win+"</b> ("+pc(t.win,t.sess)+
+    ") had labs billed in the pre-session window and <b>"+t.none+"</b> have no lab line at Oncare on any date. "+
+    "A session with no lab line either had the test done outside, or it sat inside a package price with no line of its own — "+
+    "both are worth chasing, and the second is a billing fix, not a lost test.</div>";
+}
 function renderChart(A){
   const data = A.per.filter(r=>r.sugD||r.sugP);
   if(!data.length){ $("#chart").innerHTML='<p class="muted">Nothing to plot for this period.</p>'; return; }
@@ -1448,7 +1557,7 @@ const BUCKET = {fresh:["① Fresh OPD","hi"], followup:["② Follow-up OPD","hi"
                 noopd:["④ Never consulted","no"], returned:["⑤ Returning patient","n"]};
 function renderDiag(A){
   const bf=$("#dBucket").value, bk=$("#dBack").value, q=$("#dSrch").value.trim().toLowerCase();
-  let list = A.dgAll.slice().sort((a,b)=>a.date-b.date);
+  let list = (A.dgSel||A.dgAll).slice().sort((a,b)=>a.date-b.date);
   const scope = bf ? list.filter(d=>d.bucket===bf) : list;
   /* One patient's later invoices must be counted once, however many diagnostics
      bills they had in this view. */
@@ -2707,6 +2816,7 @@ function snapshotOf(A){
      same drill-downs without loading the exports. This is the only part of the
      snapshot that carries names and mobile numbers. */
   const dg = A.dgAll.map(d=>({p:d.patient, m:d.mob, h:d.hid, c:d.center, d:iso(d.date),
+    y:d.encType||"",
     n:Math.round(d.net), b:d.bucket,
     k: d.back ? {d:iso(d.back.date), t:d.back.type, v:Math.round(d.back.total),
                  y:d.back.days, c:d.back.n} : null}));
@@ -2719,6 +2829,7 @@ function snapshotOf(A){
     eD:Math.round(r.expD), eG:Math.round(r.expDrug),
     k:r.opdKind||null,
     hD:r.hasD?1:0, hP:r.hasP?1:0, cD:r.convD?1:0, cP:r.convP?1:0,
+    ls:[r.lab_same?1:0, r.lab_pre3?1:0, r.lab_win?1:0, r.lab_any?1:0], lv:Math.round(r.labWinRev||0),
     bt:r.bought?1:0, bv:Math.round(r.buyRev||0),
     dM:packM(r.dMatch||[]), pM:packM(r.pMatch||[]),
     /* drug matches, so the pharmacy section survives into the snapshot */
@@ -2726,7 +2837,7 @@ function snapshotOf(A){
 
   const all = days.map(d=>d.d);
   return {
-    schema: 3, detail: true, dg, enc, build: BUILD,
+    schema: 4, detail: true, dg, enc, build: BUILD,
     /* Radiation travels with the snapshot so the shared page shows it too. */
     rad: radBuild(),
     /* Patient master for the journey tracker — the call list needs names and numbers. */
@@ -2769,6 +2880,8 @@ function aggregateSnap(){
     expProc:x.eP||0,
     expD:x.eD, expDrug:x.eG,
     hasD:!!x.hD, hasP:!!x.hP, convD:!!x.cD, convP:!!x.cP, bought:!!x.bt, buyRev:x.bv,
+    lab_same:!!(x.ls&&x.ls[0]), lab_pre3:!!(x.ls&&x.ls[1]), lab_win:!!(x.ls&&x.ls[2]),
+    lab_any:!!(x.ls&&x.ls[3]), labWinRev:x.lv||0, hasLab:!!x.ls,
     dItems:splitItems(x.dT), pItems:splitItems(x.pT),
     dMatch:unpackM(x.dM,"D"), pMatch:unpackM(x.pM,"P"), bD:[], bP:[],
     proc:unpackD(x.cM,"PROC"), reg:unpackD(x.rM,"REG"),
@@ -2815,6 +2928,7 @@ function aggregateSnap(){
      hold them to the same date / centre / OP-IP filters as the totals. */
   const dgAll = (s.dg||[]).filter(inRange).map(x=>({
     patient:x.p, mob:x.m, hid:x.h||"", center:x.c, date:parseDate(x.d), net:x.n, bucket:x.b,
+    encType:x.y||"",
     back: x.k ? {date:parseDate(x.k.d), type:x.k.t, total:x.k.v, days:x.k.y, n:x.k.c} : null}));
   const rows = encRows.filter(r=>!ty || r.type===ty);
 
@@ -2828,8 +2942,21 @@ function aggregateSnap(){
     bilD: new Set(rr.filter(d=>CNT.has(d.bucket)).map(pk)).size,
     bFresh:np(rr,"fresh"), bFollow:np(rr,"followup"), bPrior:np(rr,"prior"),
     bNoOpd:np(rr,"noopd"), bReturn:np(rr,"returned"), bSameDay:np(rr,"sameday")});
-  per.forEach(p=>setB(p, dgAll.filter(d=>d.center===p.center)));
-  setB(tot, dgAll);
+  /* Snapshots published before the OP/IP attribution existed carry no type on
+     the bill rows; there the billed side stays combined and the page says so. */
+  const encTyped = (s.dg||[]).some(x=>x.y);
+  const dgSel = (ty && encTyped) ? dgAll.filter(d=>d.encType===ty) : dgAll;
+  per.forEach(p=>setB(p, dgSel.filter(d=>d.center===p.center)));
+  setB(tot, dgSel);
+  /* Revenue is stored per day for the whole centre, so when the billed side is
+     narrowed to one encounter type it is re-added from the bill rows instead. */
+  if(ty && encTyped){
+    const money2 = rr => rr.reduce((a,d)=>a+(d.net||0),0);
+    const byB = (rr,b) => rr.filter(d=>d.bucket===b).reduce((a,d)=>a+(d.net||0),0);
+    per.forEach(p=>{ const rr = dgSel.filter(d=>d.center===p.center);
+      p.bilRev = money2(rr); p.noOpdRev = byB(rr,"noopd"); p.returnRev = byB(rr,"returned"); });
+    tot.bilRev = money2(dgSel); tot.noOpdRev = byB(dgSel,"noopd"); tot.returnRev = byB(dgSel,"returned");
+  }
   const bothRow = byEnc[byEnc.length-1];
   if(bothRow) bothRow.bilD = tot.bilD;   // combined row mirrors the recomputed total
 
@@ -2837,7 +2964,17 @@ function aggregateSnap(){
           pharmPer: centers.map(cc=>pharm(cc, sel.filter(d=>d.c===cc))),
           pharmTot: pharm("All centers", sel),
           pharmNote: s.pharmNote, backTrack: bt,
-          rows, dgAll, drugRows: rows.filter(r=>r.drugTxt.trim()!=="")};
+          rows, dgAll, dgSel, encTyped, drugRows: rows.filter(r=>r.drugTxt.trim()!==""),
+          ...(()=>{ /* lab compliance re-added from the stored encounter rows */
+            const cs = [...new Set(rows.map(r=>r.center))].sort();
+            const mk = (center,rr) => { const n=f=>rr.filter(f).length;
+              return {center, sess:rr.length, same:n(r=>r.lab_same), pre3:n(r=>r.lab_pre3),
+                      win:n(r=>r.lab_win), any:n(r=>r.lab_any), none:n(r=>!r.lab_any),
+                      adv:rr.reduce((a,r)=>a+(r.expD||0),0),
+                      rev:rr.reduce((a,r)=>a+(r.labWinRev||0),0)}; };
+            const hd = rows.filter(r=>r.hasD && r.hasLab);
+            return {labPer: cs.map(c=>mk(c, hd.filter(r=>r.center===c))), labTot: mk("All centers", hd)};
+          })()};
 }
 function publishSnapshot(){
   if(!LAST || SNAPMODE){ alert("Load the dumps first, then publish."); return; }
@@ -2863,7 +3000,7 @@ function publishSnapshot(){
 }
 function renderSnap(){
   const A = LAST = aggregateSnap();
-  renderKpis(A); renderEnc(A); renderSummary(A); renderChart(A); if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
+  renderKpis(A); renderEnc(A); renderSummary(A); renderLabs(A); renderChart(A); if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
   try{ renderPharma(); }
   catch(err){ const n=$("#phTop");
     if(n) n.innerHTML = '<div class="warnbox"><b>Pharmacy section failed to build:</b> '+esc(err.message)+"</div>"; }
