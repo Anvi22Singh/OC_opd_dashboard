@@ -523,6 +523,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
   <button aria-selected="false" data-t="diag">Diagnostics dump</button>
   <button aria-selected="false" data-t="items">Item-level detail</button>
   <button aria-selected="false" data-t="patients">Patients</button>
+  <button aria-selected="false" data-t="reg">OP / IP registered</button>
   <button aria-selected="false" data-t="settings">Rules &amp; mapping</button>
 </nav>
 
@@ -635,6 +636,36 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
   </div>
 </section>
 
+<section class="tab" id="tab-reg">
+  <div class="card">
+    <h2>Registered patients — one row per patient</h2>
+    <p class="hint">A different cut of the same data. Everything else counts <b>rows</b> in the exports; this counts
+      <b>patients</b>, split by how the patient is registered with us rather than by which file the row came from.
+      A patient is <b>IP registered</b> if they appear in the IP export, or an OP-export row carries Type (OP/IP) = IP, or the
+      patient master says IP. Everyone else is OP registered. A patient counts once, at the centre that advised them first.
+      <b>Billed</b> means a diagnostics invoice for that patient, on or after the day they were advised, inside the period.</p>
+    <div id="regNote"></div>
+  </div>
+  <div class="card">
+    <h2>OP registered patients</h2>
+    <div class="ctrls" style="margin-bottom:12px">
+      <div class="fld"><label for="regWho">Show</label><select id="regWho">
+        <option value="">Both</option>
+        <option value="fresh">Fresh — onboarded the same month</option>
+        <option value="followup">Follow-up — onboarded earlier</option></select></div>
+    </div>
+    <div class="tblwrap"><table id="regOpTbl"></table></div>
+    <div id="regOpNote"></div>
+  </div>
+  <div class="card">
+    <h2>IP registered patients</h2>
+    <p class="hint">Every patient in the IP export, plus any patient whose OP-export row is marked Type = IP, plus anyone the
+      patient master registers as IP.</p>
+    <div class="tblwrap"><table id="regIpTbl"></table></div>
+    <div id="regIpNote"></div>
+  </div>
+</section>
+
 <section class="tab" id="tab-settings">
   <div class="card">
     <h2>Center names</h2>
@@ -679,7 +710,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "29-Sep-2026 3d2958";
+const BUILD = "30-Sep-2026 4f3751";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1364,6 +1395,8 @@ function render(){
   build();
   const A = LAST = analyse();
   renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderLabs(A); renderChart(A);
+  try{ renderRegistered(A); }catch(e){ const n=$('#regNote');
+    if(n) n.innerHTML='<div class="warnbox">Registered-patient tables failed: '+esc(e.message)+'</div>'; }
   renderDiag(A); renderItems(A); renderPatients(A);
   /* Radiation is independent of the rest; if it fails it must say so in its own
      panel rather than aborting the render and leaving the page half-drawn. */
@@ -1524,6 +1557,101 @@ function renderLabs(A){
     ") had labs billed in the pre-session window and <b>"+t.none+"</b> have no lab line at Oncare on any date. "+
     "A session with no lab line either had the test done outside, or it sat inside a package price with no line of its own — "+
     "both are worth chasing, and the second is a billing fix, not a lost test.</div>";
+}
+/* -------------------------------------------------- registered patients -- */
+/* One row per patient, split by how the patient is registered rather than by
+   which export the row came from. Independent of the OP/IP filter at the top:
+   these two tables ARE the split. */
+function regTables(A){
+  const key = r => r.hid || r.mob || r.patient;
+  const enc = (A.allRows||[]).filter(r=>r.hasD && key(r));
+  /* IP evidence, from every source that can carry it */
+  const ipSet = new Set();
+  (A.allRows||[]).forEach(r=>{
+    if(r.type==="IP" || String(r.rawType||"").toUpperCase()==="IP") ipSet.add(key(r));
+  });
+  const onb = new Map();
+  (PATIENTS||[]).forEach(p=>{
+    if(String(p.type||"").toUpperCase()==="IP"){
+      if(p.id) ipSet.add(p.id);
+      if(p.mobile) ipSet.add(p.mobile);
+    }
+    if(p.onboard){
+      if(p.id && !onb.has(p.id)) onb.set(p.id, p.onboard);
+      if(p.mobile && !onb.has(p.mobile)) onb.set(p.mobile, p.onboard);
+    }
+  });
+  const dgBy = new Map();
+  (A.dgAll||[]).forEach(d=>{ const k = key(d); if(!k) return;
+    if(!dgBy.has(k)) dgBy.set(k,[]); dgBy.get(k).push(d); });
+
+  const pat = new Map();
+  enc.forEach(r=>{
+    const k = key(r);
+    let p = pat.get(k);
+    if(!p){ p = {k, name:r.patient, center:r.center, first:r.date, adv:0, dates:[]}; pat.set(k,p); }
+    if(r.date < p.first){ p.first = r.date; p.center = r.center; }
+    p.adv += r.expD||0; p.dates.push(r.date);
+  });
+  pat.forEach(p=>{
+    const bills = (dgBy.get(p.k)||[]).filter(d=>p.dates.some(od=>dateOk(d.date, od)));
+    p.bil = bills.reduce((a,d)=>a+(d.net||0),0);
+    p.conv = bills.length>0;
+    p.ip = ipSet.has(p.k);
+    /* Fresh = onboarded in the SAME MONTH as the visit that advised the tests;
+       anyone onboarded in an earlier month is a follow-up. Judging it against
+       the selected date range instead would call everybody fresh whenever the
+       range covers the whole file. With no patient-master row there is no
+       onboarding date, so the patient stays out of the split. */
+    const ob = onb.get(p.k);
+    p.when = !ob ? ""
+      : (ob.getFullYear()===p.first.getFullYear() && ob.getMonth()===p.first.getMonth())
+        ? "fresh" : "followup";
+  });
+  const all = [...pat.values()];
+  const agg = list => {
+    const mk = (center, rr) => ({center, n:rr.length, conv:rr.filter(p=>p.conv).length,
+      adv:rr.reduce((a,p)=>a+p.adv,0), bil:rr.reduce((a,p)=>a+p.bil,0)});
+    const cs = [...new Set(list.map(p=>p.center))].sort();
+    return {rows: cs.map(c=>mk(c, list.filter(p=>p.center===c))).filter(r=>r.n),
+            tot: mk("All centers", list)};
+  };
+  const who = $("#regWho") ? $("#regWho").value : "";
+  const op = all.filter(p=>!p.ip), ip = all.filter(p=>p.ip);
+  return {op: agg(who ? op.filter(p=>p.when===who) : op), ip: agg(ip),
+          opAll: op, ipAll: ip, who};
+}
+function renderRegistered(A){
+  if(!$("#regOpTbl")) return;
+  const R = regTables(A);
+  const pc = (a,b) => b ? Math.round(a/b*100)+"%" : "—";
+  const line = (r,cls) => '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
+    "<td>"+r.n+"</td><td><b>"+r.conv+"</b></td>"+
+    "<td>"+money(r.adv)+"</td><td>"+money(r.bil)+"</td>"+
+    '<td class="pct" style="color:'+(r.n?"var(--series-diag)":"var(--text-muted)")+'">'+
+      (r.n ? pc(r.conv,r.n)+" "+bar(r.conv/r.n,1,"var(--series-diag)") : "—")+"</td>"+
+    '<td class="pct" style="color:'+(r.adv?"var(--series-diag)":"var(--text-muted)")+'">'+
+      (r.adv ? pc(r.bil,r.adv) : "—")+"</td></tr>";
+  const draw = (sel,t) => { $(sel).innerHTML =
+    "<thead><tr><th>Location</th><th>Patients advised diagnostics</th><th>Patients who got billed</th>"+
+    "<th>Advised ₹</th><th>Net billed ₹</th><th>Conversion %</th><th>Billed %</th></tr></thead><tbody>"+
+    (t.rows.length ? t.rows.map(r=>line(r,"")).join("")
+                   : '<tr><td colspan="7" class="muted">Nobody in this group.</td></tr>')+
+    line(t.tot,"total")+"</tbody>"; };
+  draw("#regOpTbl", R.op); draw("#regIpTbl", R.ip);
+  const fresh = R.opAll.filter(p=>p.when==="fresh").length,
+        foll  = R.opAll.filter(p=>p.when==="followup").length,
+        unk   = R.opAll.filter(p=>!p.when).length;
+  $("#regOpNote").innerHTML = '<p class="hint" style="margin:10px 0 0">OP registered: <b>'+R.opAll.length+
+    "</b> patients advised diagnostics — "+fresh+" onboarded the same month they were advised, "+foll+" earlier"+
+    (unk ? ", "+unk+" with no patient-master row, so they sit outside the fresh / follow-up split though they stay in Both" : "")+
+    ".</p>";
+  $("#regIpNote").innerHTML = '<p class="hint" style="margin:10px 0 0">IP registered: <b>'+R.ipAll.length+
+    "</b> patients advised diagnostics.</p>";
+  $("#regNote").innerHTML = (!PATIENTS || !PATIENTS.length)
+    ? '<div class="warnbox">Load the <b>patient master</b> too — without it there is no onboarding date, so the fresh / '+
+      "follow-up dropdown has nothing to split on, and IP registration is read only from the analysis exports.</div>"
+    : "";
 }
 function renderChart(A){
   const data = A.per.filter(r=>r.sugD||r.sugP);
@@ -2824,7 +2952,7 @@ function snapshotOf(A){
   const packD = arr => arr.map(x=>[x.name, x.m?x.m.conf:null, x.m?x.m.item.item:null,
                                    x.m?Math.round(x.m.item.net||0):0, x.m?x.m.item.lid:0]);
   const enc = A.allRows.map(r=>({p:r.patient, m:r.mob, h:r.hid, c:r.center, d:iso(r.date),
-    r:r.doctor, t:r.type, dT:r.dTxt, pT:r.pTxt, gT:r.drugTxt, cT:r.procTxt,
+    r:r.doctor, t:r.type, rt:r.rawType||"", dT:r.dTxt, pT:r.pTxt, gT:r.drugTxt, cT:r.procTxt,
     eP:Math.round(r.expProc||0),
     eD:Math.round(r.expD), eG:Math.round(r.expDrug),
     k:r.opdKind||null,
@@ -2876,6 +3004,7 @@ function aggregateSnap(){
     m: a[1] ? {conf:a[1], item:lineFor(a[2],a[3]||0,a[4])} : null}));
   const unpackEnc = x => ({
     patient:x.p, mob:x.m, hid:x.h||"", center:x.c, date:parseDate(x.d), doctor:x.r, type:x.t,
+    rawType:x.rt||"",
     opdKind:x.k||null, dTxt:x.dT||"", pTxt:x.pT||"", drugTxt:x.gT||"", procTxt:x.cT||"",
     expProc:x.eP||0,
     expD:x.eD, expDrug:x.eG,
@@ -2964,7 +3093,7 @@ function aggregateSnap(){
           pharmPer: centers.map(cc=>pharm(cc, sel.filter(d=>d.c===cc))),
           pharmTot: pharm("All centers", sel),
           pharmNote: s.pharmNote, backTrack: bt,
-          rows, dgAll, dgSel, encTyped, drugRows: rows.filter(r=>r.drugTxt.trim()!==""),
+          rows, allRows: encRows, dgAll, dgSel, encTyped, drugRows: rows.filter(r=>r.drugTxt.trim()!==""),
           ...(()=>{ /* lab compliance re-added from the stored encounter rows */
             const cs = [...new Set(rows.map(r=>r.center))].sort();
             const mk = (center,rr) => { const n=f=>rr.filter(f).length;
@@ -3000,7 +3129,10 @@ function publishSnapshot(){
 }
 function renderSnap(){
   const A = LAST = aggregateSnap();
-  renderKpis(A); renderEnc(A); renderSummary(A); renderLabs(A); renderChart(A); if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
+  renderKpis(A); renderEnc(A); renderSummary(A); renderLabs(A); renderChart(A);
+  try{ renderRegistered(A); }catch(e){ const n=$('#regNote');
+    if(n) n.innerHTML='<div class="warnbox">Registered-patient tables failed: '+esc(e.message)+'</div>'; }
+  if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
   try{ renderPharma(); }
   catch(err){ const n=$("#phTop");
     if(n) n.innerHTML = '<div class="warnbox"><b>Pharmacy section failed to build:</b> '+esc(err.message)+"</div>"; }
@@ -3167,6 +3299,7 @@ function wireDetailControls(){
   ["iMatch"].forEach(id=>on(id,"change",()=>{ if(LAST) renderItems(LAST); }));
   ["pStat","pCenter","pType","pAdv"].forEach(id=>on(id,"change",()=>{ if(LAST) renderPatients(LAST); }));
   ["dBucket","dBack"].forEach(id=>on(id,"change",()=>{ if(LAST) renderDiag(LAST); }));
+  on("regWho","change",()=>{ if(LAST) renderRegistered(LAST); });
   on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
   ["phKind","phMiss","phEnc"].forEach(id=>on(id,"change",()=>{ if(OP.length&&BILL.length) renderPharma(); }));
   on("phSrch","input",()=>{ if(OP.length&&BILL.length) renderPharma(); });
