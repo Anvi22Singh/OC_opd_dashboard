@@ -519,15 +519,15 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 
 <div id="area-diagnostics" class="area">
 <nav class="tabs" id="tabs">
-  <button aria-selected="true" data-t="summary">Center summary</button>
+  <button aria-selected="true" data-t="reg">OP / IP registered</button>
+  <button aria-selected="false" data-t="summary">Center summary</button>
   <button aria-selected="false" data-t="diag">Diagnostics dump</button>
   <button aria-selected="false" data-t="items">Item-level detail</button>
   <button aria-selected="false" data-t="patients">Patients</button>
-  <button aria-selected="false" data-t="reg">OP / IP registered</button>
   <button aria-selected="false" data-t="settings">Rules &amp; mapping</button>
 </nav>
 
-<section class="tab on" id="tab-summary">
+<section class="tab" id="tab-summary">
   <div id="coverage"></div>
   <div class="kpis" id="kpis"></div>
   <div class="card">
@@ -636,7 +636,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
   </div>
 </section>
 
-<section class="tab" id="tab-reg">
+<section class="tab on" id="tab-reg">
   <div class="card">
     <h2>Registered patients — one row per patient</h2>
     <p class="hint">A different cut of the same data. Everything else counts <b>rows</b> in the exports; this counts
@@ -644,6 +644,13 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
       A patient is <b>IP registered</b> if they appear in the IP export, or an OP-export row carries Type (OP/IP) = IP, or the
       patient master says IP. Everyone else is OP registered. A patient counts once, at the centre that advised them first.
       <b>Billed</b> means a diagnostics invoice for that patient, on or after the day they were advised, inside the period.</p>
+    <div class="ctrls">
+      <label style="display:flex;gap:7px;align-items:center;font-size:13px">
+        <input type="checkbox" id="regCmp"> Compare two months, center by center</label>
+      <div class="fld"><label for="regA">Month A</label><input type="month" id="regA"></div>
+      <div class="fld"><label for="regB">Month B</label><input type="month" id="regB"></div>
+      <button class="btn" id="regSwap" type="button">Swap A and B</button>
+    </div>
     <div id="regNote"></div>
   </div>
   <div class="card">
@@ -664,6 +671,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
     <div class="tblwrap"><table id="regIpTbl"></table></div>
     <div id="regIpNote"></div>
   </div>
+  <div id="regRecon"></div>
 </section>
 
 <section class="tab" id="tab-settings">
@@ -710,7 +718,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "30-Sep-2026 4f3751";
+const BUILD = "30-Sep-2026 250854";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1395,7 +1403,7 @@ function render(){
   build();
   const A = LAST = analyse();
   renderCoverage(A); renderKpis(A); renderEnc(A); renderSummary(A); renderLabs(A); renderChart(A);
-  try{ renderRegistered(A); }catch(e){ const n=$('#regNote');
+  try{ regCmpDefaults(); renderRegistered(A); }catch(e){ const n=$('#regNote');
     if(n) n.innerHTML='<div class="warnbox">Registered-patient tables failed: '+esc(e.message)+'</div>'; }
   renderDiag(A); renderItems(A); renderPatients(A);
   /* Radiation is independent of the rest; if it fails it must say so in its own
@@ -1558,6 +1566,51 @@ function renderLabs(A){
     "A session with no lab line either had the test done outside, or it sat inside a package price with no line of its own — "+
     "both are worth chasing, and the second is a billing fix, not a lost test.</div>";
 }
+/* ------------------------------------------------------ month comparison -- */
+/* Two months, each run through the full analysis. The date inputs are driven
+   rather than duplicated, so a comparison can never drift from the rules the
+   rest of the page is using. */
+function monthRange(v){
+  if(!v || !/^\d{4}-\d{2}$/.test(v)) return null;
+  const [y,m] = v.split("-").map(Number);
+  return {f: v+"-01", t: v+"-"+String(new Date(y,m,0).getDate()).padStart(2,"0")};
+}
+const monthName = v => { const r = monthRange(v); if(!r) return "";
+  const d = parseDate(r.f);
+  return d ? d.toLocaleString("en-GB",{month:"short"})+" "+d.getFullYear() : v; };
+function analyseFor(f,t){
+  const kF = $("#fFrom").value, kT = $("#fTo").value;
+  $("#fFrom").value = f; $("#fTo").value = t;
+  try{ return SNAPMODE ? aggregateSnap() : analyse(); }
+  finally{ $("#fFrom").value = kF; $("#fTo").value = kT; }
+}
+const CMPM = [
+  {h:"Suggested",   t:"n", v:r=>r.sugD},
+  {h:"Counted",     t:"n", v:r=>r.bilD},
+  {h:"Diag %",      t:"p", v:r=>r.sugD ? r.bilD/r.sugD : null},
+  {h:"Expected ₹",  t:"m", v:r=>r.expRev},
+  {h:"Billed ₹",    t:"m", v:r=>r.bilRev},
+  {h:"Billed %",    t:"p", v:r=>r.expRev ? r.bilRev/r.expRev : null}
+];
+function cmpFmt(t,v){
+  if(v==null) return '<span class="muted">—</span>';
+  return t==="m" ? money(v) : t==="p" ? Math.round(v*100)+"%" : Number(v).toLocaleString("en-IN");
+}
+/* Δ is coloured by direction, not by judgement: every metric here is one where
+   more is better. */
+function cmpDelta(t,a,b){
+  if(a==null && b==null) return '<span class="muted">—</span>';
+  const A = a||0, B = b||0;
+  if(t==="p"){
+    const d = Math.round(B*100) - Math.round(A*100);
+    return '<span style="color:'+(d>0?"var(--good)":d<0?"var(--bad)":"var(--text-muted)")+'">'+
+      (d>0?"+":d<0?"−":"")+Math.abs(d)+" pp</span>";
+  }
+  const d = B - A;
+  const txt = t==="m" ? money(Math.abs(d)) : Math.abs(d).toLocaleString("en-IN");
+  if(!d) return '<span class="muted">0</span>';
+  return '<span style="color:'+(d>0?"var(--good)":"var(--bad)")+'">'+(d>0?"+":"−")+txt+"</span>";
+}
 /* -------------------------------------------------- registered patients -- */
 /* One row per patient, split by how the patient is registered rather than by
    which export the row came from. Independent of the OP/IP filter at the top:
@@ -1618,40 +1671,148 @@ function regTables(A){
   };
   const who = $("#regWho") ? $("#regWho").value : "";
   const op = all.filter(p=>!p.ip), ip = all.filter(p=>p.ip);
+  /* Where every rupee of diagnostics revenue sits. These two tables only ever
+     hold bills raised for a patient who was ADVISED in this period, on or after
+     the day of the advice — so the rest is accounted for here rather than left
+     as an unexplained difference. */
+  const adviseDates = new Map();
+  pat.forEach(p=>adviseDates.set(p.k, p.dates));
+  const recon = {total:0, inOp:0, inIp:0, noAdvice:0, noAdviceN:0, early:0, earlyN:0};
+  const inTable = new Map();
+  all.forEach(p=>inTable.set(p.k, p.ip ? "ip" : "op"));
+  (A.dgAll||[]).forEach(d=>{
+    const k = key(d), net = d.net||0;
+    recon.total += net;
+    const ds = adviseDates.get(k);
+    if(ds && ds.some(od=>dateOk(d.date, od))){
+      if(inTable.get(k)==="ip") recon.inIp += net; else recon.inOp += net;
+    } else if(ds){ recon.early += net; recon.earlyN++; }
+    else { recon.noAdvice += net; recon.noAdviceN++; }
+  });
   return {op: agg(who ? op.filter(p=>p.when===who) : op), ip: agg(ip),
-          opAll: op, ipAll: ip, who};
+          opAll: op, ipAll: ip, who, recon};
 }
 function renderRegistered(A){
   if(!$("#regOpTbl")) return;
-  const R = regTables(A);
   const pc = (a,b) => b ? Math.round(a/b*100)+"%" : "—";
-  const line = (r,cls) => '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
-    "<td>"+r.n+"</td><td><b>"+r.conv+"</b></td>"+
-    "<td>"+money(r.adv)+"</td><td>"+money(r.bil)+"</td>"+
-    '<td class="pct" style="color:'+(r.n?"var(--series-diag)":"var(--text-muted)")+'">'+
-      (r.n ? pc(r.conv,r.n)+" "+bar(r.conv/r.n,1,"var(--series-diag)") : "—")+"</td>"+
-    '<td class="pct" style="color:'+(r.adv?"var(--series-diag)":"var(--text-muted)")+'">'+
-      (r.adv ? pc(r.bil,r.adv) : "—")+"</td></tr>";
-  const draw = (sel,t) => { $(sel).innerHTML =
-    "<thead><tr><th>Location</th><th>Patients advised diagnostics</th><th>Patients who got billed</th>"+
-    "<th>Advised ₹</th><th>Net billed ₹</th><th>Conversion %</th><th>Billed %</th></tr></thead><tbody>"+
-    (t.rows.length ? t.rows.map(r=>line(r,"")).join("")
-                   : '<tr><td colspan="7" class="muted">Nobody in this group.</td></tr>')+
-    line(t.tot,"total")+"</tbody>"; };
-  draw("#regOpTbl", R.op); draw("#regIpTbl", R.ip);
+  const cmp = $("#regCmp") && $("#regCmp").checked;
+  /* Metrics are declared once and used by both layouts, so the plain table and
+     the A-vs-B table can never drift apart. */
+  const M = [
+    {h:"Patients advised", t:"n", v:r=>r.n},
+    {h:"Patients billed",  t:"n", v:r=>r.conv},
+    {h:"Conversion %",     t:"p", v:r=>r.n ? r.conv/r.n : null},
+    {h:"Advised ₹",        t:"m", v:r=>r.adv},
+    {h:"Net billed ₹",     t:"m", v:r=>r.bil},
+    {h:"Billed %",         t:"p", v:r=>r.adv ? r.bil/r.adv : null}
+  ];
+  const BLANK = {center:"", n:0, conv:0, adv:0, bil:0};
+
+  if(!cmp){
+    const R = regTables(A);
+    const line = (r,cls) => '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
+      "<td>"+r.n+"</td><td><b>"+r.conv+"</b></td>"+
+      "<td>"+money(r.adv)+"</td><td>"+money(r.bil)+"</td>"+
+      '<td class="pct" style="color:'+(r.n?"var(--series-diag)":"var(--text-muted)")+'">'+
+        (r.n ? pc(r.conv,r.n)+" "+bar(r.conv/r.n,1,"var(--series-diag)") : "—")+"</td>"+
+      '<td class="pct" style="color:'+(r.adv?"var(--series-diag)":"var(--text-muted)")+'">'+
+        (r.adv ? pc(r.bil,r.adv) : "—")+"</td></tr>";
+    const draw = (sel,t) => { $(sel).innerHTML =
+      "<thead><tr><th>Location</th><th>Patients advised diagnostics</th><th>Patients who got billed</th>"+
+      "<th>Advised ₹</th><th>Net billed ₹</th><th>Conversion %</th><th>Billed %</th></tr></thead><tbody>"+
+      (t.rows.length ? t.rows.map(r=>line(r,"")).join("")
+                     : '<tr><td colspan="7" class="muted">Nobody in this group.</td></tr>')+
+      line(t.tot,"total")+"</tbody>"; };
+    draw("#regOpTbl", R.op); draw("#regIpTbl", R.ip);
+    regNotes(R, "");
+    renderRecon(R.recon);
+    return;
+  }
+
+  /* Comparison: each month is run through the whole analysis again, with the
+     centre, OP/IP and date-rule settings from the top of the page still on. */
+  const va = $("#regA").value, vb = $("#regB").value;
+  const ra = monthRange(va), rb = monthRange(vb);
+  if(!ra || !rb){
+    $("#regNote").innerHTML = '<div class="warnbox">Pick both months to compare.</div>';
+    return;
+  }
+  const Ra = regTables(analyseFor(ra.f, ra.t)), Rb = regTables(analyseFor(rb.f, rb.t));
+  /* The two runs leave the shared invoice rows tagged for month B, so the main
+     view is recomputed before anything else reads it again. */
+  LAST = SNAPMODE ? aggregateSnap() : analyse();
+  const mA = monthName(va), mB = monthName(vb);
+  const drawCmp = (sel, ta, tb) => {
+    const ia = new Map(ta.rows.map(r=>[r.center,r])), ib = new Map(tb.rows.map(r=>[r.center,r]));
+    const cs = [...new Set([...ia.keys(), ...ib.keys()])].sort();
+    const line = (name, x, y, cls) => '<tr class="'+cls+'"><td>'+esc(name)+"</td>"+
+      M.map(c=>"<td>"+cmpFmt(c.t, c.v(x))+"</td><td>"+cmpFmt(c.t, c.v(y))+"</td>"+
+        "<td>"+cmpDelta(c.t, c.v(x), c.v(y))+"</td>").join("")+"</tr>";
+    $(sel).innerHTML = "<thead><tr><th>Location</th>"+
+      M.map(c=>"<th>"+esc(c.h)+" · "+esc(mA)+"</th><th>"+esc(c.h)+" · "+esc(mB)+"</th><th>Δ</th>").join("")+
+      "</tr></thead><tbody>"+
+      (cs.length ? cs.map(c=>line(c, ia.get(c)||BLANK, ib.get(c)||BLANK, "")).join("")
+                 : '<tr><td colspan="'+(1+M.length*3)+'" class="muted">Nobody in either month.</td></tr>')+
+      line("All centers", ta.tot, tb.tot, "total")+"</tbody>";
+  };
+  drawCmp("#regOpTbl", Ra.op, Rb.op);
+  drawCmp("#regIpTbl", Ra.ip, Rb.ip);
+  renderRecon(null);   /* the bridge is a single-period statement */
+  regNotes(Rb, " in "+mB);
+  const ty = $("#fType").value, cen = $("#fCenter").value;
+  $("#regNote").innerHTML = '<div class="warnbox">Comparing <b>'+esc(mA)+"</b> with <b>"+esc(mB)+
+    "</b>. Δ is B minus A; percentages move in percentage points. Each month is put through the whole analysis on its own, "+
+    "with the filters at the top still applied"+
+    (ty||cen ? " (currently "+[cen?esc(cen):"", ty?esc(ty)+" only":""].filter(Boolean).join(", ")+")" : "")+
+    ", so the two sides are strictly comparable.</div>";
+}
+/* Ties the two tables back to the diagnostics revenue in the books. */
+function renderRecon(R){
+  const el = $("#regRecon"); if(!el) return;
+  if(!R || !R.total){ el.innerHTML = ""; return; }
+  const pc = v => R.total ? Math.round(v/R.total*100)+"%" : "—";
+  const row = (lab, v, n, cls) => '<tr class="'+cls+'"><td>'+lab+"</td><td>"+money(v)+
+    '</td><td class="pct">'+pc(v)+"</td><td>"+(n==null?'<span class="muted">—</span>':n)+"</td></tr>";
+  const inTables = R.inOp + R.inIp;
+  el.innerHTML = '<div class="card"><h2>Where the rest of the diagnostics revenue sits</h2>'+
+    '<p class="hint">The two tables above only hold bills raised for a patient who was <b>advised in this period</b>, on or '+
+    "after the day they were advised. Everything else is diagnostics revenue the conversion question does not apply to. "+
+    "The lines below add up to the diagnostics revenue for the same period, centre and OP/IP filter.</p>"+
+    '<div class="tblwrap"><table><thead><tr><th>Line</th><th>Net billed ₹</th><th>Share</th><th>Bills</th>'+
+    "</tr></thead><tbody>"+
+    row("In the <b>OP registered</b> table", R.inOp, null, "")+
+    row("In the <b>IP registered</b> table", R.inIp, null, "")+
+    row("<b>Subtotal — in the two tables</b>", inTables, null, "total")+
+    row("Patient had <b>no advice row in this period</b> — walk-ins, and patients advised in an earlier month", R.noAdvice, R.noAdviceN, "")+
+    row("Patient <b>was</b> advised this period, but the bill came <b>before</b> the advice", R.early, R.earlyN, "")+
+    row("<b>Total diagnostics billed</b>", R.total, null, "total")+
+    "</tbody></table></div></div>";
+}
+/* The two notes under the tables, shared by both layouts. */
+function regNotes(R, when){
   const fresh = R.opAll.filter(p=>p.when==="fresh").length,
         foll  = R.opAll.filter(p=>p.when==="followup").length,
         unk   = R.opAll.filter(p=>!p.when).length;
-  $("#regOpNote").innerHTML = '<p class="hint" style="margin:10px 0 0">OP registered: <b>'+R.opAll.length+
+  $("#regOpNote").innerHTML = '<p class="hint" style="margin:10px 0 0">OP registered'+esc(when)+": <b>"+R.opAll.length+
     "</b> patients advised diagnostics — "+fresh+" onboarded the same month they were advised, "+foll+" earlier"+
     (unk ? ", "+unk+" with no patient-master row, so they sit outside the fresh / follow-up split though they stay in Both" : "")+
     ".</p>";
-  $("#regIpNote").innerHTML = '<p class="hint" style="margin:10px 0 0">IP registered: <b>'+R.ipAll.length+
+  $("#regIpNote").innerHTML = '<p class="hint" style="margin:10px 0 0">IP registered'+esc(when)+": <b>"+R.ipAll.length+
     "</b> patients advised diagnostics.</p>";
-  $("#regNote").innerHTML = (!PATIENTS || !PATIENTS.length)
-    ? '<div class="warnbox">Load the <b>patient master</b> too — without it there is no onboarding date, so the fresh / '+
-      "follow-up dropdown has nothing to split on, and IP registration is read only from the analysis exports.</div>"
-    : "";
+  if(!$("#regCmp") || !$("#regCmp").checked)
+    $("#regNote").innerHTML = (!PATIENTS || !PATIENTS.length)
+      ? '<div class="warnbox">Load the <b>patient master</b> too — without it there is no onboarding date, so the fresh / '+
+        "follow-up dropdown has nothing to split on, and IP registration is read only from the analysis exports.</div>"
+      : "";
+}
+/* Default the two months to the last month of data and the one before it. */
+function regCmpDefaults(){
+  if(!$("#regB") || $("#regB").value) return;
+  const d = parseDate($("#fTo").value || (SNAP && SNAP.maxDate) || "");
+  if(!d) return;
+  const mv = x => x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0");
+  $("#regB").value = mv(new Date(d.getFullYear(), d.getMonth(), 1));
+  $("#regA").value = mv(new Date(d.getFullYear(), d.getMonth()-1, 1));
 }
 function renderChart(A){
   const data = A.per.filter(r=>r.sugD||r.sugP);
@@ -3130,7 +3291,7 @@ function publishSnapshot(){
 function renderSnap(){
   const A = LAST = aggregateSnap();
   renderKpis(A); renderEnc(A); renderSummary(A); renderLabs(A); renderChart(A);
-  try{ renderRegistered(A); }catch(e){ const n=$('#regNote');
+  try{ regCmpDefaults(); renderRegistered(A); }catch(e){ const n=$('#regNote');
     if(n) n.innerHTML='<div class="warnbox">Registered-patient tables failed: '+esc(e.message)+'</div>'; }
   if(SNAP.detail){ renderDiag(A); renderItems(A); renderPatients(A); }
   try{ renderPharma(); }
@@ -3300,6 +3461,11 @@ function wireDetailControls(){
   ["pStat","pCenter","pType","pAdv"].forEach(id=>on(id,"change",()=>{ if(LAST) renderPatients(LAST); }));
   ["dBucket","dBack"].forEach(id=>on(id,"change",()=>{ if(LAST) renderDiag(LAST); }));
   on("regWho","change",()=>{ if(LAST) renderRegistered(LAST); });
+  /* The comparison runs the analysis twice, so it is drawn on demand — when
+     its tab is opened or its months change — not on every render. */
+  ["regCmp","regA","regB"].forEach(id=>on(id,"change",()=>{ if(LAST) renderRegistered(LAST); }));
+  on("regSwap","click",()=>{ const a=$("#regA").value; $("#regA").value=$("#regB").value;
+    $("#regB").value=a; if(LAST) renderRegistered(LAST); });
   on("dSrch","input",()=>{ if(LAST) renderDiag(LAST); });
   ["phKind","phMiss","phEnc"].forEach(id=>on(id,"change",()=>{ if(OP.length&&BILL.length) renderPharma(); }));
   on("phSrch","input",()=>{ if(OP.length&&BILL.length) renderPharma(); });
