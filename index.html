@@ -643,9 +643,9 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
       <b>patients</b>, split by how the patient is registered with us rather than by which file the row came from.
       A patient is <b>IP registered</b> if they appear in the IP export, or an OP-export row carries Type (OP/IP) = IP, or the
       patient master says IP. Everyone else is OP registered. A patient counts once, at the centre that advised them first.
-      <b>Billed</b> means a diagnostics invoice for that patient inside the period — for an OP patient on or after the day
-      they were advised, and for an IP patient on any day of the period, since their bloods are billed just before the
-      session that records the advice.</p>
+      <b>Billed</b> means a diagnostics invoice for that patient inside the period. For IP patients, and for anyone who was
+      already our patient before this month, any day of the period counts. Only for a patient onboarded this month must the
+      bill come on or after the advice — before that, the test was referred in from outside.</p>
     <div class="ctrls">
       <label style="display:flex;gap:7px;align-items:center;font-size:13px">
         <input type="checkbox" id="regCmp"> Compare two months, center by center</label>
@@ -720,7 +720,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "30-Sep-2026 d91c77";
+const BUILD = "30-Sep-2026 5fae7f";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1650,20 +1650,6 @@ function regTables(A){
   });
   pat.forEach(p=>{
     p.ip = ipSet.has(p.k);
-    /* An IP patient on an ongoing protocol is advised bloods before every
-       session, and the lab is billed a day or two AHEAD of the session row that
-       carries the advice — often against an advice written the month before.
-       So for an IP-registered patient every diagnostics bill in the period
-       counts; for an OP patient the bill must still follow the advice, because
-       there a test done first and consulted later is genuinely not a
-       conversion. */
-    const mine = dgBy.get(p.k) || [];
-    const bills = p.ip ? mine : mine.filter(d=>p.dates.some(od=>dateOk(d.date, od)));
-    p.bil = bills.reduce((a,d)=>a+(d.net||0),0);
-    p.conv = bills.length>0;
-    p.early = p.ip ? mine.filter(d=>!p.dates.some(od=>dateOk(d.date, od)))
-                          .reduce((a,d)=>a+(d.net||0),0) : 0;
-    p.earlyN = p.ip ? mine.filter(d=>!p.dates.some(od=>dateOk(d.date, od))).length : 0;
     /* Fresh = onboarded in the SAME MONTH as the visit that advised the tests;
        anyone onboarded in an earlier month is a follow-up. Judging it against
        the selected date range instead would call everybody fresh whenever the
@@ -1673,6 +1659,25 @@ function regTables(A){
     p.when = !ob ? ""
       : (ob.getFullYear()===p.first.getFullYear() && ob.getMonth()===p.first.getMonth())
         ? "fresh" : "followup";
+    /* Does the order of bill and advice matter for this patient?
+         IP on a protocol      - no. Bloods are advised before every session and
+                                 billed a day or two ahead of the session row.
+         Existing OP patient   - no. They were already ours before this month, so
+                                 a test they do here is follow-up care whichever
+                                 side of the consultation it is billed.
+         Patient new this month- YES. A test billed before their first advice
+                                 came in on somebody else's referral, and it
+                                 produced the consultation rather than the other
+                                 way round. */
+    p.anyOrder = p.ip || p.when==="followup";
+    const mine = dgBy.get(p.k) || [];
+    const follows = d => p.dates.some(od=>dateOk(d.date, od));
+    const bills = p.anyOrder ? mine : mine.filter(follows);
+    p.bil = bills.reduce((a,d)=>a+(d.net||0),0);
+    p.conv = bills.length>0;
+    const pre = p.anyOrder ? mine.filter(d=>!follows(d)) : [];
+    p.early = pre.reduce((a,d)=>a+(d.net||0),0);
+    p.earlyN = pre.length;
   });
   const all = [...pat.values()];
   const agg = list => {
@@ -1693,17 +1698,18 @@ function regTables(A){
   const recon = {total:0, inOp:0, inIp:0, noAdvice:0, noAdviceN:0, early:0, earlyN:0,
                  ipEarly:0, ipEarlyN:0};
   const inTable = new Map();
-  all.forEach(p=>inTable.set(p.k, p.ip ? "ip" : "op"));
+  all.forEach(p=>inTable.set(p.k, {side: p.ip ? "ip" : "op", anyOrder: p.anyOrder}));
   (A.dgAll||[]).forEach(d=>{
     const k = key(d), net = d.net||0;
     recon.total += net;
     const ds = adviseDates.get(k);
     if(!ds){ recon.noAdvice += net; recon.noAdviceN++; return; }
     const follows = ds.some(od=>dateOk(d.date, od));
-    if(inTable.get(k)==="ip"){
-      recon.inIp += net;
+    const t = inTable.get(k) || {side:"op", anyOrder:false};
+    if(follows || t.anyOrder){
+      if(t.side==="ip") recon.inIp += net; else recon.inOp += net;
       if(!follows){ recon.ipEarly += net; recon.ipEarlyN++; }   /* shown, not excluded */
-    } else if(follows){ recon.inOp += net; }
+    }
     else { recon.early += net; recon.earlyN++; }
   });
   return {op: agg(who ? op.filter(p=>p.when===who) : op), ip: agg(ip),
@@ -1718,7 +1724,6 @@ function renderRegistered(A){
   const M = [
     {h:"Patients advised", t:"n", v:r=>r.n},
     {h:"Patients billed",  t:"n", v:r=>r.conv},
-    {h:"Conversion %",     t:"p", v:r=>r.n ? r.conv/r.n : null},
     {h:"Advised ₹",        t:"m", v:r=>r.adv},
     {h:"Net billed ₹",     t:"m", v:r=>r.bil},
     {h:"Billed %",         t:"p", v:r=>r.adv ? r.bil/r.adv : null}
@@ -1730,15 +1735,13 @@ function renderRegistered(A){
     const line = (r,cls) => '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
       "<td>"+r.n+"</td><td><b>"+r.conv+"</b></td>"+
       "<td>"+money(r.adv)+"</td><td>"+money(r.bil)+"</td>"+
-      '<td class="pct" style="color:'+(r.n?"var(--series-diag)":"var(--text-muted)")+'">'+
-        (r.n ? pc(r.conv,r.n)+" "+bar(r.conv/r.n,1,"var(--series-diag)") : "—")+"</td>"+
       '<td class="pct" style="color:'+(r.adv?"var(--series-diag)":"var(--text-muted)")+'">'+
-        (r.adv ? pc(r.bil,r.adv) : "—")+"</td></tr>";
+        (r.adv ? pc(r.bil,r.adv)+" "+bar(Math.min(r.bil/r.adv,1),1,"var(--series-diag)") : "—")+"</td></tr>";
     const draw = (sel,t) => { $(sel).innerHTML =
       "<thead><tr><th>Location</th><th>Patients advised diagnostics</th><th>Patients who got billed</th>"+
-      "<th>Advised ₹</th><th>Net billed ₹</th><th>Conversion %</th><th>Billed %</th></tr></thead><tbody>"+
+      "<th>Advised ₹</th><th>Net billed ₹</th><th>Billed %</th></tr></thead><tbody>"+
       (t.rows.length ? t.rows.map(r=>line(r,"")).join("")
-                     : '<tr><td colspan="7" class="muted">Nobody in this group.</td></tr>')+
+                     : '<tr><td colspan="6" class="muted">Nobody in this group.</td></tr>')+
       line(t.tot,"total")+"</tbody>"; };
     draw("#regOpTbl", R.op); draw("#regIpTbl", R.ip);
     regNotes(R, "");
@@ -1792,20 +1795,21 @@ function renderRecon(R){
     '</td><td class="pct">'+pc(v)+"</td><td>"+(n==null?'<span class="muted">—</span>':n)+"</td></tr>";
   const inTables = R.inOp + R.inIp;
   el.innerHTML = '<div class="card"><h2>Where the rest of the diagnostics revenue sits</h2>'+
-    '<p class="hint">The two tables above hold bills raised for a patient <b>advised in this period</b>. For an <b>OP</b> '+
-    "patient the bill must come on or after the advice. For an <b>IP</b> patient every diagnostics bill in the period counts, "+
-    "because bloods are advised before each session and billed a day or two ahead of the session row that records the advice — "+
-    "often against advice written the month before. "+
+    '<p class="hint">The two tables above hold bills raised for a patient <b>advised in this period</b>. For an <b>IP</b> '+
+    "patient, and for any <b>patient who was already ours before this month</b>, every diagnostics bill in the period counts — "+
+    "bloods are billed ahead of the session that records them, and an existing patient doing a test here is follow-up care "+
+    "whichever side of the consultation it falls. Only for a patient <b>new this month</b> must the bill follow the advice, "+
+    "because a test billed before their first consultation came in on an outside referral. "+
     "The lines below add up to the diagnostics revenue for the same period, centre and OP/IP filter.</p>"+
     '<div class="tblwrap"><table><thead><tr><th>Line</th><th>Net billed ₹</th><th>Share</th><th>Bills</th>'+
     "</tr></thead><tbody>"+
     row("In the <b>OP registered</b> table", R.inOp, null, "")+
     row("In the <b>IP registered</b> table", R.inIp, null, "")+
-    (R.ipEarly ? row("&nbsp;&nbsp;<i>of which IP labs billed before the session row that advised them — counted above</i>",
+    (R.ipEarly ? row("&nbsp;&nbsp;<i>of which billed before the advice — IP sessions and existing patients, counted above</i>",
                      R.ipEarly, R.ipEarlyN, "") : "")+
     row("<b>Subtotal — in the two tables</b>", inTables, null, "total")+
     row("Patient had <b>no advice row in this period</b> — walk-ins, and patients advised in an earlier month", R.noAdvice, R.noAdviceN, "")+
-    row("<b>OP</b> patient was advised this period, but the bill came <b>before</b> the advice", R.early, R.earlyN, "")+
+    row("Patient <b>new this month</b>, and the bill came <b>before</b> their first advice — referred in from outside", R.early, R.earlyN, "")+
     row("<b>Total diagnostics billed</b>", R.total, null, "total")+
     "</tbody></table></div></div>";
 }
