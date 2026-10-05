@@ -720,7 +720,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "30-Sep-2026 5fae7f";
+const BUILD = "03-Oct-2026 c9f39d";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   centers: [
@@ -1388,7 +1388,11 @@ function analyse(){
   const pharmTot = pharmPer.reduce((a,b)=>({center:"All centers",sug:a.sug+b.sug,
     bought:a.bought+b.bought,adv:a.adv+b.adv,bil:a.bil+b.bil}),{sug:0,bought:0,adv:0,bil:0});
 
-  return {rows, allRows: all, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll, dgSel, encTyped:true,
+  /* Every encounter at the selected centre, whatever the date — needed to see
+     that a patient billed this month was advised in an earlier one. */
+  const cenSel = $("#fCenter").value;
+  const allEnc = OP.filter(r=>!cenSel || r.center===cenSel);
+  return {rows, allRows: all, allEnc, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll, dgSel, encTyped:true,
           labPer, labTot,
           drugRows, pharmPer, pharmTot, V};
 }
@@ -1622,7 +1626,9 @@ function regTables(A){
   const enc = (A.allRows||[]).filter(r=>r.hasD && key(r));
   /* IP evidence, from every source that can carry it */
   const ipSet = new Set();
-  (A.allRows||[]).forEach(r=>{
+  /* Read IP evidence from the whole file: a patient on chemo since July is IP
+     registered even in a month where only an OP row appears. */
+  (A.allEnc||A.allRows||[]).forEach(r=>{
     if(r.type==="IP" || String(r.rawType||"").toUpperCase()==="IP") ipSet.add(key(r));
   });
   const onb = new Map();
@@ -1679,9 +1685,38 @@ function regTables(A){
     p.early = pre.reduce((a,d)=>a+(d.net||0),0);
     p.earlyN = pre.length;
   });
+  /* A test advised on the 30th and billed on the 1st belongs to the month it was
+     billed in — the money arrived then. So a patient with no advice THIS period
+     but an advice row in an earlier one still carries their bills into the
+     table, with no advised value attached, since that was counted when it was
+     given. Patients never advised at all stay out: those are walk-ins. */
+  const P0 = period();
+  const priorAdv = new Set();
+  /* The global encounter list is the raw mapped rows, which carry the advice
+     text but not the hasD flag the analysed rows get. */
+  const wasAdvised = r => r.hasD || (r.dTxt && String(r.dTxt).trim()!=="");
+  (A.allEnc||[]).forEach(r=>{
+    if(!wasAdvised(r) || !r.date) return;
+    if(P0.f && r.date >= P0.f) return;          // advice inside the period is handled above
+    const k = key(r); if(k && !pat.has(k)) priorAdv.add(k);
+  });
+  dgBy.forEach((bills, k)=>{
+    if(pat.has(k) || !priorAdv.has(k)) return;
+    const b0 = bills.slice().sort((x,y)=>x.date-y.date)[0];
+    const p = {k, name:b0.patient, center:b0.center, first:b0.date, adv:0, dates:[],
+               earlierOnly:true, anyOrder:true, when:"", ip:ipSet.has(k)};
+    p.bil = bills.reduce((a,d)=>a+(d.net||0),0);
+    p.conv = bills.length>0;
+    p.early = 0; p.earlyN = 0;
+    pat.set(k, p);
+  });
   const all = [...pat.values()];
   const agg = list => {
-    const mk = (center, rr) => ({center, n:rr.length, conv:rr.filter(p=>p.conv).length,
+    /* n counts patients ADVISED in this period; a patient billed this period on
+       an earlier month's advice adds to the billed side only, so the advised
+       column never counts the same advice twice. */
+    const mk = (center, rr) => ({center, n:rr.filter(p=>!p.earlierOnly).length,
+      conv:rr.filter(p=>p.conv).length,
       adv:rr.reduce((a,p)=>a+p.adv,0), bil:rr.reduce((a,p)=>a+p.bil,0)});
     const cs = [...new Set(list.map(p=>p.center))].sort();
     return {rows: cs.map(c=>mk(c, list.filter(p=>p.center===c))).filter(r=>r.n),
@@ -1696,14 +1731,20 @@ function regTables(A){
   const adviseDates = new Map();
   pat.forEach(p=>adviseDates.set(p.k, p.dates));
   const recon = {total:0, inOp:0, inIp:0, noAdvice:0, noAdviceN:0, early:0, earlyN:0,
-                 ipEarly:0, ipEarlyN:0};
+                 ipEarly:0, ipEarlyN:0, prior:0, priorN:0};
   const inTable = new Map();
-  all.forEach(p=>inTable.set(p.k, {side: p.ip ? "ip" : "op", anyOrder: p.anyOrder}));
+  all.forEach(p=>inTable.set(p.k, {side: p.ip ? "ip" : "op", anyOrder: p.anyOrder,
+                                   earlierOnly: !!p.earlierOnly}));
   (A.dgAll||[]).forEach(d=>{
     const k = key(d), net = d.net||0;
     recon.total += net;
     const ds = adviseDates.get(k);
-    if(!ds){ recon.noAdvice += net; recon.noAdviceN++; return; }
+    const t0 = inTable.get(k);
+    if(t0 && t0.earlierOnly){                       /* billed now, advised earlier */
+      if(t0.side==="ip") recon.inIp += net; else recon.inOp += net;
+      recon.prior += net; recon.priorN++; return;
+    }
+    if(!ds || !ds.length){ recon.noAdvice += net; recon.noAdviceN++; return; }
     const follows = ds.some(od=>dateOk(d.date, od));
     const t = inTable.get(k) || {side:"op", anyOrder:false};
     if(follows || t.anyOrder){
@@ -1807,8 +1848,10 @@ function renderRecon(R){
     row("In the <b>IP registered</b> table", R.inIp, null, "")+
     (R.ipEarly ? row("&nbsp;&nbsp;<i>of which billed before the advice — IP sessions and existing patients, counted above</i>",
                      R.ipEarly, R.ipEarlyN, "") : "")+
+    (R.prior ? row("&nbsp;&nbsp;<i>of which billed this period against advice given in an earlier one — counted above</i>",
+                   R.prior, R.priorN, "") : "")+
     row("<b>Subtotal — in the two tables</b>", inTables, null, "total")+
-    row("Patient had <b>no advice row in this period</b> — walk-ins, and patients advised in an earlier month", R.noAdvice, R.noAdviceN, "")+
+    row("Patient <b>never advised</b> diagnostics at all — direct walk-in", R.noAdvice, R.noAdviceN, "")+
     row("Patient <b>new this month</b>, and the bill came <b>before</b> their first advice — referred in from outside", R.early, R.earlyN, "")+
     row("<b>Total diagnostics billed</b>", R.total, null, "total")+
     "</tbody></table></div></div>";
@@ -3279,7 +3322,8 @@ function aggregateSnap(){
           pharmPer: centers.map(cc=>pharm(cc, sel.filter(d=>d.c===cc))),
           pharmTot: pharm("All centers", sel),
           pharmNote: s.pharmNote, backTrack: bt,
-          rows, allRows: encRows, dgAll, dgSel, encTyped, drugRows: rows.filter(r=>r.drugTxt.trim()!==""),
+          rows, allRows: encRows, allEnc: (s.enc||[]).filter(x=>!c || x.c===c).map(unpackEnc),
+          dgAll, dgSel, encTyped, drugRows: rows.filter(r=>r.drugTxt.trim()!==""),
           ...(()=>{ /* lab compliance re-added from the stored encounter rows */
             const cs = [...new Set(rows.map(r=>r.center))].sort();
             const mk = (center,rr) => { const n=f=>rr.filter(f).length;
