@@ -696,6 +696,14 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
     <textarea id="cfgRad" style="min-height:150px"></textarea>
   </div>
   <div class="card">
+    <h2>Not a diagnostic test</h2>
+    <p class="hint">Sometimes a line is billed on an invoice the system has tagged <b>Diagnostics</b> even though it is not a
+      test — a stitch removal at Gurugram came through that way on its own Diagnostics invoice. Anything listed here is taken
+      out of the diagnostics value, one phrase per line, matched anywhere in the item name. Biopsies, aspirations and imaging
+      are deliberately not on this list: those are diagnostic procedures and belong in the number.</p>
+    <textarea id="cfgNotDiag" style="min-height:110px"></textarea>
+  </div>
+  <div class="card">
     <h2>Item synonyms</h2>
     <p class="hint">One group per line, comma separated — anything on the same line is treated as the same item when matching advice to bills.</p>
     <textarea id="cfgSyn" style="min-height:160px"></textarea>
@@ -720,9 +728,13 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "03-Oct-2026 c9f39d";
+const BUILD = "07-Oct-2026 03dd78";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
+  /* Lines that are not a diagnostic test, even when they ride on an invoice the
+     billing system has tagged Diagnostics. One per line. */
+  notdiag: ["stitch removal","dressing","consultation","pharmacy","registration",
+            "room charge","bed charge","nursing"].join("\n"),
   centers: [
     "Greater Kailash | Greater Kailash",
     "West Delhi | West Delhi",
@@ -777,7 +789,8 @@ function loadCfg(){
      setting existed would otherwise leave that key undefined, and the first
      thing to read it throws — which is exactly how the radiation tab broke for
      anyone who had saved settings earlier. */
-  const base = {centers:DEF.centers, diag:DEF.diag, pharm:DEF.pharm, syn:DEF.syn, radDocs:DEF.radDocs};
+  const base = {centers:DEF.centers, diag:DEF.diag, pharm:DEF.pharm, syn:DEF.syn, radDocs:DEF.radDocs,
+                notdiag:DEF.notdiag};
   try{
     const r = JSON.parse(localStorage.getItem(LSK));
     if(r && typeof r === "object"){
@@ -991,6 +1004,10 @@ function build(){
     const item = String(get(r,"Item Name")||"");
     return {
       center: centerOf(get(r,"Location")), date: parseDate(get(r,"Invoice Date","Item Billed Date")),
+      /* The invoice's own date, kept apart from the line date: invoice numbers
+         are reused at the same centre years apart (222 of them here), so centre
+         + number alone can attach a line to the wrong invoice. */
+      invDate: parseDate(get(r,"Invoice Date")),
       lid: ++_lid,
       hid: hid(get(r,"Hospital ID")),
       mob: normMobile(get(r,"Patient Mobile","Patient Mobile Number")),
@@ -1187,12 +1204,49 @@ function analyse(){
   const npat = (rows, b) => new Set(rows.filter(d=>d.bucket===b).map(pkey)).size;
   const nCounted = rows => new Set(rows.filter(d=>COUNTED.has(d.bucket)).map(pkey)).size;
   const sumNet = (rows, b) => rows.filter(d=>d.bucket===b).reduce((a,d)=>a+d.net,0);
-  const dgAll = V.inv.filter(i=>i.procType==="DIAGNOSTICS");
+  /* A diagnostics invoice is counted at invoice level, so anything on it that is
+     not a test has to come off, or a mis-tagged stitch removal is reported as
+     diagnostics revenue. */
+  const ndWords = String(CFG.notdiag==null ? DEF.notdiag : CFG.notdiag)
+    .split("\n").map(x=>x.trim()).filter(Boolean)
+    .map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  const ndRe = ndWords.length ? new RegExp(ndWords.join("|"), "i") : null;
+  const ikey = x => x.center+"|"+x.invNo+"|"+iso(x.invDate||x.date);
+  const ndByInv = new Map();
+  if(ndRe) V.bill.forEach(b=>{ if(!b.item || !ndRe.test(b.item)) return;
+    ndByInv.set(ikey(b), (ndByInv.get(ikey(b))||0) + (b.net||0)); });
+  let ndTotal = 0;
+  const dgAll = V.inv.filter(i=>i.procType==="DIAGNOSTICS").map(i=>{
+    const cut = ndByInv.get(ikey(i)) || 0;
+    if(!cut) return i;
+    const net = Math.max(0, (i.net||0) - cut);
+    ndTotal += (i.net||0) - net;
+    return Object.assign(Object.create(Object.getPrototypeOf(i)), i, {net, netRaw:i.net, ndCut:(i.net||0)-net});
+  });
   dgAll.forEach(d=>{ d.bucket = classify(d); });
   const dgInv  = dgAll.filter(d=>COUNTED.has(d.bucket));
   const dgDrop = dgAll.length - dgInv.length;
-  const dgNos   = new Set(dgInv.map(i=>i.invNo));
-  const dgLines = V.bill.filter(b=>dgNos.has(b.invNo));
+  /* Invoice numbers repeat across centres — 1,143 of 3,603 in this data — so a
+     billing line is tied to its invoice by centre AND number. Keyed on the
+     number alone, one centre's lines leak into another centre's invoice. */
+  const invKey  = x => x.center+"|"+x.invNo+"|"+iso(x.invDate||x.date);
+  const dgNos   = new Set(dgInv.map(invKey));
+  const dgLines = V.bill.filter(b=>dgNos.has(invKey(b)));
+  /* A test advised in the IP analysis is often billed INSIDE the chemo, immuno
+     or day-care invoice — the patient has bloods done with the session. That
+     money is diagnostics but the invoice is not tagged Diagnostics, so it never
+     reached these tables. It cannot be found from the department field: this
+     data files "Surgery Package" and "Medical Management" under Investigation.
+     It is found by matching the billed line against what the doctor advised.
+     Package, admin and treatment lines are excluded outright — one of them
+     ("Surgery Package", Rs 1.3 lakh) matched the word "Surgery" typed into a
+     Diagnostics Suggested box. */
+  const NOTATEST = /surgery package|medical management|miscellaneous|registration|^pharmacy|other services|dressing|infusion|mixing|administration|nursing|room|bed charge|picc|chemoport|chemport|package charges|consultation|\binj\b|\btab\b|\bcap\b|syrup/i;
+  const dgAllNos = new Set(dgAll.map(invKey));
+  const offPool = V.bill.filter(b=>b.date && (b.net||0) > 0 && !dgAllNos.has(invKey(b)) && !NOTATEST.test(b.item));
+  const offIdx = new Map();
+  offPool.forEach(b=>{ const k = b.hid || b.mob || b.patient; if(!k) return;
+    if(!offIdx.has(k)) offIdx.set(k, []); offIdx.get(k).push(b); });
   /* Pharmacy lines come from the whole file, not the selected range: a drug
      collected on the next visit still fulfils the prescription. This matches the
      Pharmacy tab, which already counts purchases on any later date. */
@@ -1283,6 +1337,47 @@ function analyse(){
     });
     return best ? best.type : "";
   };
+  /* Every encounter at the selected centre, whatever the date — needed to see
+     that a patient billed this month was advised in an earlier one. */
+  const cenSel = $("#fCenter").value;
+  const allEnc = OP.filter(r=>!cenSel || r.center===cenSel);
+  /* Advice from ANY month is matched against the lines billed in this period:
+     bloods advised at the September session are billed with the October one. */
+  const offSeen = new Set(), offBills = [];
+  const addOff = (L, type, why) => {
+    /* Both routes are filtered here, so neither can let a drug or a package
+       line through on its own. */
+    if(offSeen.has(L.lid) || NOTATEST.test(L.item) || (ndRe && ndRe.test(L.item))) return;
+    offSeen.add(L.lid);
+    offBills.push({patient:L.patient, mob:L.mob, hid:L.hid, center:L.center, date:L.date,
+                   net:L.net, invNo:L.invNo, item:L.item, bucket:"offinv", encType:type||"",
+                   off:true, why});
+  };
+  /* Second route in, as agreed: a line sitting inside a chemo or immuno invoice
+     whose own department / report category says Diagnostics counts as well,
+     even when its name matches nothing the doctor typed. The package, admin and
+     drug lines are already out of offPool, and the "not a diagnostic test" list
+     is applied again here, because this field is the one that calls a stitch
+     removal an Investigation. */
+  offPool.forEach(b=>{ if(b.isD && !(ndRe && ndRe.test(b.item))) addOff(b, "", "category"); });
+  allEnc.forEach(o=>{
+    if(!o.dItems || !o.dItems.length) return;
+    const lines = offIdx.get(o.hid || o.mob || o.patient); if(!lines) return;
+    const cand = lines.filter(b=>dateOk(b.date, o.date) && (!sameCtr || b.center===o.center));
+    if(!cand.length) return;
+    o.dItems.forEach(it=>{
+      const m = matchItem(it.name, cand);
+      /* a weak one-token overlap is not enough to move money */
+      if(!m || m.conf==="lo") return;
+      addOff(m.item, o.type, "advised");
+    });
+  });
+  /* These are diagnostics too, so they join the bills everything else counts:
+     the scenario columns, Counted, Billed ₹ and the patient tables all see them.
+     Billed ₹ therefore sits above the diagnostics figure in the books by exactly
+     this amount, which the note under the table states. */
+  offBills.forEach(d=>{ d.bucket = classify(d); });
+  dgAll.push(...offBills);
   dgAll.forEach(d=>{ d.encType = attrType(d); });
   /* The billed side now follows the OP/IP filter, exactly like the advised side. */
   const dgSel = ty ? dgAll.filter(d=>d.encType===ty) : dgAll;
@@ -1388,11 +1483,7 @@ function analyse(){
   const pharmTot = pharmPer.reduce((a,b)=>({center:"All centers",sug:a.sug+b.sug,
     bought:a.bought+b.bought,adv:a.adv+b.adv,bil:a.bil+b.bil}),{sug:0,bought:0,adv:0,bil:0});
 
-  /* Every encounter at the selected centre, whatever the date — needed to see
-     that a patient billed this month was advised in an earlier one. */
-  const cenSel = $("#fCenter").value;
-  const allEnc = OP.filter(r=>!cenSel || r.center===cenSel);
-  return {rows, allRows: all, allEnc, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll, dgSel, encTyped:true,
+  return {rows, allRows: all, allEnc, offBills, ndTotal, per, tot, byEnc, dgDrop, dgTotal: dgAll.length, dgAll, dgSel, encTyped:true,
           labPer, labTot,
           drugRows, pharmPer, pharmTot, V};
 }
@@ -1502,7 +1593,22 @@ function bar(v,max,color){
   return '<span class="bar"><span style="width:'+w+'%;background:'+color+'"></span></span>';
 }
 function renderSummary(A){
+  /* The billed side of the very patients counted in Suggested, so the question
+     "they were advised — did they get it done with us?" is answered in this
+     table instead of on another tab. Same figures as the OP / IP registered
+     tab, OP and IP added together. */
+  let SB = new Map(), SBtot = {conv:0, bil:0};
+  try{
+    const R = regTables(A);
+    [...R.op.rows, ...R.ip.rows].forEach(r=>{
+      const c = SB.get(r.center) || {conv:0, bil:0};
+      c.conv += r.conv; c.bil += r.bil; SB.set(r.center, c);
+    });
+    SBtot = {conv: R.op.tot.conv + R.ip.tot.conv, bil: R.op.tot.bil + R.ip.tot.bil};
+  }catch(e){}
+  const sb = r => (r.center==="All centers" ? SBtot : SB.get(r.center)) || {conv:0, bil:0};
   const head = ["Center","Consultations","Fresh OPD","Suggested diagnostics",
+                "Advised patients billed","Billed from advised ₹",
                 "① Fresh OPD → diag","② Follow-up → diag","③ Prior IP → diag","⑤ Returning patient","Counted","Diag %",
                 "Expected ₹","Billed ₹","Billed after OPD ₹","Billed after OPD %","Billed %","④ Diag w/o OPD","④ Revenue","⑤ Revenue (in Counted)","⊘ Same-day session"];
   let h = "<thead><tr>"+head.map(x=>"<th>"+x+"</th>").join("")+"</tr></thead><tbody>";
@@ -1515,6 +1621,7 @@ function renderSummary(A){
     const aft = (r.bilRev||0) - (r.noOpdRev||0), aftP = r.expRev ? aft/r.expRev : null;
     return '<tr class="'+cls+'"><td>'+esc(r.center)+"</td>"+
       "<td>"+r.opd+"</td><td>"+r.fresh+"</td><td>"+r.sugD+"</td>"+
+      "<td><b>"+sb(r).conv+"</b></td><td><b>"+money(sb(r).bil)+"</b></td>"+
       "<td>"+r.bFresh+"</td><td>"+r.bFollow+"</td><td>"+r.bPrior+"</td><td>"+(r.bReturn||0)+"</td>"+
       "<td><b>"+r.bilD+"</b></td>"+
       '<td class="pct" style="color:'+(dp==null?"var(--text-muted)":"var(--series-diag)")+'">'+
@@ -1535,8 +1642,19 @@ function renderSummary(A){
   $("#sumTbl").innerHTML = h;
   /* With an OP/IP filter on, say plainly which bills are in and which are out —
      the billed side is attributed, not tagged, and walk-ins belong to neither. */
+  const off = (A.offBills||[]);
+  const offRev = off.reduce((a,d)=>a+(d.net||0),0);
+  const ndNote = !A.ndTotal ? "" :
+    '<div class="warnbox">'+money(A.ndTotal)+" of non-test lines billed on invoices tagged <b>Diagnostics</b> "+
+    "(stitch removal, dressing, consultation and the like) are <b>left out</b> of these figures. "+
+    "Edit that list on the Rules &amp; mapping tab.</div>";
+  const extra = !offRev ? "" :
+    '<div class="warnbox"><b>Billed ₹ includes '+money(offRev)+'</b> of advised tests billed inside a chemotherapy, '+
+    "immunotherapy or day-care invoice rather than on a Diagnostics invoice ("+off.length+" lines). They are real "+
+    "diagnostics and the patient converted, so they are counted here — which puts Billed ₹ above the diagnostics "+
+    "figure in your books by that amount. The split is on the OP / IP registered tab.</div>";
   const ty = $("#fType").value, note = $("#sumScope");
-  if(note) note.innerHTML = !ty ? "" :
+  if(note) note.innerHTML = ndNote + extra + (!ty ? "" :
     (A.encTyped === false
       ? '<div class="warnbox">This shared snapshot was published before OP/IP attribution existed, so only the '+
         '<b>Suggested</b> and <b>Expected ₹</b> columns follow the '+esc(ty)+' filter. Ask for a snapshot '+
@@ -1544,7 +1662,7 @@ function renderSummary(A){
       : '<div class="warnbox"><b>Showing '+esc(ty)+' only.</b> A diagnostics bill carries no OP/IP tag, so each one is '+
         'credited to the nearest row in the analysis exports for that patient — up to the lookback window before it, '+
         'and up to 7 days after, because pre-session labs are billed ahead of the session. Bills with no analysis row '+
-        'either side (direct walk-ins) are counted under <b>Both</b> only, so OP + IP is less than Both.</div>');
+        'either side (direct walk-ins) are counted under <b>Both</b> only, so OP + IP is less than Both.</div>'));
 }
 
 function renderLabs(A){
@@ -1643,6 +1761,7 @@ function regTables(A){
     }
   });
   const dgBy = new Map();
+  /* Diagnostics invoices, plus advised tests billed inside a treatment invoice. */
   (A.dgAll||[]).forEach(d=>{ const k = key(d); if(!k) return;
     if(!dgBy.has(k)) dgBy.set(k,[]); dgBy.get(k).push(d); });
 
@@ -1731,13 +1850,14 @@ function regTables(A){
   const adviseDates = new Map();
   pat.forEach(p=>adviseDates.set(p.k, p.dates));
   const recon = {total:0, inOp:0, inIp:0, noAdvice:0, noAdviceN:0, early:0, earlyN:0,
-                 ipEarly:0, ipEarlyN:0, prior:0, priorN:0};
+                 ipEarly:0, ipEarlyN:0, prior:0, priorN:0, off:0, offN:0, dgOnly:0};
   const inTable = new Map();
   all.forEach(p=>inTable.set(p.k, {side: p.ip ? "ip" : "op", anyOrder: p.anyOrder,
                                    earlierOnly: !!p.earlierOnly}));
   (A.dgAll||[]).forEach(d=>{
     const k = key(d), net = d.net||0;
     recon.total += net;
+    if(d.off){ recon.off += net; recon.offN++; } else recon.dgOnly += net;
     const ds = adviseDates.get(k);
     const t0 = inTable.get(k);
     if(t0 && t0.earlierOnly){                       /* billed now, advised earlier */
@@ -1853,7 +1973,9 @@ function renderRecon(R){
     row("<b>Subtotal — in the two tables</b>", inTables, null, "total")+
     row("Patient <b>never advised</b> diagnostics at all — direct walk-in", R.noAdvice, R.noAdviceN, "")+
     row("Patient <b>new this month</b>, and the bill came <b>before</b> their first advice — referred in from outside", R.early, R.earlyN, "")+
-    row("<b>Total diagnostics billed</b>", R.total, null, "total")+
+    row("<i>of the total, raised on a <b>Diagnostics invoice</b></i>", R.dgOnly, null, "")+
+    row("<i>of the total, advised tests billed <b>inside a chemo, immuno or other treatment invoice</b></i>", R.off, R.offN, "")+
+    row("<b>Total diagnostics counted</b>", R.total, null, "total")+
     "</tbody></table></div></div>";
 }
 /* The two notes under the tables, shared by both layouts. */
@@ -3173,7 +3295,7 @@ function snapshotOf(A){
      same drill-downs without loading the exports. This is the only part of the
      snapshot that carries names and mobile numbers. */
   const dg = A.dgAll.map(d=>({p:d.patient, m:d.mob, h:d.hid, c:d.center, d:iso(d.date),
-    y:d.encType||"",
+    y:d.encType||"", o:d.off?1:0,
     n:Math.round(d.net), b:d.bucket,
     k: d.back ? {d:iso(d.back.date), t:d.back.type, v:Math.round(d.back.total),
                  y:d.back.days, c:d.back.n} : null}));
@@ -3286,7 +3408,7 @@ function aggregateSnap(){
      hold them to the same date / centre / OP-IP filters as the totals. */
   const dgAll = (s.dg||[]).filter(inRange).map(x=>({
     patient:x.p, mob:x.m, hid:x.h||"", center:x.c, date:parseDate(x.d), net:x.n, bucket:x.b,
-    encType:x.y||"",
+    encType:x.y||"", off:!!x.o,
     back: x.k ? {date:parseDate(x.k.d), type:x.k.t, total:x.k.v, days:x.k.y, n:x.k.c} : null}));
   const rows = encRows.filter(r=>!ty || r.type===ty);
 
@@ -3323,6 +3445,7 @@ function aggregateSnap(){
           pharmTot: pharm("All centers", sel),
           pharmNote: s.pharmNote, backTrack: bt,
           rows, allRows: encRows, allEnc: (s.enc||[]).filter(x=>!c || x.c===c).map(unpackEnc),
+          offBills: dgAll.filter(d=>d.off),
           dgAll, dgSel, encTyped, drugRows: rows.filter(r=>r.drugTxt.trim()!==""),
           ...(()=>{ /* lab compliance re-added from the stored encounter rows */
             const cs = [...new Set(rows.map(r=>r.center))].sort();
@@ -3602,18 +3725,20 @@ $("#tabs").addEventListener("click",e=>{
   [...$("#tabs").children].forEach(x=>x.setAttribute("aria-selected", x===b));
   document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("on", s.id==="tab-"+b.dataset.t));
 });
-function fillCfg(){ $("#cfgCenters").value=CFG.centers; $("#cfgDiag").value=CFG.diag; $("#cfgPharm").value=CFG.pharm; $("#cfgSyn").value=CFG.syn;
+function fillCfg(){ if($("#cfgNotDiag")) $("#cfgNotDiag").value=CFG.notdiag||DEF.notdiag;
+  $("#cfgCenters").value=CFG.centers; $("#cfgDiag").value=CFG.diag; $("#cfgPharm").value=CFG.pharm; $("#cfgSyn").value=CFG.syn;
   if($("#cfgRad")) $("#cfgRad").value=CFG.radDocs||DEF.radDocs; }
 $("#saveCfg").addEventListener("click",()=>{
   CFG = {centers:$("#cfgCenters").value, diag:$("#cfgDiag").value.trim()||DEF.diag,
          pharm:$("#cfgPharm").value.trim()||DEF.pharm, syn:$("#cfgSyn").value,
-         radDocs:$("#cfgRad")?$("#cfgRad").value:CFG.radDocs};
+         radDocs:$("#cfgRad")?$("#cfgRad").value:CFG.radDocs,
+         notdiag:$("#cfgNotDiag")?$("#cfgNotDiag").value:CFG.notdiag};
   try{ new RegExp(CFG.diag); new RegExp(CFG.pharm); }
   catch(err){ $("#cfgMsg").textContent="Invalid regular expression — not saved."; return; }
   saveCfg(); render(); $("#cfgMsg").textContent="Saved and recalculated.";
   setTimeout(()=>$("#cfgMsg").textContent="",2600);
 });
-$("#resetCfg").addEventListener("click",()=>{ CFG={centers:DEF.centers,diag:DEF.diag,pharm:DEF.pharm,syn:DEF.syn,radDocs:DEF.radDocs};
+$("#resetCfg").addEventListener("click",()=>{ CFG={centers:DEF.centers,diag:DEF.diag,pharm:DEF.pharm,syn:DEF.syn,radDocs:DEF.radDocs,notdiag:DEF.notdiag};
   saveCfg(); fillCfg(); render(); $("#cfgMsg").textContent="Reset to defaults."; setTimeout(()=>$("#cfgMsg").textContent="",2600); });
 $("#buildTag").textContent = " · build " + BUILD;
 fillCfg();
