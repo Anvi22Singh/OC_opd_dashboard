@@ -934,10 +934,26 @@ async function readFile(file){
   const buf = await file.arrayBuffer();
   const wb = XLSX.read(new Uint8Array(buf), {type:"array"});
   const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows = XLSX.utils.sheet_to_json(ws, {defval:null, raw:true});
-  if(!rows.length){ throw new Error("the sheet is empty"); }
-  const kind = detect(Object.keys(rows[0]), file.name);
+  /* Exports may carry a branded banner (logo, title, date range) above the
+     real column headers, pushing them down to row 5 or so. Scan the first rows
+     for the one whose cells are recognised column names and read from there. */
+  if(!ws || !ws["!ref"]){ throw new Error("the sheet is empty"); }
+  const grid = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:true, blankrows:true});
+  let kind = null, hdr = -1;
+  for(let i=0; i<Math.min(grid.length, 30) && !kind; i++){
+    const cols = (grid[i]||[]).filter(c => c!=null && String(c).trim()!=="").map(c => String(c).trim());
+    if(!cols.length) continue;
+    kind = detect(cols, file.name);
+    if(kind) hdr = i;
+  }
   if(!kind){ throw new Error("could not tell what kind of export this is — no recognised columns"); }
+  const range = XLSX.utils.decode_range(ws["!ref"]);
+  range.s.r += hdr;
+  const rows = XLSX.utils.sheet_to_json(ws, {defval:null, raw:true, range})
+    .map(r => { const o = {}; for(const k in r) o[String(k).trim()] = r[k]; return o; })
+    /* drop fully blank rows and any banner/footer lines with no data */
+    .filter(r => Object.keys(r).filter(k => !/^__EMPTY/.test(k)).some(k => r[k]!=null && String(r[k]).trim()!==""));
+  if(!rows.length){ throw new Error("the sheet has headers but no data rows"); }
   /* Loading a second file of the same kind ADDS to it — that is how an older
      invoice export is brought in so "never consulted before" can be judged
      against real history. Rows already present are ignored, so re-loading the
