@@ -728,7 +728,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "25-Nov-2026 walkin-dump";
+const BUILD = "25-Nov-2026 walkin-dump-2";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   /* Lines that are not a diagnostic test, even when they ride on an invoice the
@@ -1995,7 +1995,7 @@ function renderRecon(R){
     row("<b>Total diagnostics counted</b>", R.total, null, "total")+
     "</tbody></table></div>"+
     (R.noAdviceList && R.noAdviceList.length
-      ? '<p style="margin:10px 0 0"><button class="btn ghost" id="noAdvCsv" type="button">Download never-advised walk-in bills ('+
+      ? '<p style="margin:10px 0 0"><button class="btn" id="noAdvCsv" type="button" style="border-color:var(--violet)">Download never-advised walk-in bills ('+
         R.noAdviceList.length+")</button></p>" : "")+
     "</div>";
   const b = $("#noAdvCsv");
