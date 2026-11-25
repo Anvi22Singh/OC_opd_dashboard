@@ -728,7 +728,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "19-Nov-2026 banner-fix";
+const BUILD = "25-Nov-2026 walkin-dump";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   /* Lines that are not a diagnostic test, even when they ride on an invoice the
@@ -1866,7 +1866,8 @@ function regTables(A){
   const adviseDates = new Map();
   pat.forEach(p=>adviseDates.set(p.k, p.dates));
   const recon = {total:0, inOp:0, inIp:0, noAdvice:0, noAdviceN:0, early:0, earlyN:0,
-                 ipEarly:0, ipEarlyN:0, prior:0, priorN:0, off:0, offN:0, dgOnly:0};
+                 ipEarly:0, ipEarlyN:0, prior:0, priorN:0, off:0, offN:0, dgOnly:0,
+                 noAdviceList:[]};
   const inTable = new Map();
   all.forEach(p=>inTable.set(p.k, {side: p.ip ? "ip" : "op", anyOrder: p.anyOrder,
                                    earlierOnly: !!p.earlierOnly}));
@@ -1880,7 +1881,7 @@ function regTables(A){
       if(t0.side==="ip") recon.inIp += net; else recon.inOp += net;
       recon.prior += net; recon.priorN++; return;
     }
-    if(!ds || !ds.length){ recon.noAdvice += net; recon.noAdviceN++; return; }
+    if(!ds || !ds.length){ recon.noAdvice += net; recon.noAdviceN++; recon.noAdviceList.push(d); return; }
     const follows = ds.some(od=>dateOk(d.date, od));
     const t = inTable.get(k) || {side:"op", anyOrder:false};
     if(follows || t.anyOrder){
@@ -1992,7 +1993,31 @@ function renderRecon(R){
     row("<i>of the total, raised on a <b>Diagnostics invoice</b></i>", R.dgOnly, null, "")+
     row("<i>of the total, advised tests billed <b>inside a chemo, immuno or other treatment invoice</b></i>", R.off, R.offN, "")+
     row("<b>Total diagnostics counted</b>", R.total, null, "total")+
-    "</tbody></table></div></div>";
+    "</tbody></table></div>"+
+    (R.noAdviceList && R.noAdviceList.length
+      ? '<p style="margin:10px 0 0"><button class="btn ghost" id="noAdvCsv" type="button">Download never-advised walk-in bills ('+
+        R.noAdviceList.length+")</button></p>" : "")+
+    "</div>";
+  const b = $("#noAdvCsv");
+  if(b) b.onclick = () => exportNoAdvice(R.noAdviceList);
+}
+/* The bills behind the "never advised — direct walk-in" line, one row per bill,
+   so the total matches the dashboard line exactly. */
+function exportNoAdvice(list){
+  const q = s => '"'+String(s==null?"":s).replace(/"/g,'""')+'"';
+  const L = [["Patient","Mobile","Hospital ID","Center","Bill date","Invoice number","OP/IP","Raised on","Item","Net billed"].map(q).join(",")];
+  let tot = 0;
+  list.slice().sort((a,b)=>String(a.patient).localeCompare(String(b.patient)) || (a.date-b.date)).forEach(d=>{
+    tot += d.net||0;
+    L.push([d.patient, d.mob, d.hid, d.center, d.date?dmy(d.date):"", d.invNo, d.encType||"",
+      d.off ? "Treatment invoice" : "Diagnostics invoice", d.item||"", Math.round(d.net||0)].map(q).join(","));
+  });
+  L.push(["Total","","","","","","","","",Math.round(tot)].map(q).join(","));
+  const blob = new Blob(["\ufeff"+L.join("\r\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "never_advised_walkins_"+($("#fFrom").value||"start")+"_to_"+($("#fTo").value||"end")+".csv";
+  a.click(); URL.revokeObjectURL(a.href);
 }
 /* The two notes under the tables, shared by both layouts. */
 function regNotes(R, when){
