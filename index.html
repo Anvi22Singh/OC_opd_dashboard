@@ -728,7 +728,7 @@ td.wrap{white-space:normal;text-align:left;min-width:240px;max-width:380px;font-
 /* Stamped by the build script. Shown in the header so anyone can tell which
    version of the file they have — GitHub Pages caches index.html for a few
    minutes, so a stale copy after an upload is normal and Ctrl+F5 fixes it. */
-const BUILD = "25-Nov-2026 walkin-dump-2";
+const BUILD = "28-Nov-2026 no-advice-in-tables";
 /* ---------------------------------------------------------------- config -- */
 const DEF = {
   /* Lines that are not a diagnostic test, even when they ride on an invoice the
@@ -1810,7 +1810,10 @@ function regTables(A){
                                  came in on somebody else's referral, and it
                                  produced the consultation rather than the other
                                  way round. */
-    p.anyOrder = p.ip || p.when==="followup";
+    /* Every diagnostics bill of an advised patient counts, before or after the
+       advice: discharge summaries and prescriptions are often missing, so the
+       advice on file is not a reliable gate. */
+    p.anyOrder = true;
     const mine = dgBy.get(p.k) || [];
     const follows = d => p.dates.some(od=>dateOk(d.date, od));
     const bills = p.anyOrder ? mine : mine.filter(follows);
@@ -1824,7 +1827,7 @@ function regTables(A){
      billed in — the money arrived then. So a patient with no advice THIS period
      but an advice row in an earlier one still carries their bills into the
      table, with no advised value attached, since that was counted when it was
-     given. Patients never advised at all stay out: those are walk-ins. */
+     given. Patients with no advice at all are handled just below. */
   const P0 = period();
   const priorAdv = new Set();
   /* The global encounter list is the raw mapped rows, which carry the advice
@@ -1845,6 +1848,34 @@ function regTables(A){
     p.early = 0; p.earlyN = 0;
     pat.set(k, p);
   });
+  /* Patients billed diagnostics with no advice on file at all. The advice is
+     often simply missing (no discharge summary or prescription uploaded), so
+     their bills still belong to OP or IP. The ONLY bills left out are a genuine
+     diagnostics-only patient: never consulted or treated before or on the day
+     of the test, and nothing but diagnostics in their whole journey. */
+  const nonDiag = new Set();
+  (INV||[]).forEach(i=>{ if(i.procType && i.procType!=="DIAGNOSTICS"){
+    if(i.hid) nonDiag.add(i.hid); if(i.mob) nonDiag.add(i.mob); } });
+  const encKeys = new Set();
+  (A.allEnc||A.allRows||[]).forEach(r=>{ const k=key(r); if(k) encKeys.add(k); if(r.mob) encKeys.add(r.mob); });
+  const dxOnly = (k, bills) => !ipSet.has(k) && !encKeys.has(k) &&
+    bills.every(d=>d.bucket==="noopd" && !d.off &&
+      !(d.hid && nonDiag.has(d.hid)) && !(d.mob && (nonDiag.has(d.mob) || encKeys.has(d.mob))) &&
+      !(d.back && d.back.type && d.back.type!=="DIAGNOSTICS"));
+  dgBy.forEach((bills, k)=>{
+    if(pat.has(k) || dxOnly(k, bills)) return;
+    const b0 = bills.slice().sort((x,y)=>x.date-y.date)[0];
+    /* Side comes from the patient's own billing: IP evidence anywhere, an IP
+       encounter next to the bill, or a treatment invoice -> IP; else OP. */
+    const ip = ipSet.has(k) || bills.some(d=>d.encType==="IP" || /\bip\b/.test(d.invType||"") ||
+      d.off || d.bucket==="prior" || d.bucket==="sameday");
+    const p = {k, name:b0.patient, center:b0.center, first:b0.date, adv:0, dates:[],
+               earlierOnly:true, noAdv:true, anyOrder:true, when:"", ip};
+    p.bil = bills.reduce((a,d)=>a+(d.net||0),0);
+    p.conv = bills.length>0;
+    p.early = 0; p.earlyN = 0;
+    pat.set(k, p);
+  });
   const all = [...pat.values()];
   const agg = list => {
     /* n counts patients ADVISED in this period; a patient billed this period on
@@ -1854,7 +1885,7 @@ function regTables(A){
       conv:rr.filter(p=>p.conv).length,
       adv:rr.reduce((a,p)=>a+p.adv,0), bil:rr.reduce((a,p)=>a+p.bil,0)});
     const cs = [...new Set(list.map(p=>p.center))].sort();
-    return {rows: cs.map(c=>mk(c, list.filter(p=>p.center===c))).filter(r=>r.n),
+    return {rows: cs.map(c=>mk(c, list.filter(p=>p.center===c))).filter(r=>r.n || r.conv),
             tot: mk("All centers", list)};
   };
   const who = $("#regWho") ? $("#regWho").value : "";
@@ -1867,16 +1898,20 @@ function regTables(A){
   pat.forEach(p=>adviseDates.set(p.k, p.dates));
   const recon = {total:0, inOp:0, inIp:0, noAdvice:0, noAdviceN:0, early:0, earlyN:0,
                  ipEarly:0, ipEarlyN:0, prior:0, priorN:0, off:0, offN:0, dgOnly:0,
-                 noAdviceList:[]};
+                 noAdvIn:0, noAdvInN:0, noAdvInList:[], noAdviceList:[]};
   const inTable = new Map();
   all.forEach(p=>inTable.set(p.k, {side: p.ip ? "ip" : "op", anyOrder: p.anyOrder,
-                                   earlierOnly: !!p.earlierOnly}));
+                                   earlierOnly: !!p.earlierOnly, noAdv: !!p.noAdv}));
   (A.dgAll||[]).forEach(d=>{
     const k = key(d), net = d.net||0;
     recon.total += net;
     if(d.off){ recon.off += net; recon.offN++; } else recon.dgOnly += net;
     const ds = adviseDates.get(k);
     const t0 = inTable.get(k);
+    if(t0 && t0.noAdv){                             /* billed, no advice on file */
+      if(t0.side==="ip") recon.inIp += net; else recon.inOp += net;
+      recon.noAdvIn += net; recon.noAdvInN++; recon.noAdvInList.push(d); return;
+    }
     if(t0 && t0.earlierOnly){                       /* billed now, advised earlier */
       if(t0.side==="ip") recon.inIp += net; else recon.inOp += net;
       recon.prior += net; recon.priorN++; return;
@@ -1973,37 +2008,45 @@ function renderRecon(R){
     '</td><td class="pct">'+pc(v)+"</td><td>"+(n==null?'<span class="muted">—</span>':n)+"</td></tr>";
   const inTables = R.inOp + R.inIp;
   el.innerHTML = '<div class="card"><h2>Where the rest of the diagnostics revenue sits</h2>'+
-    '<p class="hint">The two tables above hold bills raised for a patient <b>advised in this period</b>. For an <b>IP</b> '+
-    "patient, and for any <b>patient who was already ours before this month</b>, every diagnostics bill in the period counts — "+
-    "bloods are billed ahead of the session that records them, and an existing patient doing a test here is follow-up care "+
-    "whichever side of the consultation it falls. Only for a patient <b>new this month</b> must the bill follow the advice, "+
-    "because a test billed before their first consultation came in on an outside referral. "+
+    '<p class="hint">The two tables above hold <b>every</b> diagnostics bill in the period, whether it falls before or after the advice, '+
+    "and including bills with <b>no advice on file</b> — discharge summaries and prescriptions are not always available, so a "+
+    "missing advice does not make the bill a walk-in. Such a bill goes to OP or IP by the patient's own billing. The only "+
+    "revenue left out is a <b>diagnostics-only patient</b>: never consulted or treated at Oncare before or on the day of the "+
+    "test, and nothing but diagnostics in their whole journey. "+
     "The lines below add up to the diagnostics revenue for the same period, centre and OP/IP filter.</p>"+
     '<div class="tblwrap"><table><thead><tr><th>Line</th><th>Net billed ₹</th><th>Share</th><th>Bills</th>'+
     "</tr></thead><tbody>"+
     row("In the <b>OP registered</b> table", R.inOp, null, "")+
     row("In the <b>IP registered</b> table", R.inIp, null, "")+
-    (R.ipEarly ? row("&nbsp;&nbsp;<i>of which billed before the advice — IP sessions and existing patients, counted above</i>",
+    (R.noAdvIn ? row("&nbsp;&nbsp;<i>of which billed with <b>no advice on file</b> (summary / prescription missing) — counted above</i>",
+                     R.noAdvIn, R.noAdvInN, "") : "")+
+    (R.ipEarly ? row("&nbsp;&nbsp;<i>of which billed before the advice — counted above</i>",
                      R.ipEarly, R.ipEarlyN, "") : "")+
     (R.prior ? row("&nbsp;&nbsp;<i>of which billed this period against advice given in an earlier one — counted above</i>",
                    R.prior, R.priorN, "") : "")+
     row("<b>Subtotal — in the two tables</b>", inTables, null, "total")+
-    row("Patient <b>never advised</b> diagnostics at all — direct walk-in", R.noAdvice, R.noAdviceN, "")+
-    row("Patient <b>new this month</b>, and the bill came <b>before</b> their first advice — referred in from outside", R.early, R.earlyN, "")+
+    row("<b>Diagnostics-only patient</b> — never consulted or treated at Oncare, not counted", R.noAdvice, R.noAdviceN, "")+
+    (R.early ? row("Bill <b>before</b> first advice — referred in from outside", R.early, R.earlyN, "") : "")+
     row("<i>of the total, raised on a <b>Diagnostics invoice</b></i>", R.dgOnly, null, "")+
     row("<i>of the total, advised tests billed <b>inside a chemo, immuno or other treatment invoice</b></i>", R.off, R.offN, "")+
     row("<b>Total diagnostics counted</b>", R.total, null, "total")+
     "</tbody></table></div>"+
+    '<p style="margin:10px 0 0;display:flex;gap:8px;flex-wrap:wrap">'+
+    (R.noAdvInList && R.noAdvInList.length
+      ? '<button class="btn" id="noAdvInCsv" type="button" style="border-color:var(--violet)">Download bills with no advice on file ('+
+        R.noAdvInList.length+")</button>" : "")+
     (R.noAdviceList && R.noAdviceList.length
-      ? '<p style="margin:10px 0 0"><button class="btn" id="noAdvCsv" type="button" style="border-color:var(--violet)">Download never-advised walk-in bills ('+
-        R.noAdviceList.length+")</button></p>" : "")+
-    "</div>";
+      ? '<button class="btn" id="noAdvCsv" type="button" style="border-color:var(--violet)">Download diagnostics-only walk-in bills ('+
+        R.noAdviceList.length+")</button>" : "")+
+    "</p></div>";
   const b = $("#noAdvCsv");
-  if(b) b.onclick = () => exportNoAdvice(R.noAdviceList);
+  if(b) b.onclick = () => exportNoAdvice(R.noAdviceList, "diagnostics_only_walkins");
+  const b2 = $("#noAdvInCsv");
+  if(b2) b2.onclick = () => exportNoAdvice(R.noAdvInList, "billed_no_advice_on_file");
 }
 /* The bills behind the "never advised — direct walk-in" line, one row per bill,
    so the total matches the dashboard line exactly. */
-function exportNoAdvice(list){
+function exportNoAdvice(list, stem){
   const q = s => '"'+String(s==null?"":s).replace(/"/g,'""')+'"';
   const L = [["Patient","Mobile","Hospital ID","Center","Bill date","Invoice number","OP/IP","Raised on","Item","Net billed"].map(q).join(",")];
   let tot = 0;
@@ -2016,7 +2059,7 @@ function exportNoAdvice(list){
   const blob = new Blob(["\ufeff"+L.join("\r\n")], {type:"text/csv;charset=utf-8"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "never_advised_walkins_"+($("#fFrom").value||"start")+"_to_"+($("#fTo").value||"end")+".csv";
+  a.download = (stem||"never_advised_walkins")+"_"+($("#fFrom").value||"start")+"_to_"+($("#fTo").value||"end")+".csv";
   a.click(); URL.revokeObjectURL(a.href);
 }
 /* The two notes under the tables, shared by both layouts. */
